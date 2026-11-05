@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
-import { ArrowRight, Eye, Globe2, Handshake, Palette, ScanLine, ShieldCheck, Sparkle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useRef, type MouseEvent, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { artisans, masks, articles } from "@/lib/mock/data";
@@ -11,6 +11,7 @@ import { NumberTicker, Reveal, Stagger, StaggerItem } from "@/components/ui/moti
 import { MaskArtwork } from "@/components/ui/MaskImage";
 import { SpotlightCard } from "@/components/ui/surfaces";
 import { ImageFrame } from "@/components/ui/MaskImage";
+import { ArWallArt, CoastMap, CraftStageArt, FlameBand, GalleryArt, TagArt } from "@/components/art";
 
 /* ------------------------------------------------ magnetic CTA --- */
 
@@ -42,12 +43,11 @@ function Magnetic({ children }: { children: ReactNode }) {
 
 /* ------------------------------------------------ sections ------- */
 
-function SectionHead({ overline, title, href, hrefLabel }: { overline: string; title: string; href?: string; hrefLabel?: string }) {
+function SectionHead({ title, href, hrefLabel }: { title: string; href?: string; hrefLabel?: string }) {
   return (
     <div className="mb-10 flex items-end justify-between gap-6">
       <div>
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">{overline}</p>
-        <h2 className="mt-2 font-display text-[28px] leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">{title}</h2>
+        <h2 className="font-display text-[28px] leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">{title}</h2>
       </div>
       {href && (
         <Link to={href} className="hidden shrink-0 items-center gap-1.5 text-sm font-medium text-ink2 transition-colors hover:text-gold-strong sm:inline-flex">
@@ -60,30 +60,33 @@ function SectionHead({ overline, title, href, hrefLabel }: { overline: string; t
 }
 
 const trust = [
-  { icon: ShieldCheck, title: "Authentic", body: "Every piece leaves the workshop with a minted certificate." },
-  { icon: Handshake, title: "Artisan-direct", body: "61% of the price reaches the hands that carved it." },
-  { icon: ScanLine, title: "Provenance-verified", body: "Registry records scannable from the card on its back." },
-  { icon: Globe2, title: "Ships worldwide", body: "Export papers handled; insured, tracked, signed-for." },
+  { title: "Authentic", body: "Every piece leaves the workshop with a minted certificate." },
+  { title: "Artisan-direct", body: "61% of the price reaches the hands that carved it." },
+  { title: "Provenance-verified", body: "Registry records scannable from the card on its back." },
+  { title: "Ships worldwide", body: "Export papers handled; insured, tracked, signed-for." },
 ];
 
 const steps = [
   {
-    n: "01",
-    icon: Eye,
-    title: "Discover",
-    body: "Browse a living registry — Raksha guardians, the eighteen Sanni, Kolam's comic parliament. Every piece names its maker and its tree.",
+    art: <GalleryArt label="Three masks hung on a gallery wall, each with its plaque" />,
+    title: "Find the face you keep thinking about",
+    body: "Browse a living registry — Raksha guardians, the eighteen Sanni, Kolam’s comic parliament. Every piece names its maker and its tree.",
+    to: "/masks",
+    cta: "Open the collection",
   },
   {
-    n: "02",
-    icon: ScanLine,
-    title: "Preview on your wall",
+    art: <ArWallArt label="A phone showing a mask life-size against a living-room wall" />,
+    title: "Hold it against your own wall",
     body: "Life-size AR straight from your phone. See how a 58 cm Naga Raksha sits above the sideboard before you commit.",
+    to: "/masks/naga-raksha",
+    cta: "Try it on a mask",
   },
   {
-    n: "03",
-    icon: ShieldCheck,
-    title: "Verify authenticity",
-    body: "Scan the tag on the back any time — before you pay, and for decades after. The certificate travels with the mask.",
+    art: <TagArt label="The back of a mask with its NFC pocket, QR tag and a phone reading it" />,
+    title: "Scan the back, read its whole life",
+    body: "Scan the tag any time — before you pay, and for decades after. The certificate travels with the mask.",
+    to: "/verify",
+    cta: "See a live certificate",
   },
 ];
 
@@ -107,24 +110,11 @@ export default function Home() {
     <>
       {/* ---------------------------------------------- HERO */}
       <section className="grain relative overflow-hidden" aria-label="Introduction">
-        <div
-          className="pointer-events-none absolute -top-40 right-[8%] h-[560px] w-[560px] rounded-full opacity-40"
-          style={{ background: "radial-gradient(circle, color-mix(in oklab, var(--gold) 16%, transparent), transparent 62%)" }}
-          aria-hidden="true"
-        />
         <div className="relative mx-auto grid max-w-7xl gap-12 px-4 pt-14 pb-16 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-20 lg:pb-24">
           <Stagger className="lg:col-span-7">
             <StaggerItem>
-              <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em] text-gold">
-                <Sparkle className="size-3.5" aria-hidden="true" />
-                A curated registry · southern Sri Lanka
-              </p>
-            </StaggerItem>
-            <StaggerItem>
-              <h1 className="mt-5 font-display text-[44px] leading-[1.04] font-light tracking-[-0.02em] text-ink sm:text-[60px] lg:text-[68px]">
-                The carved face of a
-                <br />
-                <em className="text-gold-strong">living tradition.</em>
+              <h1 className="font-display text-[44px] leading-[1.04] font-light tracking-[-0.02em] text-ink sm:text-[60px] lg:text-[68px]">
+                The carved face of a living tradition.
               </h1>
             </StaggerItem>
             <StaggerItem>
@@ -153,9 +143,30 @@ export default function Home() {
               </div>
             </StaggerItem>
             <StaggerItem>
-              <p className="mt-9 font-mono text-[11px] tracking-wide text-ink4 tnum">
-                18 masks &nbsp;·&nbsp; 8 lineages &nbsp;·&nbsp; 0 middlemen
-              </p>
+              <p className="mt-9 text-sm text-ink3">Eighteen masks, eight lineages, no middlemen.</p>
+            </StaggerItem>
+            <StaggerItem>
+              <Link to="/heritage" className="group mt-10 block max-w-xl" aria-label="See how a mask is made, from tree to waking the eyes">
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    [0, "The tree"],
+                    [3, "The carving"],
+                    [6, "The paint"],
+                    [7, "The eyes"],
+                  ].map(([stage, cap]) => (
+                    <figure key={cap as string}>
+                      <div className="overflow-hidden rounded-md transition-transform duration-300 group-hover:-translate-y-0.5">
+                        <CraftStageArt stage={stage as number} />
+                      </div>
+                      <figcaption className="mt-1.5 text-[12.5px] text-ink3">{cap}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+                <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-gold transition-colors group-hover:text-gold-strong">
+                  Eight stations from tree to mask
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </span>
+              </Link>
             </StaggerItem>
           </Stagger>
 
@@ -189,7 +200,7 @@ export default function Home() {
               </div>
               <Link
                 to={`/masks/${heroMask.slug}`}
-                className="absolute -right-2 -bottom-3 inline-flex items-center gap-1.5 rounded-lg border border-line bg-s1/95 px-3 py-2 text-xs font-medium text-ink2 shadow-lg backdrop-blur transition-colors hover:text-gold-strong sm:-right-4"
+                className="absolute -right-2 -bottom-3 inline-flex items-center gap-1.5 rounded-lg bg-s2 px-3 py-2 text-xs font-medium text-ink2 shadow-lg transition-colors hover:text-gold-strong sm:-right-4"
               >
                 This month's signature piece
                 <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -200,23 +211,22 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------- TRUST STRIP */}
-      <section className="border-y border-line bg-s1/60" aria-label="Assurances">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-line sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x lg:divide-y-0">
+      <section aria-label="Assurances">
+        <FlameBand tall />
+        <div className="mx-auto grid max-w-7xl gap-x-10 gap-y-6 px-4 py-9 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
           {trust.map((t) => (
-            <div key={t.title} className="flex items-start gap-3.5 px-6 py-6 lg:py-7">
-              <t.icon className="mt-0.5 size-5 shrink-0 text-gold" aria-hidden="true" />
-              <div>
-                <p className="text-sm font-semibold text-ink">{t.title}</p>
-                <p className="mt-1 text-[13px] leading-snug text-ink3">{t.body}</p>
-              </div>
+            <div key={t.title}>
+              <p className="font-display text-lg text-ink">{t.title}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink2">{t.body}</p>
             </div>
           ))}
         </div>
+        <FlameBand tall />
       </section>
 
       {/* ---------------------------------------------- FEATURED BENTO */}
       <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="Featured pieces">
-        <SectionHead overline="This month's registry" title="Pieces the workshops are proudest of" href="/masks" hrefLabel="See all 18" />
+        <SectionHead title="Pieces the workshops are proudest of" href="/masks" hrefLabel="See all 18" />
         <Stagger className="grid auto-rows-[minmax(150px,auto)] grid-cols-2 gap-4 lg:grid-cols-4">
           {featured.map((m, i) => (
             <StaggerItem key={m.slug} className={i === 0 ? "col-span-2 row-span-2" : ""}>
@@ -244,21 +254,24 @@ export default function Home() {
 
       {/* ---------------------------------------------- HOW IT WORKS */}
       <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="How it works">
-        <SectionHead overline="How it works" title="From the workshop floor to your wall" />
-        <Stagger className="grid gap-4 md:grid-cols-3">
-          {steps.map((s) => (
-            <StaggerItem key={s.n}>
-              <div className="edge h-full rounded-lg bg-s2 p-6">
-                <div className="flex items-center justify-between">
-                  <s.icon className="size-5 text-gold" aria-hidden="true" />
-                  <span className="font-mono text-xs text-ink4 tnum">{s.n}</span>
+        <SectionHead title="From the workshop floor to your wall" />
+        <div className="space-y-6 lg:space-y-10">
+          {steps.map((st, i) => (
+            <Reveal key={st.title}>
+              <div className="grid items-center gap-6 rounded-lg bg-s2 p-4 sm:p-6 lg:grid-cols-12 lg:gap-12 lg:p-8">
+                <div className={cn("overflow-hidden rounded-lg lg:col-span-6", i % 2 === 1 && "lg:order-2")}>{st.art}</div>
+                <div className={cn("lg:col-span-6", i % 2 === 1 ? "lg:order-1 lg:pl-6" : "lg:pr-6")}>
+                  <h3 className="font-display text-[26px] leading-tight text-ink sm:text-[30px]">{st.title}</h3>
+                  <p className="mt-3 max-w-md text-[15px] leading-relaxed text-ink2">{st.body}</p>
+                  <Link to={st.to} className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-gold transition-colors hover:text-gold-strong">
+                    {st.cta}
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </Link>
                 </div>
-                <h3 className="mt-5 font-display text-lg text-ink">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink2">{s.body}</p>
               </div>
-            </StaggerItem>
+            </Reveal>
           ))}
-        </Stagger>
+        </div>
       </section>
 
       {/* ---------------------------------------------- ARTISAN SPOTLIGHT */}
@@ -275,12 +288,11 @@ export default function Home() {
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-s1 via-transparent to-transparent lg:bg-gradient-to-r" aria-hidden="true" />
             </div>
             <div className="p-8 sm:p-10 lg:col-span-3">
-              <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Maker spotlight</p>
               <h2 className="mt-2 font-display text-[28px] leading-tight text-ink sm:text-[34px]">
                 {sirisena.name} <span className="font-sinhala text-[0.62em] text-ink2">· {sirisena.sinhalaName}</span>
               </h2>
               <p className="mt-1 text-sm text-ink3">{sirisena.role} · {sirisena.village}</p>
-              <blockquote className="mt-6 border-l-2 border-gold/40 pl-5 font-display text-lg leading-relaxed font-light text-ink2 italic sm:text-xl">
+              <blockquote className="mt-6 font-display text-lg leading-relaxed font-light text-ink2 italic sm:text-xl">
                 “My father said the wood will tell you what it wants to be. First you must earn the right to listen.”
               </blockquote>
               <p className="mt-5 max-w-lg text-sm leading-relaxed text-ink2">
@@ -294,7 +306,7 @@ export default function Home() {
                   ["Collector rating", `${sirisena.rating} / 5`],
                 ].map(([k, v]) => (
                   <div key={k}>
-                    <p className="text-[11px] uppercase tracking-[0.14em] text-ink4">{k}</p>
+                    <p className="text-[12.5px]  text-ink4">{k}</p>
                     <p className="mt-0.5 font-mono text-[15px] text-ink tnum">{v}</p>
                   </div>
                 ))}
@@ -315,11 +327,7 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="Folklore hub preview">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
-            <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-vermilion">
-              <Palette className="size-3.5" aria-hidden="true" />
-              The Folklore Hub
-            </p>
-            <h2 className="mt-2 font-display text-[28px] leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
+            <h2 className="font-display text-[28px] leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
               Every mask arrived with a story attached. We keep those, too.
             </h2>
             <ul className="mt-7 divide-y divide-line border-y border-line">
@@ -344,33 +352,41 @@ export default function Home() {
           </div>
           <div className="relative">
             <ImageFrame src="/images/heritage/ritual.jpg" alt="Torch-lit tovil ceremony at night, masked dancer mid-turn" ratio="aspect-[16/11]" />
-            <p className="mt-3 text-right font-mono text-[11px] tracking-wide text-ink4 tnum">Tovil grounds · Wathugedara · 03:14 a.m.</p>
+            <p className="mt-3 text-right text-[13px] text-ink3">Tovil grounds · Wathugedara · 03:14 a.m.</p>
           </div>
         </div>
       </section>
 
       {/* ---------------------------------------------- IMPACT */}
       <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="Impact">
-        <div className="edge rounded-lg bg-s2 px-6 py-10 sm:px-10">
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {impactStats.map((s) => (
-              <div key={s.label} className="border-l border-line pl-5">
-                <p className="font-mono text-[34px] leading-none text-ink tnum">
-                  <NumberTicker value={s.value} />
-                  <span className="text-gold">{s.suffix}</span>
-                </p>
-                <p className="mt-2.5 max-w-[190px] text-[13px] leading-snug text-ink3">{s.label}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-9 flex flex-col items-start justify-between gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
-            <p className="text-sm text-ink2">
+        <div className="grid items-center gap-10 rounded-lg bg-s2 p-6 sm:p-10 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-7">
+            <h2 className="max-w-lg font-display text-[28px] leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
+              Eight lineages along one stretch of coast
+            </h2>
+            <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-ink2">
               Sixty-one percent of every sale is settled with the workshop within 14 days — before shipping, before anything else.
             </p>
-            <Link to="/about" className="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-gold transition-colors hover:text-gold-strong">
+            <dl className="mt-8 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+              {impactStats.map((s) => (
+                <div key={s.label} className="flex items-baseline gap-3">
+                  <dt className="sr-only">{s.label}</dt>
+                  <dd className="shrink-0 font-display text-[40px] leading-none font-light text-ink tnum">
+                    <NumberTicker value={s.value} className="font-display" />
+                    <span className="text-gold">{s.suffix}</span>
+                  </dd>
+                  <dd className="text-[13.5px] leading-snug text-ink3" aria-hidden="true">{s.label}</dd>
+                </div>
+              ))}
+            </dl>
+            <Link to="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-gold transition-colors hover:text-gold-strong">
               Read the mission
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
+          </div>
+          <div className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none">
+            <CoastMap />
+            <p className="mt-2 text-center text-[13px] text-ink3">Ambalangoda to Mirissa — where the carving still happens.</p>
           </div>
         </div>
       </section>

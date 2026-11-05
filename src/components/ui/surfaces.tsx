@@ -89,7 +89,7 @@ export function VerifiedSeal({ size = "md", label = "Verified authentic" }: { si
   return (
     <figure className="inline-flex flex-col items-center gap-2">
       <span
-        className="relative grid place-items-center rounded-full border border-gold/60 bg-gradient-to-b from-s2 to-s1"
+        className="relative grid place-items-center rounded-full border border-gold/60 bg-s2"
         style={{ width: dim, height: dim }}
       >
         <span className="absolute inset-[5px] rounded-full border border-dashed border-gold/35" aria-hidden="true" />
@@ -99,7 +99,7 @@ export function VerifiedSeal({ size = "md", label = "Verified authentic" }: { si
         </span>
       </span>
       {label !== null && (
-        <figcaption className="text-[11px] font-medium uppercase tracking-[0.14em] text-gold">{label}</figcaption>
+        <figcaption className="text-[12.5px] font-medium  text-gold">{label}</figcaption>
       )}
     </figure>
   );

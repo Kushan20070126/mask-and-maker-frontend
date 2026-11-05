@@ -56,7 +56,7 @@ const tagTone: Record<string, string> = {
 
 export function Tag({ tone = "neutral", children, className }: { tone?: keyof typeof tagTone; children: ReactNode; className?: string }) {
   return (
-    <span className={cn("inline-flex shrink-0 items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-ink2", className)}>
+    <span className={cn("inline-flex shrink-0 items-center gap-1.5 text-[13px] font-medium capitalize text-ink2", className)}>
       <span className={cn("size-1.5 rounded-full", tagTone[tone])} aria-hidden="true" />
       {children}
     </span>
@@ -98,13 +98,32 @@ export function Skeleton({ className }: { className?: string }) {
 
 /* ------------------------------------------------ EmptyState - */
 
-export function EmptyState({ icon: Icon, title, body, children }: { icon: LucideIcon; title: string; body: string; children?: ReactNode }) {
+export function EmptyState({
+  icon: Icon,
+  art,
+  title,
+  body,
+  children,
+}: {
+  icon?: LucideIcon;
+  /** An illustration from components/art; replaces the icon when given. */
+  art?: ReactNode;
+  title: string;
+  body: string;
+  children?: ReactNode;
+}) {
   return (
-    <div className="edge rounded-lg bg-s1 px-6 py-14 text-center">
-      <div className="mx-auto mb-5 grid size-12 place-items-center rounded-full border border-gold/30 bg-s2">
-        <Icon className="size-5 text-gold" aria-hidden="true" />
-      </div>
-      <h3 className="font-display text-lg text-ink">{title}</h3>
+    <div className="rounded-lg bg-s1 px-6 py-12 text-center">
+      {art ? (
+        <div className="mx-auto mb-6 w-full max-w-[260px] overflow-hidden rounded-lg">{art}</div>
+      ) : (
+        Icon && (
+          <div className="mx-auto mb-5 grid size-12 place-items-center rounded-full border border-gold/30 bg-s2">
+            <Icon className="size-5 text-gold" aria-hidden="true" />
+          </div>
+        )
+      )}
+      <h3 className="font-display text-xl text-ink">{title}</h3>
       <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-ink2">{body}</p>
       {children && <div className="mt-6 flex flex-wrap items-center justify-center gap-3">{children}</div>}
     </div>

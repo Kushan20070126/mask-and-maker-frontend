@@ -7,6 +7,7 @@ import type { Artisan } from "@/lib/types";
 import { AnimatedTabs } from "@/components/ui/surfaces";
 import { Skeleton } from "@/components/ui/kit";
 import { Stagger, StaggerItem } from "@/components/ui/motion";
+import { CoastMap } from "@/components/art";
 
 export function ArtisanAvatar({ artisan, size = "size-14" }: { artisan: Artisan; size?: string }) {
   return (
@@ -14,7 +15,7 @@ export function ArtisanAvatar({ artisan, size = "size-14" }: { artisan: Artisan;
       {artisan.photo ? (
         <img src={artisan.photo} alt={`Portrait of ${artisan.name}`} className="h-full w-full object-cover" loading="lazy" />
       ) : (
-        <span className="grid h-full w-full place-items-center bg-gradient-to-b from-s3 to-s2 font-display text-[15px] tracking-wide text-gold">
+        <span className="grid h-full w-full place-items-center bg-s3 font-display text-[15px] tracking-wide text-gold">
           {artisan.initials}
         </span>
       )}
@@ -36,21 +37,33 @@ export default function Artisans() {
     [list]
   );
 
+  const counts = useMemo(() => {
+    const c: Record<string, number> = {};
+    (list ?? []).forEach((a) => (c[a.region] = (c[a.region] ?? 0) + 1));
+    return c;
+  }, [list]);
+
   const shown = useMemo(() => (list ?? []).filter((a) => region === "all" || a.region === region), [list, region]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
-      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The makers</p>
-      <h1 className="mt-2 max-w-2xl font-display text-[34px] leading-tight tracking-[-0.01em] text-ink sm:text-[40px]">
-        Eight lineages the middlemen used to sign for
-      </h1>
-      <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-ink2">
-        Dealers once bought these faces by the basket and sold them as anonymous antiques. Here, every mask carries its maker's
-        name, village and price — and sixty-one percent of that price goes home.
-      </p>
-
-      <div className="mt-8">
-        <AnimatedTabs id="region" tabs={regions} value={region} onChange={setRegion} />
+      <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="lg:col-span-7">
+          <h1 className="max-w-2xl font-display text-[34px] leading-tight tracking-[-0.01em] text-ink sm:text-[44px]">
+            Eight lineages the middlemen used to sign for
+          </h1>
+          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink2">
+            Dealers once bought these faces by the basket and sold them as anonymous antiques. Here, every mask carries its maker’s
+            name, village and price — and sixty-one percent of that price goes home.
+          </p>
+          <div className="mt-8">
+            <AnimatedTabs id="region" tabs={regions} value={region} onChange={setRegion} className="flex-wrap overflow-visible" />
+          </div>
+          <p className="mt-3 text-[13px] text-ink3">Choose a village here, or tap its pin on the map.</p>
+        </div>
+        <div className="mx-auto w-full max-w-xs rounded-lg bg-s2 p-4 sm:max-w-sm lg:col-span-5 lg:max-w-none">
+          <CoastMap active={region === "all" ? undefined : region} counts={counts} onSelect={setRegion} />
+        </div>
       </div>
 
       {!list ? (

@@ -1,4 +1,4 @@
-import { BadgeCheck, BookUser, Heart, MapPin, PackageOpen, ScanLine, Trash2 } from "lucide-react";
+import { BadgeCheck, BookUser, MapPin, PackageOpen, ScanLine, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "@/lib/mock/api";
@@ -11,6 +11,7 @@ import { AnimatedTabs, VerifiedSeal } from "@/components/ui/surfaces";
 import { EmptyState, Skeleton } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
 import { ProvenanceTimeline } from "@/components/ui/ProvenanceTimeline";
+import { CertificateArt, WallArt } from "@/components/art";
 import { cn } from "@/utils/cn";
 
 const tabs = [
@@ -41,7 +42,7 @@ export default function Account() {
     <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
       {/* identity */}
       <div className="edge flex flex-wrap items-center gap-5 rounded-lg bg-s1 p-6">
-        <span className="grid size-16 shrink-0 place-items-center rounded-full border border-gold/40 bg-gradient-to-b from-s3 to-s2 font-display text-xl text-gold">
+        <span className="grid size-16 shrink-0 place-items-center rounded-full border border-gold/40 bg-s3 font-display text-xl text-gold">
           RJ
         </span>
         <div className="min-w-0 flex-1">
@@ -59,7 +60,7 @@ export default function Account() {
           ].map(([k, v]) => (
             <div key={k} className="text-right">
               <p className="font-mono text-xl text-ink tnum">{v}</p>
-              <p className="mt-0.5 text-[11px] uppercase tracking-[0.14em] text-ink4">{k}</p>
+              <p className="mt-0.5 text-[12.5px]  text-ink4">{k}</p>
             </div>
           ))}
         </div>
@@ -145,7 +146,10 @@ export default function Account() {
                 </div>
               );
             })}
-          <div className="flex flex-col items-start justify-center rounded-lg border border-dashed border-line bg-canvas p-5">
+          <div className="flex flex-col items-start justify-center gap-1 rounded-lg bg-s1 p-5">
+            <div className="mb-3 w-full max-w-[220px] overflow-hidden rounded-md">
+              <CertificateArt label="A certificate of provenance with its seal" />
+            </div>
             <p className="text-sm font-medium text-ink">Scanned a tag on a piece you own?</p>
             <p className="mt-1 text-[13px] leading-relaxed text-ink2">Claim its twin here and the certificate starts answering to your name.</p>
             <Link to="/verify" className="mt-4 inline-flex h-9 items-center gap-2 rounded-lg bg-gold px-3.5 text-[13px] font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
@@ -160,7 +164,7 @@ export default function Account() {
       {tab === "wishlist" &&
         (wishlist.length === 0 ? (
           <div className="mt-8">
-            <EmptyState icon={Heart} title="Nothing kept yet" body="Tap the heart on any mask and it waits here — privately, on this device.">
+            <EmptyState art={<WallArt />} title="Nothing kept yet" body="Tap the heart on any mask and it waits here — privately, on this device.">
               <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] hover:bg-gold-strong active:scale-[0.98] transition-transform duration-100">
                 Browse the collection
               </Link>
@@ -192,7 +196,7 @@ export default function Account() {
             { label: "Office", name: "R. Jayasuriya", lines: ["Level 4, Trace City", "Maradana, Colombo 01000"] },
           ].map((a) => (
             <div key={a.label} className="edge rounded-lg bg-s1 p-5">
-              <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">
+              <p className="flex items-center gap-2 text-[12.5px] font-medium  text-ink3">
                 <BookUser className="size-3.5 text-gold" aria-hidden="true" />
                 {a.label}
               </p>

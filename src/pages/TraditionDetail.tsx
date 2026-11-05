@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Drama } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "@/lib/mock/api";
@@ -7,6 +7,8 @@ import { usePageMeta } from "@/lib/meta";
 import type { Mask } from "@/lib/types";
 import { cn } from "@/utils/cn";
 import { MaskCard, TraditionTag } from "@/components/MaskCard";
+import { ArchivePlate } from "@/components/ui/MaskImage";
+import { FlameBand, MagnifierArt } from "@/components/art";
 import { EmptyState, Skeleton } from "@/components/ui/kit";
 
 const washColor: Record<string, string> = {
@@ -31,7 +33,7 @@ export default function TraditionDetail() {
   if (!doc) {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
-        <EmptyState icon={Drama} title="No such tradition" body="The island keeps three. They are Raksha, Sanni and Kolam — and they are a scroll away.">
+        <EmptyState art={<MagnifierArt />} title="No such tradition" body="The island keeps three. They are Raksha, Sanni and Kolam — and they are a scroll away.">
           <Link to="/heritage" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Back to the hub
           </Link>
@@ -53,10 +55,11 @@ export default function TraditionDetail() {
       <header className="relative mt-8 overflow-hidden rounded-lg">
         <div
           className="pointer-events-none absolute inset-0"
-          style={{ background: `radial-gradient(90% 130% at 12% 0%, color-mix(in oklab, ${wash} 14%, transparent), transparent 55%)` }}
+          style={{ background: `color-mix(in oklab, ${wash} 9%, var(--s1))` }}
           aria-hidden="true"
         />
-        <div className="relative p-8 sm:p-12">
+        <div className="relative grid items-center gap-10 p-8 sm:p-12 lg:grid-cols-12">
+          <div className="lg:col-span-8">
           <TraditionTag tradition={doc.slug} />
           <div className="mt-4 flex flex-wrap items-end gap-x-8 gap-y-4">
             <h1 className="font-display text-[44px] leading-none font-light tracking-[-0.02em] text-ink sm:text-[60px]">{doc.name}</h1>
@@ -68,7 +71,17 @@ export default function TraditionDetail() {
             {doc.palette.map((c) => (
               <span key={c} className="size-6 rounded-md border border-line" style={{ background: c }} />
             ))}
-            <span className="ml-2 self-center font-mono text-[11px] text-ink4 tnum">the working palette</span>
+            <span className="ml-2 self-center text-[13px] text-ink3">the working palette</span>
+          </div>
+          </div>
+          <div className="mx-auto w-full max-w-[240px] lg:col-span-4 lg:max-w-none">
+            <ArchivePlate
+              seed={doc.slug === "raksha" ? 11 : doc.slug === "sanni" ? 23 : 37}
+              variant={doc.slug === "raksha" ? 1 : doc.slug === "sanni" ? 2 : 0}
+              tradition={doc.slug}
+              label={doc.name}
+              className="aspect-[4/5] rounded-lg"
+            />
           </div>
         </div>
       </header>
@@ -101,7 +114,9 @@ export default function TraditionDetail() {
         </section>
       </div>
 
-      <section className="mt-14" aria-label="Registry pieces in this tradition">
+      <FlameBand className="mt-14 opacity-70" />
+
+      <section className="mt-10" aria-label="Registry pieces in this tradition">
         <div className="flex items-end justify-between gap-4">
           <h2 className="font-display text-[26px] text-ink">In the registry now</h2>
           <Link to={`/masks?tradition=${doc.slug}`} className={cn("inline-flex items-center gap-1.5 text-sm font-medium text-gold transition-colors hover:text-gold-strong")}>

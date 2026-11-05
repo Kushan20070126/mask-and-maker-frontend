@@ -5,6 +5,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { Button } from "../ui/kit";
+import { FlameBand } from "../art";
 
 const navLinks = [
   { to: "/masks", label: "Collection" },
@@ -24,7 +25,7 @@ export function Wordmark({ compact = false }: { compact?: boolean }) {
       {!compact && (
         <span className="hidden flex-col leading-tight sm:flex">
           <span className="font-display text-[15px] text-ink">Mask &amp; Maker</span>
-          <span className="text-[10px] uppercase tracking-[0.18em] text-ink3">Ambalangoda registry</span>
+          <span className="text-[12.5px]  text-ink3">Ambalangoda registry</span>
         </span>
       )}
     </Link>
@@ -90,7 +91,7 @@ export function Header() {
   }, [paletteOpen]);
 
   return (
-    <header className="sticky top-0 z-[60] border-b border-line bg-canvas/85 backdrop-blur-md">
+    <header className="sticky top-0 z-[60] border-b border-line bg-canvas">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[70] focus:rounded-lg focus:bg-gold focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-[#16120A]"
@@ -222,7 +223,7 @@ export function Header() {
                 Your account
               </NavLink>
               <div className="flex items-center gap-3 px-3 pt-2 pb-1 sm:hidden">
-                <span className="text-[11px] uppercase tracking-[0.14em] text-ink4">Currency</span>
+                <span className="text-[12.5px]  text-ink4">Currency</span>
                 {(["LKR", "USD"] as const).map((c) => (
                   <button
                     key={c}
@@ -281,7 +282,7 @@ export function Footer() {
 
   return (
     <footer className="mt-24 border-t border-line bg-s1" role="contentinfo">
-      <div className="flame-divider" aria-hidden="true" />
+      <FlameBand tall />
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
@@ -291,7 +292,7 @@ export function Footer() {
               and the maker's name on the back.
             </p>
             <form onSubmit={subscribe} className="mt-6" aria-label="Newsletter">
-              <label htmlFor="footer-news" className="mb-2 block text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">
+              <label htmlFor="footer-news" className="mb-2 block text-[12.5px] font-medium  text-ink3">
                 The registry letter
               </label>
               <div className="flex max-w-sm gap-2">
@@ -310,7 +311,7 @@ export function Footer() {
           </div>
 
           <nav aria-label="Explore" className="text-sm">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">Explore</p>
+            <p className="mb-3 text-[12.5px] font-medium  text-ink3">Explore</p>
             <ul className="space-y-2.5">
               {exploreLinks.map((l) => (
                 <li key={l.to}>
@@ -321,7 +322,7 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Registry" className="text-sm">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">Registry</p>
+            <p className="mb-3 text-[12.5px] font-medium  text-ink3">Registry</p>
             <ul className="space-y-2.5">
               {registryLinks.map((l) => (
                 <li key={l.to}>
@@ -332,7 +333,7 @@ export function Footer() {
           </nav>
 
           <nav aria-label="Legal" className="text-sm">
-            <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">House rules</p>
+            <p className="mb-3 text-[12.5px] font-medium  text-ink3">House rules</p>
             <ul className="space-y-2.5">
               {legalLinks.map((l) => (
                 <li key={l.to}>
@@ -349,8 +350,8 @@ export function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-line pt-6 sm:flex-row sm:items-center">
-          <p className="font-mono text-[11px] text-ink4 tnum">© 2026 Mask &amp; Maker (Pvt) Ltd · Ambalangoda, Sri Lanka</p>
-          <p className="flex items-center gap-2 font-mono text-[11px] text-ink4 tnum">
+          <p className="text-[13px] text-ink3">© 2026 Mask &amp; Maker (Pvt) Ltd · Ambalangoda, Sri Lanka</p>
+          <p className="flex items-center gap-2 text-[13px] text-ink3">
             <Heart className="size-3 text-vermilion" aria-hidden="true" />
             61% of every sale reaches the workshop that made it
           </p>

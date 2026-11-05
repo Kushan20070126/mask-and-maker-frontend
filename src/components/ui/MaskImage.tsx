@@ -103,13 +103,9 @@ export function ArchivePlate({
     <div
       className={cn("relative h-full w-full overflow-hidden", className)}
       style={{
-        background: `radial-gradient(120% 90% at 50% 18%, color-mix(in oklab, ${wash} 9%, var(--s3)), var(--s2) 55%, var(--s1))`,
+        background: `color-mix(in oklab, ${wash} 8%, var(--s2))`,
       }}
     >
-      {/* corner registration ticks */}
-      <svg className="absolute inset-0 h-full w-full p-3 text-gold/30" viewBox="0 0 200 250" preserveAspectRatio="xMidYMid meet" fill="none" aria-hidden="true">
-        <path d="M12 12 h10 M12 12 v10 M188 12 h-10 M188 12 v10 M12 238 h10 M12 238 v-10 M188 238 h-10 M188 238 v-10" stroke="currentColor" strokeWidth="1" />
-      </svg>
       <svg viewBox="0 0 200 250" className="absolute inset-x-0 top-[6%] mx-auto h-[76%]" fill="none" aria-hidden="true">
         <g stroke="var(--gold)" strokeOpacity="0.75" strokeWidth="1.3" strokeLinejoin="round" strokeLinecap="round">
           {variant === 0 && (
@@ -165,7 +161,7 @@ export function ArchivePlate({
       </svg>
       <div className="absolute inset-x-0 bottom-0 flex items-baseline justify-between p-3">
         <span className="font-mono text-[10px] tracking-wide text-ink4 tnum">№ {String(seed * 137 + 109).padStart(5, "0")}</span>
-        {label && <span className="text-[10px] uppercase tracking-[0.16em] text-ink4">{label}</span>}
+        {label && <span className="text-[12.5px]  text-ink4">{label}</span>}
       </div>
     </div>
   );

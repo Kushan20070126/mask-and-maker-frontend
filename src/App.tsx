@@ -75,7 +75,7 @@ export default function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <ScrollToTop />
-        <div className="flex min-h-screen flex-col bg-canvas text-ink">
+        <div className="flex min-h-svh flex-col bg-canvas text-ink">
           <Header />
           <div className="flex-1">
             <Suspense fallback={<RouteLoading />}>

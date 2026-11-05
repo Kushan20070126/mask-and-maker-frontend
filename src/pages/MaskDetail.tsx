@@ -13,7 +13,8 @@ import { ArchivePlate, MaskArtwork } from "@/components/ui/MaskImage";
 import { AnimatedTabs, BorderBeam, VerifiedSeal } from "@/components/ui/surfaces";
 import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
-import { Drama } from "lucide-react";
+import { craftStages } from "@/lib/mock/data";
+import { CraftStageArt, MagnifierArt } from "@/components/art";
 
 /* Mock carrier quotes derived from weight. */
 function shipRows(country: string, weightKg: number): { carrier: string; eta: string; priceLKR: number }[] {
@@ -110,7 +111,7 @@ export default function MaskDetail() {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
         <EmptyState
-          icon={Drama}
+          art={<MagnifierArt />}
           title="That face isn't in the registry"
           body="The piece you're after has either found its keeper or never left the workshop. The shelf it came from is well worth a look."
         >
@@ -184,7 +185,7 @@ export default function MaskDetail() {
             )}
           </div>
           {tab === "photographs" && (
-            <p className="mt-3 font-mono text-[11px] tracking-wide text-ink4 tnum">
+            <p className="mt-3 text-[13px] text-ink3">
               Studio photograph · {mask.region} · {mask.year}
             </p>
           )}
@@ -222,7 +223,7 @@ export default function MaskDetail() {
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <TraditionTag tradition={mask.tradition} />
-            <span className="text-[11px] uppercase tracking-[0.14em] text-ink4">{mask.region} · {mask.year}</span>
+            <span className="text-[12.5px]  text-ink4">{mask.region} · {mask.year}</span>
           </div>
           <h1 className="mt-3 font-display text-[36px] leading-[1.05] tracking-[-0.01em] text-ink sm:text-[42px]">{mask.name}</h1>
           <p className="mt-1.5 font-sinhala text-[17px] text-ink2">{mask.sinhala}</p>
@@ -233,7 +234,7 @@ export default function MaskDetail() {
           <div className="edge relative mt-7 rounded-lg bg-s2 p-5">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] uppercase tracking-[0.14em] text-ink4">Workshop price</p>
+                <p className="text-[12.5px]  text-ink4">Workshop price</p>
                 <p className="mt-1 font-mono text-[28px] leading-none text-ink tnum">{formatMoney(mask.priceLKR, currency)}</p>
                 <p className="mt-1.5 text-xs text-ink3">
                   {mask.stock === 1 ? "One of one — when it's gone, it's gone" : `${mask.stock} pieces from this carving run`}
@@ -345,7 +346,7 @@ export default function MaskDetail() {
               ["Year carved", String(mask.year)],
             ].map(([k, v]) => (
               <div key={k} className="border-b border-line py-2.5 last:border-0 odd:border-r odd:pr-4 even:pl-4">
-                <dt className="text-[11px] uppercase tracking-[0.12em] text-ink4">{k}</dt>
+                <dt className="text-[12.5px]  text-ink4">{k}</dt>
                 <dd className="mt-0.5 text-ink2">{v}</dd>
               </div>
             ))}
@@ -356,7 +357,6 @@ export default function MaskDetail() {
       {/* -------------------------------- provenance panel */}
       <section className="mt-14 grid gap-8 lg:grid-cols-5" aria-label="Provenance">
         <div className="lg:col-span-2">
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Provenance</p>
           <h2 className="mt-2 font-display text-[26px] leading-tight text-ink">A lineage you can check</h2>
           <p className="mt-3 text-sm leading-relaxed text-ink2">
             From the felling date of its Kaduru tree to the tag on its back, this piece carries a public record. The plain-english
@@ -415,19 +415,27 @@ export default function MaskDetail() {
       </section>
 
       {/* -------------------------------- story + tradition */}
-      <section className="mt-14 overflow-hidden rounded-lg" aria-label="Cultural context">
-        <div className="flame-divider" aria-hidden="true" />
-        <div className="grid gap-10 bg-s1 px-6 py-10 sm:px-10 lg:grid-cols-2">
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The face</p>
-            <p className="mt-3 font-display text-lg leading-relaxed font-light text-ink">{mask.story}</p>
-          </div>
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Its place in the tradition</p>
-            <p className="mt-3 text-sm leading-relaxed text-ink2">{mask.context}</p>
-            <Link to={`/heritage/${mask.tradition}`} className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-gold transition-colors hover:text-gold-strong">
-              Read about {mask.tradition[0].toUpperCase() + mask.tradition.slice(1)} tradition →
+      <section className="mt-14 rounded-lg bg-s1 p-6 sm:p-10" aria-label="Cultural context">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-5">
+            <h2 className="font-display text-[26px] leading-tight text-ink">Its place in the tradition</h2>
+            <p className="mt-4 text-[15px] leading-relaxed text-ink2">{mask.context}</p>
+            <Link to={`/heritage/${mask.tradition}`} className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-gold transition-colors hover:text-gold-strong">
+              Read about the {mask.tradition[0].toUpperCase() + mask.tradition.slice(1)} tradition →
             </Link>
+          </div>
+          <div className="lg:col-span-7">
+            <h3 className="font-display text-lg text-ink">How it was made, station by station</h3>
+            <ol className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {craftStages.map((st, i) => (
+                <li key={st.n}>
+                  <div className="overflow-hidden rounded-md">
+                    <CraftStageArt stage={i} label={st.title} />
+                  </div>
+                  <p className="mt-1.5 text-[13px] leading-snug text-ink3">{st.title}</p>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>

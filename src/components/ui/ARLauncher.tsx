@@ -1,10 +1,11 @@
-import { Box, Loader2, RefreshCw, ScanLine, Smartphone } from "lucide-react";
+import { Loader2, RefreshCw, ScanLine, Smartphone } from "lucide-react";
 import QRCode from "qrcode";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Mask } from "@/lib/types";
 import { cn } from "@/utils/cn";
 import { Button, Modal } from "./kit";
 import { ArchivePlate } from "./MaskImage";
+import { CraftStageArt } from "../art";
 
 type ViewerStatus = "idle" | "lib-loading" | "loading" | "error";
 
@@ -24,11 +25,13 @@ function useModelViewerLib() {
 
 function ViewerFallback({ mask, onRetry, scanning }: { mask: Mask; onRetry?: () => void; scanning?: boolean }) {
   return (
-    <div className="edge relative flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg bg-gradient-to-b from-s2 to-s1 p-8 text-center">
+    <div className="edge relative flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg bg-s2 p-8 text-center">
       {scanning ? (
         <Loader2 className="size-6 animate-spin text-gold" aria-hidden="true" />
       ) : (
-        <Box className="size-6 text-gold" aria-hidden="true" />
+        <div className="w-full max-w-[220px] overflow-hidden rounded-md">
+          <CraftStageArt stage={3} />
+        </div>
       )}
       <div>
         <p className="text-sm font-medium text-ink">{scanning ? "Preparing the 3D study" : "3D scan in preparation"}</p>
@@ -84,7 +87,7 @@ export function ModelViewerPanel({ mask, enableAR = true, className }: { mask: M
     );
 
   return (
-    <div className={cn("edge relative overflow-hidden rounded-lg bg-gradient-to-b from-s3 via-s2 to-s1", className)}>
+    <div className={cn("edge relative overflow-hidden rounded-lg bg-s2", className)}>
       <model-viewer
         key={attempt}
         ref={(el: HTMLElement | null) => {
@@ -107,9 +110,6 @@ export function ModelViewerPanel({ mask, enableAR = true, className }: { mask: M
           <Loader2 className="size-6 animate-spin text-gold" aria-hidden="true" />
         </div>
       )}
-      <p className="absolute right-3 bottom-3 rounded-md bg-scrim px-2 py-1 font-mono text-[10px] tracking-wide text-ink3 backdrop-blur-sm tnum">
-        {src}
-      </p>
     </div>
   );
 }

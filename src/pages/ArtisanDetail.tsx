@@ -1,4 +1,4 @@
-import { ArrowLeft, BadgeCheck, Heart, MapPin, PenTool, Quote, Star, Wrench } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "@/lib/mock/api";
@@ -11,6 +11,7 @@ import { MaskCard } from "@/components/MaskCard";
 import { ArtisanAvatar } from "@/pages/Artisans";
 import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
 import { ImageFrame } from "@/components/ui/MaskImage";
+import { BenchScene, FlameBand, MagnifierArt, ToolArt, toolKind } from "@/components/art";
 
 const patronAmounts = [1500, 4500, 12000];
 
@@ -59,7 +60,7 @@ export default function ArtisanDetail() {
   if (!artisan) {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
-        <EmptyState icon={PenTool} title="No maker by that name" body="The registry lists eight workshops. One of them is bound to have carved what you're looking for.">
+        <EmptyState art={<MagnifierArt />} title="No maker by that name" body="The registry lists eight workshops. One of them is bound to have carved what you're looking for.">
           <Link to="/artisans" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Meet the makers
           </Link>
@@ -80,16 +81,12 @@ export default function ArtisanDetail() {
       {/* editorial hero */}
       <div className="mt-6 grid items-end gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-gold">
-            <MapPin className="size-3.5" aria-hidden="true" />
-            {artisan.village}
-          </p>
-          <h1 className="mt-3 font-display text-[40px] leading-[1.02] font-light tracking-[-0.02em] text-ink sm:text-[52px]">
+          <h1 className="font-display text-[40px] leading-[1.02] font-light tracking-[-0.02em] text-ink sm:text-[52px]">
             {artisan.name}
           </h1>
           <p className="mt-2 font-sinhala text-lg text-ink2">{artisan.sinhalaName}</p>
           <p className="mt-3 flex flex-wrap items-center gap-3 text-sm text-ink2">
-            {artisan.role}
+            {artisan.role} · {artisan.village}
             {artisan.verified && (
               <span className="inline-flex items-center gap-1 rounded-full border border-gold/40 bg-gold/10 px-2.5 py-0.5 text-[11px] font-medium text-gold">
                 <BadgeCheck className="size-3.5" aria-hidden="true" />
@@ -97,7 +94,7 @@ export default function ArtisanDetail() {
               </span>
             )}
           </p>
-          <p className="mt-6 max-w-lg border-l-2 border-gold/50 pl-5 text-[15px] leading-relaxed text-ink2">{artisan.bio}</p>
+          <p className="mt-6 max-w-lg text-base leading-relaxed text-ink">{artisan.bio}</p>
           <div className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
             {[
               ["Carving since", String(artisan.since)],
@@ -106,7 +103,7 @@ export default function ArtisanDetail() {
               ["Generations", String(artisan.generations.length)],
             ].map(([k, v]) => (
               <div key={k}>
-                <p className="text-[11px] uppercase tracking-[0.14em] text-ink4">{k}</p>
+                <p className="text-[12.5px]  text-ink4">{k}</p>
                 <p className="mt-1 font-mono text-xl text-ink tnum">{v}</p>
               </div>
             ))}
@@ -119,13 +116,16 @@ export default function ArtisanDetail() {
               alt={`${artisan.name} in the workshop`}
               ratio="aspect-[4/4.6]"
               fallback={
-                <div className="flex h-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-s2 to-s1">
-                  <ArtisanAvatar artisan={artisan} size="size-28" />
-                  <p className="max-w-[220px] text-center text-xs leading-relaxed text-ink3">Studio portrait in the registry's sitting programme</p>
+                <div className="relative h-full w-full bg-s1">
+                  <BenchScene className="h-full w-full object-cover" label={`${artisan.name}'s carving bench`} />
+                  <div className="absolute inset-x-0 bottom-0 flex items-center gap-3 bg-s1 p-4">
+                    <ArtisanAvatar artisan={artisan} size="size-12" />
+                    <p className="text-[13px] leading-snug text-ink2">Portrait sitting not yet booked; this is the bench as it stands.</p>
+                  </div>
                 </div>
               }
             />
-            <span className="absolute right-3 bottom-3 rounded-md bg-scrim px-2 py-1 font-mono text-[10px] tracking-wide text-ink2 backdrop-blur-sm tnum">
+            <span className="absolute top-3 right-3 rounded-md bg-scrim px-2 py-1 text-[12px] text-ink2">
               {artisan.region} · {artisan.born}
             </span>
           </div>
@@ -135,44 +135,32 @@ export default function ArtisanDetail() {
       {/* story + craft details */}
       <div className="mt-16 grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-7">
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The workshop</p>
+          <h2 className="font-display text-[26px] text-ink">The workshop</h2>
           {paragraphs.map((p, i) => (
             <p key={i} className={cn("mt-4 text-[15px] leading-[1.75]", i === 0 ? "text-ink" : "text-ink2")}>
               {p.trim()}
             </p>
           ))}
-          <div className="mt-8 flex items-start gap-3 rounded-lg border border-line bg-s1 p-5">
-            <Quote className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden="true" />
-            <p className="font-display text-[15px] leading-relaxed text-ink2 italic">
-              Registry field-note — every tool above was in use within the last season. No shelf ornaments were harmed in the making of this page.
-            </p>
-          </div>
+          <h3 className="mt-10 font-display text-xl text-ink">How to spot their hand</h3>
+          <ul className="mt-3 space-y-2.5">
+            {artisan.styleNotes.map((t) => (
+              <li key={t} className="flex items-start gap-3 text-[14.5px] leading-relaxed text-ink2">
+                <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-gold/70" aria-hidden="true" />
+                {t}
+              </li>
+            ))}
+          </ul>
         </div>
-        <aside className="space-y-4 lg:col-span-5">
-          <div className="edge rounded-lg bg-s1 p-5">
-            <p className="flex items-center gap-2 text-[13px] font-semibold text-ink">
-              <Wrench className="size-4 text-gold" aria-hidden="true" />
-              The toolset
-            </p>
-            <ul className="mt-3 space-y-2">
+        <aside className="lg:col-span-5">
+          <div className="rounded-lg bg-s2 p-6">
+            <h2 className="font-display text-xl text-ink">On the bench</h2>
+            <ul className="mt-4 space-y-3">
               {artisan.tools.map((t) => (
-                <li key={t} className="flex items-center gap-2.5 text-[13px] text-ink2">
-                  <span className="size-1 rounded-full bg-gold/60" aria-hidden="true" />
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="edge rounded-lg bg-s1 p-5">
-            <p className="flex items-center gap-2 text-[13px] font-semibold text-ink">
-              <Star className="size-4 text-gold" aria-hidden="true" />
-              Style notes — how to spot their hand
-            </p>
-            <ul className="mt-3 space-y-2">
-              {artisan.styleNotes.map((t) => (
-                <li key={t} className="flex items-center gap-2.5 text-[13px] text-ink2">
-                  <span className="size-1 rounded-full bg-gold/60" aria-hidden="true" />
-                  {t}
+                <li key={t} className="flex items-center gap-3.5 rounded-lg bg-s1 p-2.5 pr-4">
+                  <span className="w-11 shrink-0 overflow-hidden rounded-md bg-s2">
+                    <ToolArt kind={toolKind(t)} />
+                  </span>
+                  <span className="text-[14px] leading-snug text-ink2">{t}</span>
                 </li>
               ))}
             </ul>
@@ -180,8 +168,10 @@ export default function ArtisanDetail() {
         </aside>
       </div>
 
+      <FlameBand className="mt-16 opacity-70" />
+
       {/* lineage */}
-      <section className="mt-16" aria-label="Lineage">
+      <section className="mt-12" aria-label="Lineage">
         <h2 className="font-display text-[24px] text-ink">The line</h2>
         <ol className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {artisan.generations.map((g, i) => (
@@ -212,10 +202,10 @@ export default function ArtisanDetail() {
 
       {/* patronage */}
       <section className="mt-16" aria-label="Support this artisan">
-        <div className="edge rounded-lg bg-gradient-to-b from-s2 to-s1 p-8 sm:p-10">
+        <div className="rounded-lg bg-s2 p-8 sm:p-10">
           <div className="grid gap-8 lg:grid-cols-2">
             <div>
-              <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-gold">
+              <p className="flex items-center gap-2 text-[12.5px] font-medium  text-gold">
                 <Heart className="size-3.5" aria-hidden="true" />
                 Patronage, done plainly
               </p>

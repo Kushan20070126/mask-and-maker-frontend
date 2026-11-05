@@ -53,7 +53,7 @@ export function MaskCard({ mask }: { mask: Mask }) {
           aria-label={wishlisted ? `Remove ${mask.name} from wishlist` : `Add ${mask.name} to wishlist`}
           aria-pressed={wishlisted}
           className={cn(
-            "absolute top-3 right-3 z-10 grid size-8 place-items-center rounded-lg border backdrop-blur-sm transition-all duration-100 active:scale-95",
+            "absolute top-3 right-3 z-10 grid size-8 place-items-center rounded-lg border transition-all duration-100 active:scale-95",
             wishlisted ? "border-gold/50 bg-scrim text-gold" : "border-line bg-scrim text-ink3 hover:text-ink"
           )}
         >

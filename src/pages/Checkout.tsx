@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, BadgeCheck, CreditCard, Landmark, Loader2, Lock, PackageCheck, ShoppingBag, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgeCheck, CreditCard, Landmark, Loader2, Lock, PackageCheck, Truck } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -11,6 +11,7 @@ import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { Button, EmptyState, Field, Input, Stepper } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
+import { CrateArt } from "@/components/art";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
 
 const addressSchema = z.object({
@@ -149,7 +150,7 @@ export default function Checkout() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
-        <EmptyState icon={ShoppingBag} title="Nothing to check out" body="Your crate is empty — the shelves, however, are not.">
+        <EmptyState art={<CrateArt />} title="Nothing to check out" body="Your crate is empty — the shelves, however, are not.">
           <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Browse the collection
           </Link>
@@ -160,7 +161,6 @@ export default function Checkout() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
-      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Secure checkout</p>
       <h1 className="mt-2 font-display text-[30px] text-ink">Two minutes, handled gently</h1>
       <Stepper steps={stepNames} current={step} className="mt-7 max-w-2xl" />
 
@@ -269,7 +269,7 @@ export default function Checkout() {
                   <CreditCard className="size-4 text-gold" aria-hidden="true" />
                   Card payment
                 </p>
-                <span className="inline-flex items-center gap-2 rounded-md border border-line bg-s2 px-2 py-1 font-mono text-[10px] text-ink3 tnum">
+                <span className="inline-flex items-center gap-2 rounded-md bg-s2 px-2 py-1 text-[12px] text-ink3">
                   <Landmark className="size-3" aria-hidden="true" />
                   PAYHERE / STRIPE STUB
                 </span>
@@ -330,7 +330,7 @@ export default function Checkout() {
             <div className="edge space-y-5 rounded-lg bg-s1 p-6" aria-label="Review order">
               <div className="grid gap-5 sm:grid-cols-3">
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-ink4">Deliver to</p>
+                  <p className="text-[12.5px]  text-ink4">Deliver to</p>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
                     {address?.name}
                     <br />
@@ -340,7 +340,7 @@ export default function Checkout() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-ink4">Carrier</p>
+                  <p className="text-[12.5px]  text-ink4">Carrier</p>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
                     {ship?.label}
                     <br />
@@ -348,7 +348,7 @@ export default function Checkout() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.14em] text-ink4">Paying with</p>
+                  <p className="text-[12.5px]  text-ink4">Paying with</p>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
                     Card ···· {pay.number.replace(/\s/g, "").slice(-4)}
                     <br />

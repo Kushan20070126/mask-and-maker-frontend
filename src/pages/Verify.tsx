@@ -1,4 +1,4 @@
-import { BadgeCheck, Fingerprint, Landmark, Loader2, Lock, QrCode, ScanLine, Search, ShieldCheck } from "lucide-react";
+import { BadgeCheck, Fingerprint, Landmark, Loader2, Lock, ScanLine, Search, ShieldCheck } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "@/lib/mock/api";
@@ -13,6 +13,7 @@ import { Button, EmptyState } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
 import { BorderBeam, VerifiedSeal } from "@/components/ui/surfaces";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
+import { CertificateArt, TagArt } from "@/components/art";
 
 const checkpoints = [
   { icon: Landmark, label: "Checking the registry", done: "In the registry" },
@@ -37,11 +38,7 @@ export default function Verify() {
     <div className="mx-auto max-w-5xl px-4 pt-14 sm:px-6">
       <div className="grid items-start gap-12 lg:grid-cols-2">
         <div>
-          <p className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em] text-gold">
-            <ScanLine className="size-3.5" aria-hidden="true" />
-            Registry verification
-          </p>
-          <h1 className="mt-3 font-display text-[38px] leading-[1.06] font-light tracking-[-0.02em] text-ink sm:text-[46px]">
+          <h1 className="font-display text-[38px] leading-[1.06] font-light tracking-[-0.02em] text-ink sm:text-[46px]">
             The tag talks.
             <br />
             <span className="text-ink2">This page listens.</span>
@@ -83,28 +80,25 @@ export default function Verify() {
             <span>· a claimed piece</span>
           </div>
 
-          <div className="mt-10 space-y-4">
+          <ol className="mt-10 space-y-5">
             {checkpoints.map((c) => (
-              <div key={c.label} className="flex items-start gap-3.5">
-                <span className="grid size-9 shrink-0 place-items-center rounded-lg border border-line bg-s1 text-gold">
-                  <c.icon className="size-4" aria-hidden="true" />
-                </span>
-                <div>
-                  <p className="text-sm font-medium text-ink">{c.label}</p>
-                  <p className="mt-0.5 text-[13px] leading-snug text-ink3">
-                    {c.icon === Landmark && "The certificate ID is looked up in the public registry — minted once, never reissued."}
-                    {c.icon === Fingerprint && "The maker's signed stamp on the certificate is checked against the workshop's records."}
-                    {c.icon === ShieldCheck && "Ownership state is confirmed: unclaimed, or claimed by the registered keeper."}
-                  </p>
-                </div>
-              </div>
+              <li key={c.label}>
+                <p className="font-display text-lg text-ink">{c.label}</p>
+                <p className="mt-1 max-w-md text-[14px] leading-relaxed text-ink2">
+                  {c.icon === Landmark && "The certificate ID is looked up in the public registry — minted once, never reissued."}
+                  {c.icon === Fingerprint && "The maker’s signed stamp on the certificate is checked against the workshop’s records."}
+                  {c.icon === ShieldCheck && "Ownership state is confirmed: unclaimed, or claimed by the registered keeper."}
+                </p>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
 
-        <div className="edge relative rounded-lg bg-s2 p-8">
-          <QrCode className="size-6 text-gold" aria-hidden="true" />
-          <h2 className="mt-4 font-display text-xl text-ink">Holding the mask now?</h2>
+        <div className="relative rounded-lg bg-s2 p-6 sm:p-8">
+          <div className="mb-6 overflow-hidden rounded-lg">
+            <TagArt label="The back of a mask with its NFC pocket and QR tag, and a phone reading it" />
+          </div>
+          <h2 className="font-display text-2xl text-ink">Holding the mask now?</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink2">
             Tap the tag with an NFC phone, or point any camera at the printed QR. Both routes end on this page with the
             certificate filled in for you.
@@ -114,10 +108,8 @@ export default function Verify() {
             Simulate a tag scan
           </Button>
           <div className="mt-8 border-t border-line pt-5">
-            <p className="font-mono text-[11px] leading-relaxed text-ink4 tnum">
-              Registry status: 191 certificates live
-              <br />
-              Counterfeit reports honoured within 48 h
+            <p className="text-[13px] leading-relaxed text-ink3">
+              191 certificates live. Counterfeit reports are answered within 48 hours.
             </p>
           </div>
         </div>
@@ -214,7 +206,7 @@ function VerifyRun({ certId }: { certId: string }) {
       {result && !result.found && (
         <div className="mt-10">
           <EmptyState
-            icon={ShieldCheck}
+            art={<CertificateArt />}
             title="Not on the registry"
             body="This number doesn't match any certificate we've minted. Check the digits — and if a seller gave you this tag, write to the registry desk. Counterfeit reports are investigated within 48 hours."
           >
@@ -232,7 +224,7 @@ function VerifyRun({ certId }: { certId: string }) {
         <div className="mt-10 grid items-start gap-8 lg:grid-cols-[340px_1fr]">
           <div>
             <MaskArtwork mask={mask} ratio="aspect-[4/5]" eager />
-            <p className="mt-3 text-center font-mono text-[11px] tracking-wide text-ink4 tnum">
+            <p className="mt-3 text-center text-[13px] text-ink3">
               {mask.region} · carved {mask.year}
             </p>
           </div>
@@ -241,7 +233,6 @@ function VerifyRun({ certId }: { certId: string }) {
             <div className="gold-frame relative rounded-lg bg-s2 p-7">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Certificate of provenance</p>
                   <h1 className="mt-2 font-display text-[30px] leading-tight text-ink">{mask.name}</h1>
                   <p className="mt-1 text-sm text-ink2">
                     by {artisan.name} · <span className="font-sinhala">{artisan.sinhalaName}</span>
@@ -260,7 +251,7 @@ function VerifyRun({ certId }: { certId: string }) {
                   ["Keeper", isClaimed ? claimed ? "You — just now" : result.cert.owner ?? "—" : "Unclaimed"],
                 ].map(([k, v]) => (
                   <div key={k}>
-                    <dt className="text-[11px] uppercase tracking-[0.12em] text-ink4">{k}</dt>
+                    <dt className="text-[12.5px]  text-ink4">{k}</dt>
                     <dd className={cn("mt-0.5", k === "Chain" || k === "Minted" ? "font-mono text-ink2 tnum" : "text-ink2", k === "Certificate" && "font-mono text-gold tnum")}>{v}</dd>
                   </div>
                 ))}

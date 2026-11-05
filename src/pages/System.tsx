@@ -1,7 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { ArrowLeft, Drama, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ArchivePlate } from "@/components/ui/MaskImage";
+import { MagnifierArt } from "@/components/art";
 import { usePageMeta } from "@/lib/meta";
 
 /* ---------------- 404 ---------------- */
@@ -10,10 +10,10 @@ export function NotFound() {
   usePageMeta("Not found");
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-24 pb-10 text-center sm:px-6">
-      <div className="w-40">
-        <ArchivePlate seed={404} variant={1} tradition="kolam" className="aspect-[4/5] rounded-lg" />
+      <div className="w-full max-w-xs overflow-hidden rounded-lg">
+        <MagnifierArt />
       </div>
-      <p className="mt-8 font-display text-[64px] leading-none font-light text-ink4">404</p>
+      <p className="mt-8 font-display text-[64px] leading-none font-light text-ink3">404</p>
       <h1 className="mt-3 font-display text-2xl text-ink">This wall bears no face</h1>
       <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink2">
         The page has moved, sold, or never left the workshop. Search the registry — <kbd className="kbd">⌘K</kbd> — or walk back
@@ -135,9 +135,8 @@ export function LegalPage({ doc }: { doc: keyof typeof legal }) {
   usePageMeta(l.title);
   return (
     <div className="mx-auto max-w-2xl px-4 pt-14 pb-4 sm:px-6">
-      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">House rules</p>
       <h1 className="mt-2 font-display text-[34px] text-ink">{l.title}</h1>
-      <p className="mt-2 font-mono text-xs text-ink4 tnum">Last revised {l.updated}</p>
+      <p className="mt-2 text-[13px] text-ink3">Last revised {l.updated}</p>
       <div className="mt-9 space-y-9">
         {l.sections.map(([h, paras]) => (
           <section key={h}>

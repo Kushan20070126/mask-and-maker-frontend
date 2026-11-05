@@ -1,4 +1,4 @@
-import { ArrowRight, Minus, Package, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { ArrowRight, Minus, Package, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { masks } from "@/lib/mock/data";
 import { usePageMeta } from "@/lib/meta";
@@ -6,6 +6,7 @@ import { formatMoney } from "@/lib/utils";
 import { useApp } from "@/store/app";
 import { EmptyState } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
+import { CrateArt } from "@/components/art";
 import { TraditionTag } from "@/components/MaskCard";
 
 export default function Cart() {
@@ -25,13 +26,12 @@ export default function Cart() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
-      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Checkout</p>
       <h1 className="mt-2 font-display text-[34px] leading-tight text-ink">Your crate</h1>
 
       {items.length === 0 ? (
         <div className="mt-10">
           <EmptyState
-            icon={ShoppingBag}
+            art={<CrateArt />}
             title="The crate is empty"
             body="Each piece here is one of one — the good ones don't linger. Have a look round the collection while the shelf is full."
           >

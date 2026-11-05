@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/ui/kit";
 import { NumberTicker } from "@/components/ui/motion";
 import { AnimatedTabs, BorderBeam, VerifiedSeal } from "@/components/ui/surfaces";
 import { ProvenanceTimeline } from "@/components/ui/ProvenanceTimeline";
+import { BenchScene } from "@/components/art";
 
 type Role = "buyer" | "artisan" | "verifier" | "admin";
 const roles: { id: Role; label: string }[] = [
@@ -47,7 +48,7 @@ export default function Portal() {
       {role !== "artisan" ? (
         <div className="mt-8">
           <EmptyState
-            icon={HandCoins}
+            art={<BenchScene label="A carver's bench with tools on the wall rack" />}
             title={`The ${roles.find((r) => r.id === role)?.label} desk opens with the pilot`}
             body="This portal is designed with and for the carving workshops first — switch back to the artisan persona to walk the whole flow. Registry staff tooling ships after the second village cohort."
           />
@@ -56,7 +57,6 @@ export default function Portal() {
         <>
           <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Artisan portal</p>
               <h1 className="mt-2 font-display text-[30px] leading-tight text-ink">
                 Ayubowan, {artisan.name.split(" ")[0]}
                 <span className="ml-3 font-sinhala text-[0.6em] text-ink3">ආයුබෝවන්</span>
@@ -136,7 +136,7 @@ function Onboarding() {
 
       <div className="edge flex min-h-80 flex-col rounded-lg bg-s1 p-8">
         <div className="mb-6 flex items-center justify-between">
-          <span className="font-mono text-xs text-ink4 tnum">Step {step + 1} / {onboardingSteps.length}</span>
+          <span className="text-[13px] text-ink3 tnum">Step {step + 1} / {onboardingSteps.length}</span>
           <div className="flex gap-1" role="group" aria-label="Interface language">
             {(["en", "si", "ta"] as Lang[]).map((l) => (
               <button
@@ -357,12 +357,12 @@ function ListingFlow() {
       {/* 1 photos */}
       <section className="edge rounded-lg bg-s1 p-6" aria-label="Photographs">
         <h2 className="flex items-baseline gap-3 font-display text-lg text-ink">
-          <span className="font-mono text-xs text-gold tnum">01</span> Photographs
+          Photographs
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-ink2">Daylight, plain wall, one straight on. The registry colour-corrects; the craft stays yours.</p>
         <div className="mt-4 grid grid-cols-4 gap-2">
           {photos.map((p) => (
-            <div key={p} className="skel relative aspect-square overflow-hidden rounded-lg border border-line bg-gradient-to-b from-s3 to-s2">
+            <div key={p} className="skel relative aspect-square overflow-hidden rounded-lg border border-line bg-s3">
               <span className="absolute inset-x-1 bottom-1 truncate font-mono text-[8px] text-ink4">{p}</span>
             </div>
           ))}
@@ -379,7 +379,7 @@ function ListingFlow() {
       {/* 2 scan */}
       <section className="edge rounded-lg bg-s1 p-6" aria-label="3D scan">
         <h2 className="flex items-baseline gap-3 font-display text-lg text-ink">
-          <span className="font-mono text-xs text-gold tnum">02</span> 3D scan
+          3D scan
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-ink2">The scanning kit visits your village on Fridays, or borrow the bench kit. Ninety seconds of orbiting does it.</p>
         <button
@@ -400,7 +400,7 @@ function ListingFlow() {
       <section className="relative edge rounded-lg bg-s1 p-6" aria-label="Mint certificate">
         {!minted && <BorderBeam duration={6} />}
         <h2 className="flex items-baseline gap-3 font-display text-lg text-ink">
-          <span className="font-mono text-xs text-gold tnum">03</span> Mint the certificate
+          Mint the certificate
         </h2>
         <p className="mt-2 text-sm leading-relaxed text-ink2">One tap writes the piece into the registry forever. Gas is on us — you never touch crypto.</p>
         {minted ? (
@@ -432,7 +432,7 @@ function ListingFlow() {
       {/* 4 tag */}
       <section className="edge rounded-lg bg-s1 p-6" aria-label="Attach tag">
         <h2 className="flex items-baseline gap-3 font-display text-lg text-ink">
-          <span className="font-mono text-xs text-gold tnum">04</span> Tag &amp; publish
+          Tag &amp; publish
         </h2>
         <ol className="mt-4 space-y-3">
           {[

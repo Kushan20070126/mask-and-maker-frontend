@@ -1,4 +1,4 @@
-import { ArrowUpDown, Check, Inbox, LayoutGrid, List, RotateCcw, SlidersHorizontal } from "lucide-react";
+import { ArrowUpDown, Check, LayoutGrid, List, RotateCcw, SlidersHorizontal } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api, sizeOf, type MaskQuery } from "@/lib/mock/api";
@@ -12,6 +12,7 @@ import { MaskCard, TraditionTag } from "@/components/MaskCard";
 import { AnimatedTabs, SpotlightCard } from "@/components/ui/surfaces";
 import { Button, Drawer, EmptyState, Skeleton } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
+import { ShelfArt } from "@/components/art";
 
 const traditionTabs = [
   { id: "all", label: "All traditions" },
@@ -125,7 +126,7 @@ export default function Marketplace() {
   const filterBody = (
     <div className="space-y-7">
       <div>
-        <p className="mb-2.5 text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">Maker</p>
+        <p className="mb-2.5 text-[12.5px] font-medium  text-ink3">Maker</p>
         <select
           value={artisan}
           onChange={(e) => setArtisan(e.target.value)}
@@ -143,7 +144,7 @@ export default function Marketplace() {
 
       <div>
         <div className="mb-2.5 flex items-baseline justify-between">
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">Price ceiling</p>
+          <p className="text-[12.5px] font-medium  text-ink3">Price ceiling</p>
           <span className="font-mono text-xs text-gold tnum">{formatMoney(maxPrice, currency)}</span>
         </div>
         <input
@@ -159,7 +160,7 @@ export default function Marketplace() {
       </div>
 
       <fieldset>
-        <legend className="mb-2.5 text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">Scale</legend>
+        <legend className="mb-2.5 text-[12.5px] font-medium  text-ink3">Scale</legend>
         <div className="space-y-2">
           {sizeOptions.map((s) => {
             const on = sizes.includes(s.id);
@@ -182,7 +183,7 @@ export default function Marketplace() {
       </fieldset>
 
       <fieldset>
-        <legend className="mb-2.5 text-[11px] font-medium uppercase tracking-[0.14em] text-ink3">Attributes</legend>
+        <legend className="mb-2.5 text-[12.5px] font-medium  text-ink3">Attributes</legend>
         <div className="space-y-2">
           {([
             ["AR preview ready", arOnly, () => setArOnly(!arOnly)],
@@ -218,7 +219,6 @@ export default function Marketplace() {
       {/* heading row */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The collection</p>
           <h1 className="mt-2 font-display text-[34px] leading-tight tracking-[-0.01em] text-ink sm:text-[40px]">Eighteen faces, three traditions</h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink2">
             Raksha guardians, the eighteen Sanni, and Kolam's comic parliament. Each is one of one — carved, rested and
@@ -301,7 +301,7 @@ export default function Marketplace() {
 
         {/* results */}
         <div aria-live="polite" aria-busy={fetching} className={cn("transition-opacity duration-180", fetching && !loading && "opacity-60")}>
-          <p className="mb-4 font-mono text-xs text-ink3 tnum">
+          <p className="mb-4 text-[13px] text-ink3 tnum">
             {fetching ? "Consulting the registry…" : `${results.length} ${results.length === 1 ? "piece" : "pieces"}`}
           </p>
 
@@ -313,7 +313,7 @@ export default function Marketplace() {
             </div>
           ) : results.length === 0 ? (
             <EmptyState
-              icon={Inbox}
+              art={<ShelfArt />}
               title="The shelf is bare under these filters"
               body="No piece matches every box you've ticked. Loosen one filter — or let us commission the face you're imagining."
             >

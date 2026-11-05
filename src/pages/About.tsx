@@ -4,6 +4,7 @@ import { usePageMeta } from "@/lib/meta";
 import { NumberTicker, Stagger, StaggerItem } from "@/components/ui/motion";
 import { ProvenanceTimeline } from "@/components/ui/ProvenanceTimeline";
 import { ImageFrame } from "@/components/ui/MaskImage";
+import { CoastMap, FlameBand } from "@/components/art";
 
 const problems = [
   {
@@ -47,7 +48,6 @@ export default function About() {
   return (
     <div className="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
       <header className="max-w-3xl">
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Impact &amp; mission</p>
         <h1 className="mt-3 font-display text-[40px] leading-[1.04] font-light tracking-[-0.02em] text-ink sm:text-[56px]">
           Sixty cents in the rupee
           <br />
@@ -60,18 +60,17 @@ export default function About() {
         </p>
       </header>
 
-      <div className="flame-divider mx-auto mt-16 w-56" aria-hidden="true" />
+      <FlameBand tall className="mt-16 opacity-80" />
 
       {/* the problem */}
       <section className="mt-16" aria-label="The problem">
         <h2 className="font-display text-[28px] text-ink">Four faults in the old trade</h2>
         <Stagger className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {problems.map((p, i) => (
+          {problems.map((p) => (
             <StaggerItem key={p.label}>
-              <div className="edge h-full rounded-lg bg-s2 p-6">
-                <p className="font-mono text-[11px] text-ink4 tnum">0{i + 1}</p>
-                <p className="mt-4 font-mono text-[26px] leading-none text-gold tnum">{p.stat}</p>
-                <p className="mt-2 text-sm font-semibold text-ink">{p.label}</p>
+              <div className="h-full rounded-lg bg-s2 p-6">
+                <p className="font-display text-[34px] leading-none font-light text-gold tnum">{p.stat}</p>
+                <p className="mt-3 font-display text-lg leading-snug text-ink">{p.label}</p>
                 <p className="mt-2.5 text-[13px] leading-relaxed text-ink2">{p.body}</p>
               </div>
             </StaggerItem>
@@ -82,8 +81,7 @@ export default function About() {
       {/* mission */}
       <section className="mt-24 grid items-center gap-12 lg:grid-cols-2" aria-label="The mission">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The mission</p>
-          <p className="mt-3 border-l-2 border-gold/50 pl-6 font-display text-[26px] leading-[1.35] font-light text-ink sm:text-[30px]">
+          <p className="font-display text-[26px] leading-[1.35] font-light text-ink sm:text-[30px]">
             Make the honest face the easier one to buy. Then make the honest carver the obvious one to pay.
           </p>
           <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink2">
@@ -106,27 +104,32 @@ export default function About() {
         </div>
         <div className="relative">
           <ImageFrame src="/images/craft/carving.jpg" alt="Hands carving pale kaduru wood — first cuts of a Kolam face" ratio="aspect-[4/3.4]" />
-          <p className="mt-3 font-mono text-[11px] tracking-wide text-ink4 tnum">Keteraya &amp; kaduru · Wathugedara bench</p>
+          <p className="mt-3 text-[13px] text-ink3">Keteraya and kaduru on the Wathugedara bench.</p>
         </div>
       </section>
 
       {/* metrics */}
       <section className="mt-24" aria-label="Impact to date">
-        <div className="edge rounded-lg bg-s2 px-6 py-10 sm:px-10">
-          <div className="mb-8 flex items-center gap-3">
-            <Landmark className="size-4 text-gold" aria-hidden="true" />
-            <h2 className="font-display text-xl text-ink">What the ledger says so far</h2>
+        <div className="grid items-center gap-10 rounded-lg bg-s2 p-6 sm:p-10 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-7">
+            <h2 className="flex items-center gap-3 font-display text-[28px] text-ink">
+              <Landmark className="size-5 text-gold" aria-hidden="true" />
+              What the ledger says so far
+            </h2>
+            <dl className="mt-8 grid gap-x-10 gap-y-7 sm:grid-cols-2">
+              {metrics.map((s) => (
+                <div key={s.label}>
+                  <dd className="font-display text-[44px] leading-none font-light text-ink tnum">
+                    <NumberTicker value={s.value} className="font-display" />
+                    <span className="text-gold">{s.suffix}</span>
+                  </dd>
+                  <dt className="mt-2 max-w-[230px] text-[14px] leading-snug text-ink3">{s.label}</dt>
+                </div>
+              ))}
+            </dl>
           </div>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {metrics.map((s) => (
-              <div key={s.label} className="border-l border-line pl-5">
-                <p className="font-mono text-[34px] leading-none text-ink tnum">
-                  <NumberTicker value={s.value} />
-                  <span className="text-gold">{s.suffix}</span>
-                </p>
-                <p className="mt-2.5 text-[13px] leading-snug text-ink3">{s.label}</p>
-              </div>
-            ))}
+          <div className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none">
+            <CoastMap />
           </div>
         </div>
       </section>
@@ -134,7 +137,6 @@ export default function About() {
       {/* roadmap */}
       <section className="mt-24 grid gap-10 lg:grid-cols-5" aria-label="Roadmap">
         <div className="lg:col-span-2">
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The road</p>
           <h2 className="mt-2 font-display text-[26px] leading-tight text-ink">Done, doing, promised</h2>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink2">
             We publish the roadmap in the same registry style as our certificates — each station dated, each promise checkable.
@@ -155,7 +157,7 @@ export default function About() {
 
       {/* cta */}
       <section className="mt-24" aria-label="Closing">
-        <div className="edge flex flex-col items-start justify-between gap-6 rounded-lg bg-gradient-to-b from-s2 to-s1 p-8 sm:flex-row sm:items-center sm:p-10">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-lg bg-s2 p-8 sm:flex-row sm:items-center sm:p-10">
           <div>
             <h2 className="font-display text-[24px] text-ink">Buy once. Verify forever. Credit the hands.</h2>
             <p className="mt-2 max-w-md text-sm text-ink2">

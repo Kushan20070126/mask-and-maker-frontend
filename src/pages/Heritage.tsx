@@ -8,7 +8,8 @@ import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { AnimatedTabs } from "@/components/ui/surfaces";
 import { Button, Modal } from "@/components/ui/kit";
-import { ImageFrame } from "@/components/ui/MaskImage";
+import { ArchivePlate, ImageFrame } from "@/components/ui/MaskImage";
+import { CraftStageArt, FlameBand, Rosette } from "@/components/art";
 import { Reveal } from "@/components/ui/motion";
 import type { Article } from "@/lib/types";
 
@@ -19,7 +20,11 @@ const kindTabs = [
   { id: "field-notes", label: "Field notes" },
 ];
 
-const markerBg: Record<string, string> = { vermilion: "bg-vermilion", forest: "bg-forest", gold: "bg-gold" };
+const plateFor: Record<string, { seed: number; variant: number }> = {
+  raksha: { seed: 11, variant: 1 },
+  sanni: { seed: 23, variant: 2 },
+  kolam: { seed: 37, variant: 0 },
+};
 
 export default function Heritage() {
   const [params, setParams] = useSearchParams();
@@ -36,7 +41,6 @@ export default function Heritage() {
   return (
     <div className="mx-auto max-w-7xl px-4 pt-14 sm:px-6">
       <header className="max-w-2xl">
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The Folklore Hub</p>
         <h1 className="mt-2 font-display text-[38px] leading-[1.05] font-light tracking-[-0.02em] text-ink sm:text-[48px]">
           The stories packed into the same crate
           <span className="mt-1 block font-sinhala text-[0.45em] text-ink3">අප්‍රකට උරුමය මෙතන වාසය කරයි</span>
@@ -56,7 +60,12 @@ export default function Heritage() {
                 to={`/heritage/${t.slug}`}
                 className="group flex h-full flex-col rounded-lg border border-line bg-s2 p-6 transition-colors duration-180 hover:border-gold/30 hover:bg-s3"
               >
-                <div className={cn("mb-5 h-[3px] w-10 rounded-full", markerBg[t.marker])} aria-hidden="true" />
+                <ArchivePlate
+                  seed={plateFor[t.slug]?.seed ?? 11}
+                  variant={plateFor[t.slug]?.variant ?? 0}
+                  tradition={t.slug}
+                  className="mb-5 aspect-[16/10] rounded-md"
+                />
                 <div className="flex items-baseline justify-between gap-3">
                   <h2 className="font-display text-[22px] text-ink group-hover:text-gold-strong">{t.name}</h2>
                   <span className="font-sinhala text-sm text-ink3">{t.sinhala}</span>
@@ -64,7 +73,7 @@ export default function Heritage() {
                 <p className="mt-1 text-[13px] font-medium text-gold/90">{t.tagline}</p>
                 <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-ink2">{t.description}</p>
                 <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-                  <span className="font-mono text-xs text-ink3 tnum">{masks.filter((m) => m.tradition === t.slug).length} pieces in the registry</span>
+                  <span className="text-[13.5px] text-ink3 tnum">{masks.filter((m) => m.tradition === t.slug).length} pieces in the registry</span>
                   <ArrowRight className="size-4 text-ink4 transition-all duration-180 group-hover:translate-x-1 group-hover:text-gold" aria-hidden="true" />
                 </div>
               </Link>
@@ -73,7 +82,7 @@ export default function Heritage() {
         </div>
       </section>
 
-      <div className="flame-divider mx-auto mt-20 w-56" aria-hidden="true" />
+      <FlameBand tall className="mt-20 opacity-80" />
 
       {/* scroll story — from log to mask */}
       <ScrollStory />
@@ -82,7 +91,6 @@ export default function Heritage() {
       <section className="mt-24" aria-label="Films">
         <div className="mb-8 flex items-end justify-between gap-6">
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The screening shelf</p>
             <h2 className="mt-2 font-display text-[28px] leading-[1.15] text-ink">Filmed where it happens</h2>
           </div>
         </div>
@@ -92,9 +100,9 @@ export default function Heritage() {
             .map((a) => (
               <FilmCard key={a.slug} article={a} />
             ))}
-          <div className="edge flex flex-col justify-center rounded-lg bg-s1 p-8">
-            <Clapperboard className="size-6 text-gold" aria-hidden="true" />
-            <p className="mt-4 font-display text-lg leading-snug text-ink">One new film a moon</p>
+          <div className="flex flex-col justify-center rounded-lg bg-s1 p-8">
+            <Rosette className="-ml-2 size-24" />
+            <p className="mt-4 font-display text-xl leading-snug text-ink">One new film a moon</p>
             <p className="mt-2 text-sm leading-relaxed text-ink2">
               Slow documentaries from the workshops and the tovil grounds, made with the families on camera — never about them.
               Registry letter subscribers see each first.
@@ -110,7 +118,6 @@ export default function Heritage() {
 
       {/* workshops */}
       <section className="mt-24 pb-4" aria-label="Workshops">
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Sit at the bench</p>
         <h2 className="mt-2 font-display text-[28px] leading-[1.15] text-ink">Workshops &amp; ritual nights</h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {workshops.map((w) => (
@@ -173,12 +180,11 @@ function ScrollStory() {
     <section className="mt-20" aria-label="From log to mask">
       <div className="grid gap-10 lg:grid-cols-[300px_1fr]">
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">From log to mask</p>
           <h2 className="mt-2 font-display text-[28px] leading-[1.15] text-ink">Ninety days of patience, then nine gouges</h2>
           <p className="mt-3 text-sm leading-relaxed text-ink2">
             Every registry mask passes these eight stations in order. The timeline on its certificate begins at stage one — the tree.
           </p>
-          <p className="mt-6 font-mono text-xs text-ink4 tnum" aria-live="polite">
+          <p className="mt-6 text-[13px] text-ink3 tnum" aria-live="polite">
             Stage {active + 1} / {craftStages.length}
           </p>
           <div className="mt-2 h-[3px] w-full overflow-hidden rounded-full bg-s3" aria-hidden="true">
@@ -191,19 +197,21 @@ function ScrollStory() {
               key={s.n}
               data-stage={i}
               className={cn(
-                "edge rounded-lg bg-s2 p-6 transition-colors duration-300 sm:p-7",
-                i === active && "border-gold/25"
+                "grid gap-5 rounded-lg p-5 transition-colors duration-300 sm:grid-cols-[1fr_250px] sm:items-center sm:gap-8 sm:p-6",
+                i === active ? "bg-s3" : "bg-s2"
               )}
             >
-              <div className="flex items-baseline justify-between gap-4">
-                <span className={cn("font-mono text-[12px] tnum", i === active ? "text-gold" : "text-ink4")}>
-                  {String(s.n).padStart(2, "0")}
-                </span>
-                <span className="font-sinhala text-sm text-ink3">{s.sinhala}</span>
+              <div className="order-2 sm:order-1">
+                <p className={cn("text-[13px] font-medium", i === active ? "text-gold" : "text-ink3")}>Station {s.n}</p>
+                <h3 className="mt-1 font-display text-[22px] leading-snug text-ink">
+                  {s.title} <span className="ml-1 font-sinhala text-sm text-ink3">{s.sinhala}</span>
+                </h3>
+                <p className="mt-2.5 max-w-xl text-sm leading-relaxed text-ink2">{s.body}</p>
+                <p className="mt-3 text-[13px] leading-relaxed text-ink3">{s.detail}</p>
               </div>
-              <h3 className="mt-2.5 font-display text-[20px] text-ink">{s.title}</h3>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink2">{s.body}</p>
-              <p className="mt-3 border-t border-line pt-3 font-mono text-[11px] leading-relaxed text-ink4">{s.detail}</p>
+              <div className="order-1 overflow-hidden rounded-md sm:order-2">
+                <CraftStageArt stage={i} label={s.title} />
+              </div>
             </li>
           ))}
         </ol>
@@ -226,14 +234,14 @@ function FilmCard({ article }: { article: Article }) {
             <span className="block font-display text-lg text-ink">{article.title}</span>
             <span className="mt-0.5 block font-mono text-[11px] text-ink3 tnum">{article.readMinutes} min · {formatDate(article.date)}</span>
           </span>
-          <span className="grid size-11 shrink-0 place-items-center rounded-full border border-gold/60 bg-scrim text-gold backdrop-blur transition-transform duration-180 group-hover:scale-105">
+          <span className="grid size-11 shrink-0 place-items-center rounded-full border border-gold/60 bg-scrim text-gold transition-transform duration-180 group-hover:scale-105">
             <Play className="ml-0.5 size-4 fill-current" aria-hidden="true" />
           </span>
         </span>
       </button>
       <Modal open={open} onClose={() => setOpen(false)} title={article.title} maxWidth="max-w-xl">
         <p className="text-sm leading-relaxed text-ink2">{article.body[0]}</p>
-        <p className="mt-4 rounded-lg border border-line bg-s2 px-4 py-3 font-mono text-[12px] leading-relaxed text-ink3">
+        <p className="mt-4 rounded-lg bg-s2 px-4 py-3 text-[13.5px] leading-relaxed text-ink2">
           The film travels with the piece it documents. It unlocks on certificate scan — scan a tag, or read the transcript in the registry letter.
         </p>
         <Button variant="outline" size="sm" className="mt-4" onClick={() => setOpen(false)}>
@@ -259,7 +267,6 @@ function ArticleIndex() {
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">Essays &amp; field notes</p>
           <h2 className="mt-2 font-display text-[28px] leading-[1.15] text-ink">Read the registry</h2>
         </div>
         <AnimatedTabs id="kind" tabs={kindTabs} value={kind} onChange={setKind} />
@@ -275,7 +282,7 @@ function ArticleIndex() {
                 <span className="block truncate text-[15px] font-medium text-ink transition-colors group-hover:text-gold-strong">{a.title}</span>
                 <span className="mt-1 block truncate text-[13px] text-ink3">{a.excerpt}</span>
               </span>
-              <span className="hidden shrink-0 font-mono text-[11px] text-ink4 sm:block tnum">
+              <span className="hidden shrink-0 text-[13px] text-ink3 sm:block tnum">
                 {a.readMinutes} min · {formatDate(a.date)}
               </span>
               <ArrowRight className="size-4 shrink-0 text-ink4 transition-all duration-180 group-hover:translate-x-0.5 group-hover:text-gold" aria-hidden="true" />
@@ -298,12 +305,12 @@ function ArticleReader({ article, onBack }: { article: Article; onBack: () => vo
         <ArrowLeft className="size-3.5" aria-hidden="true" />
         The Folklore Hub
       </button>
-      <p className="mt-8 text-[11px] font-medium uppercase tracking-[0.16em] text-gold">
+      <p className="mt-8 text-[12.5px] font-medium  text-gold">
         {article.kind === "film" ? "Film notes" : article.kind === "field-notes" ? "Field notes" : "Essay"}
         {article.tradition && <span className="text-ink4"> · {article.tradition}</span>}
       </p>
       <h1 className="mt-3 font-display text-[34px] leading-[1.08] font-light tracking-[-0.01em] text-ink sm:text-[44px]">{article.title}</h1>
-      <p className="mt-4 font-mono text-[12px] text-ink4 tnum">
+      <p className="mt-4 text-[13px] text-ink3">
         Registry desk · {formatDate(article.date)} · {article.readMinutes} min
       </p>
       {article.image ? (

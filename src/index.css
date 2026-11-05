@@ -229,3 +229,29 @@ html[data-theme="light"] {
     animation: sweep 1.6s linear infinite;
   }
 }
+
+/* ============================================================
+   Illustration language (src/components/art) — line work in gold,
+   flat wood and pigment fields. Everything reads theme tokens.
+   ============================================================ */
+@layer components {
+  .a-line { fill: none; stroke: var(--gold); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .a-soft { fill: none; stroke: var(--gold); stroke-opacity: 0.4; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+  .a-wood { fill: color-mix(in oklab, var(--gold) 20%, var(--s3)); stroke: var(--gold); stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+  .a-wood-d { fill: color-mix(in oklab, var(--gold) 34%, var(--s2)); stroke: var(--gold); stroke-width: 1.2; stroke-linejoin: round; stroke-linecap: round; }
+  .a-bark { fill: color-mix(in oklab, var(--ink3) 40%, var(--s2)); stroke: var(--gold); stroke-opacity: 0.6; stroke-width: 1.2; stroke-linejoin: round; }
+  .a-leaf { fill: color-mix(in oklab, var(--forest) 78%, var(--s2)); stroke: var(--gold); stroke-opacity: 0.45; stroke-width: 1; stroke-linejoin: round; }
+  .a-verm { fill: var(--vermilion); stroke: none; }
+  .a-forest { fill: var(--forest); stroke: none; }
+  .a-gold-f { fill: var(--gold); stroke: none; }
+  .a-ground { fill: var(--s3); stroke: none; }
+  .a-ground2 { fill: var(--s1); stroke: none; }
+  .a-paper { fill: color-mix(in oklab, var(--ink) 9%, var(--s2)); stroke: var(--gold); stroke-opacity: 0.55; stroke-width: 1.2; stroke-linejoin: round; }
+  .a-ink { fill: var(--ink); stroke: none; }
+  .a-text { fill: var(--ink2); font-family: var(--font-sans); }
+}
+
+@layer components {
+  .a-verm-face { fill: color-mix(in oklab, var(--vermilion) 72%, var(--s2)); stroke: var(--gold); stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+  .a-forest-face { fill: color-mix(in oklab, var(--forest) 80%, var(--s2)); stroke: var(--gold); stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+}

@@ -7,6 +7,7 @@ import type { SearchHit } from "@/lib/types";
 import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { EXPO } from "@/lib/utils";
+import { MagnifierArt } from "@/components/art";
 
 const pages: SearchHit[] = [
   { kind: "page", title: "Collection", subtitle: "All masks", href: "/masks" },
@@ -160,9 +161,14 @@ export function CommandPalette() {
 
             <div className="max-h-[46vh] overflow-y-auto p-1.5" id="mm-palette-list" role="listbox">
               {grouped.length === 0 && (
-                <p className="px-3 py-8 text-center text-sm text-ink3">
-                  Nothing in the registry matches “{q}”. Try a tradition — raksha, sanni, kolam — or a maker's region.
-                </p>
+                <div className="px-3 py-5 text-center">
+                  <div className="mx-auto w-40 overflow-hidden rounded-md">
+                    <MagnifierArt />
+                  </div>
+                  <p className="mt-3 text-sm text-ink3">
+                    Nothing in the registry matches “{q}”. Try a tradition — raksha, sanni, kolam — or a maker's region.
+                  </p>
+                </div>
               )}
               {grouped.map((hit, i) => {
                 const header = hit.kind !== lastKind;
@@ -171,7 +177,7 @@ export function CommandPalette() {
                 return (
                   <div key={`${hit.kind}-${hit.href}-${hit.title}`}>
                     {header && (
-                      <p className="px-3 pt-2.5 pb-1 text-[11px] font-medium uppercase tracking-[0.14em] text-ink4">{kindLabel[hit.kind]}</p>
+                      <p className="px-3 pt-2.5 pb-1 text-[12.5px] font-medium  text-ink4">{kindLabel[hit.kind]}</p>
                     )}
                     <button
                       id={`mm-hit-${i}`}
