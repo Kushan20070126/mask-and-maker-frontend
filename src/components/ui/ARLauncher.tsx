@@ -71,7 +71,17 @@ export function ModelViewerPanel({ mask, enableAR = true, className }: { mask: M
   }, [libReady, attempt]);
 
   if (!libReady) return <ViewerFallback mask={mask} scanning />;
-  if (status === "error") return <ViewerFallback mask={mask} onRetry={() => setAttempt((n) => n + 1)} />;
+  if (status === "error")
+    return (
+      <ViewerFallback
+        mask={mask}
+        onRetry={() => {
+          /* the fallback replaced the viewer, so leave the error state or the retry is a no-op */
+          setStatus("loading");
+          setAttempt((n) => n + 1);
+        }}
+      />
+    );
 
   return (
     <div className={cn("edge relative overflow-hidden rounded-lg bg-gradient-to-b from-s3 via-s2 to-s1", className)}>

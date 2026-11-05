@@ -9,6 +9,11 @@
     <meta property="og:title" content="Mask & Maker — Digital Heritage, Made by Hand" />
     <meta property="og:description" content="A curated registry of Sri Lankan ritual masks. Authentic, artisan-direct, verifiably yours." />
     <meta property="og:type" content="website" />
+    <script>
+      try {
+        if (localStorage.getItem("mm-theme") === "light") document.documentElement.dataset.theme = "light";
+      } catch (e) {}
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

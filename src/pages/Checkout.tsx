@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, ArrowRight, BadgeCheck, CreditCard, Landmark, Loader2, Lock, PackageCheck, ShoppingBag, Truck } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { z } from "zod";
@@ -34,6 +34,16 @@ interface ShipMethod {
 
 const stepNames = ["Address", "Delivery", "Payment", "Review"];
 
+/** MM/YY with a real month that has not already passed. */
+function expiryValid(v: string): boolean {
+  if (!/^\d{2}\/\d{2}$/.test(v)) return false;
+  const month = Number(v.slice(0, 2));
+  const year = 2000 + Number(v.slice(3));
+  if (month < 1 || month > 12) return false;
+  const now = new Date();
+  return year > now.getFullYear() || (year === now.getFullYear() && month >= now.getMonth() + 1);
+}
+
 export default function Checkout() {
   usePageMeta("Secure checkout");
   const currency = useApp((s) => s.currency);
@@ -58,14 +68,24 @@ export default function Checkout() {
   const subtotal = items.reduce((s, i) => s + i.mask.priceLKR * i.qty, 0);
   const weight = items.reduce((s, i) => s + i.mask.weightKg * i.qty, 0);
 
-  const shipOptions: ShipMethod[] = useMemo(
-    () => [
-      { id: "island", label: "Island courier, signed for", eta: "2–3 days", priceLKR: 2800, note: "Within Sri Lanka" },
+  /* island courier only serves Sri Lanka; the international carriers serve everywhere else */
+  const shipOptions: ShipMethod[] = useMemo(() => {
+    if (address?.country === "Sri Lanka") {
+      return [{ id: "island", label: "Island courier, signed for", eta: "2–3 days", priceLKR: 2800, note: "Within Sri Lanka" }];
+    }
+    return [
       { id: "dhl", label: "DHL Express", eta: "5–8 days", priceLKR: Math.round(14500 + weight * 4200), note: "End-to-end tracking, customs handled" },
       { id: "fedex", label: "FedEx International Priority", eta: "4–7 days", priceLKR: Math.round(13200 + weight * 3900), note: "Fastest to most addresses" },
-    ],
-    [weight]
-  );
+    ];
+  }, [weight, address?.country]);
+
+  /* keep the chosen carrier valid if the address country changed under it */
+  useEffect(() => {
+    if (ship && !shipOptions.some((o) => o.id === ship.id)) setShip(null);
+  }, [shipOptions, ship]);
+
+  const orderTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(orderTimer.current), []);
 
   const total = subtotal + (ship?.priceLKR ?? 0);
 
@@ -74,11 +94,13 @@ export default function Checkout() {
     defaultValues: address ?? { country: "Sri Lanka" },
   });
 
-  const payValid = pay.number.replace(/\s/g, "").length >= 15 && pay.expiry.length === 5 && pay.cvc.length >= 3 && pay.name.trim().length > 1;
+  const payValid = pay.number.replace(/\s/g, "").length >= 15 && expiryValid(pay.expiry) && pay.cvc.length >= 3 && pay.name.trim().length > 1;
+  const expiryBad = pay.expiry.length === 5 && !expiryValid(pay.expiry);
 
   const placeOrder = () => {
+    if (placing) return;
     setPlacing(true);
-    window.setTimeout(() => {
+    orderTimer.current = window.setTimeout(() => {
       setOrderId(`MM-ORD-${3400 + Math.floor(Math.random() * 500)}`);
       setPlacing(false);
       clearCart();
@@ -269,7 +291,7 @@ export default function Checkout() {
                   />
                 </Field>
                 <div className="grid grid-cols-2 gap-4">
-                  <Field label="Expiry">
+                  <Field label="Expiry" error={expiryBad ? "Use a real month that hasn't passed" : undefined}>
                     <Input
                       inputMode="numeric"
                       autoComplete="cc-exp"

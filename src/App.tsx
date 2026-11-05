@@ -43,26 +43,28 @@ function AnimatedRoutes() {
         transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
         className="min-h-[60vh]"
       >
-        <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/masks" element={<Marketplace />} />
-          <Route path="/masks/:slug" element={<MaskDetail />} />
-          <Route path="/artisans" element={<Artisans />} />
-          <Route path="/artisans/:slug" element={<ArtisanDetail />} />
-          <Route path="/heritage" element={<Heritage />} />
-          <Route path="/heritage/:tradition" element={<TraditionDetail />} />
-          <Route path="/verify" element={<Verify />} />
-          <Route path="/verify/:certId" element={<Verify />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/account" element={<Account />} />
-          <Route path="/portal" element={<Portal />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/legal/privacy" element={<LegalPage doc="privacy" />} />
-          <Route path="/legal/terms" element={<LegalPage doc="terms" />} />
-          <Route path="/legal/shipping" element={<LegalPage doc="shipping" />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <ErrorBoundary resetKey={location.pathname}>
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/masks" element={<Marketplace />} />
+            <Route path="/masks/:slug" element={<MaskDetail />} />
+            <Route path="/artisans" element={<Artisans />} />
+            <Route path="/artisans/:slug" element={<ArtisanDetail />} />
+            <Route path="/heritage" element={<Heritage />} />
+            <Route path="/heritage/:tradition" element={<TraditionDetail />} />
+            <Route path="/verify" element={<Verify />} />
+            <Route path="/verify/:certId" element={<Verify />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/portal" element={<Portal />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/legal/privacy" element={<LegalPage doc="privacy" />} />
+            <Route path="/legal/terms" element={<LegalPage doc="terms" />} />
+            <Route path="/legal/shipping" element={<LegalPage doc="shipping" />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ErrorBoundary>
       </motion.main>
     </AnimatePresence>
   );

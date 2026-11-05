@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { masks } from "../lib/mock/data";
 import type { Currency } from "../lib/types";
+
+const stockOf = (slug: string) => masks.find((m) => m.slug === slug)?.stock ?? 0;
 
 export interface CartItem {
   slug: string;
@@ -22,7 +25,8 @@ interface AppState {
   cartOpen: boolean;
   paletteOpen: boolean;
   cookieChoice: "accepted" | "declined" | null;
-  addToCart: (slug: string, qty?: number) => void;
+  /** Returns false when the piece is unknown or the whole stock is already in the crate. */
+  addToCart: (slug: string, qty?: number) => boolean;
   removeFromCart: (slug: string) => void;
   setQty: (slug: string, qty: number) => void;
   clearCart: () => void;
@@ -49,21 +53,27 @@ export const useApp = create<AppState>()(
       paletteOpen: false,
       cookieChoice: null,
 
-      addToCart: (slug, qty = 1) =>
-        set((s) => {
-          const existing = s.cart.find((i) => i.slug === slug);
-          return {
-            cart: existing
-              ? s.cart.map((i) => (i.slug === slug ? { ...i, qty: i.qty + qty } : i))
-              : [...s.cart, { slug, qty }],
-          };
-        }),
+      addToCart: (slug, qty = 1) => {
+        const stock = stockOf(slug);
+        const have = get().cart.find((i) => i.slug === slug)?.qty ?? 0;
+        const next = Math.min(have + qty, stock);
+        if (stock === 0 || next <= have) return false;
+        set((s) => ({
+          cart: s.cart.some((i) => i.slug === slug)
+            ? s.cart.map((i) => (i.slug === slug ? { ...i, qty: next } : i))
+            : [...s.cart, { slug, qty: next }],
+        }));
+        return true;
+      },
 
       removeFromCart: (slug) => set((s) => ({ cart: s.cart.filter((i) => i.slug !== slug) })),
 
       setQty: (slug, qty) =>
         set((s) => ({
-          cart: qty <= 0 ? s.cart.filter((i) => i.slug !== slug) : s.cart.map((i) => (i.slug === slug ? { ...i, qty } : i)),
+          cart:
+            qty <= 0
+              ? s.cart.filter((i) => i.slug !== slug)
+              : s.cart.map((i) => (i.slug === slug ? { ...i, qty: Math.min(qty, stockOf(slug)) } : i)),
         })),
 
       clearCart: () => set({ cart: [] }),
@@ -91,6 +101,25 @@ export const useApp = create<AppState>()(
     {
       name: "mm-store",
       partialize: (s) => ({ cart: s.cart, wishlist: s.wishlist, currency: s.currency, cookieChoice: s.cookieChoice }),
+      /* Persisted state can outlive the catalogue it was saved against (or be
+         hand-edited): drop unknown pieces, clamp quantities, ignore bad values. */
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<AppState>;
+        const cart = Array.isArray(p.cart)
+          ? p.cart
+              .filter((i): i is CartItem => !!i && typeof i.slug === "string" && Number.isFinite(i.qty))
+              .map((i) => ({ slug: i.slug, qty: Math.min(Math.floor(i.qty), stockOf(i.slug)) }))
+              .filter((i) => i.qty > 0)
+          : current.cart;
+        const wishlist = Array.isArray(p.wishlist) ? p.wishlist.filter((w) => masks.some((m) => m.slug === w)) : current.wishlist;
+        return {
+          ...current,
+          cart,
+          wishlist,
+          currency: p.currency === "USD" || p.currency === "LKR" ? p.currency : current.currency,
+          cookieChoice: p.cookieChoice === "accepted" || p.cookieChoice === "declined" ? p.cookieChoice : null,
+        };
+      },
     }
   )
 );

@@ -1,6 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { AlertTriangle, CheckCircle2, Info, X, type LucideIcon } from "lucide-react";
-import { forwardRef, useEffect, type ButtonHTMLAttributes, type InputHTMLAttributes, type ReactNode, type TextareaHTMLAttributes } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  type ButtonHTMLAttributes,
+  type InputHTMLAttributes,
+  type KeyboardEvent as ReactKeyboardEvent,
+  type ReactNode,
+  type TextareaHTMLAttributes,
+} from "react";
 import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { EXPO } from "@/lib/utils";
@@ -102,6 +111,70 @@ export function EmptyState({ icon: Icon, title, body, children }: { icon: Lucide
   );
 }
 
+/* ------------------------------------------------ Overlay ---- */
+
+/* Several overlays can be open at once (e.g. a modal launched from a drawer),
+   so the page scroll lock is reference-counted rather than set/reset blindly. */
+let scrollLocks = 0;
+
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/**
+ * Shared dialog behaviour: Escape closes, page scroll is locked, focus moves
+ * into the panel and returns to the trigger on close, and Tab stays inside.
+ * `onClose` is read through a ref so an inline arrow never re-subscribes.
+ */
+function useOverlay(open: boolean, onClose: () => void) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+
+  useEffect(() => {
+    if (!open) return;
+    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeRef.current();
+    };
+    document.addEventListener("keydown", onKey);
+    scrollLocks += 1;
+    document.body.style.overflow = "hidden";
+    const raf = window.requestAnimationFrame(() => {
+      const panel = panelRef.current;
+      if (panel && !panel.contains(document.activeElement)) panel.focus({ preventScroll: true });
+    });
+    return () => {
+      window.cancelAnimationFrame(raf);
+      document.removeEventListener("keydown", onKey);
+      scrollLocks = Math.max(0, scrollLocks - 1);
+      if (scrollLocks === 0) document.body.style.overflow = "";
+      if (trigger && document.contains(trigger)) trigger.focus({ preventScroll: true });
+    };
+  }, [open]);
+
+  const onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "Tab") return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const nodes = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE)).filter((n) => n.offsetParent !== null);
+    if (nodes.length === 0) {
+      e.preventDefault();
+      return;
+    }
+    const first = nodes[0];
+    const last = nodes[nodes.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey && (active === first || active === panel)) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && active === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+
+  return { panelRef, onKeyDown };
+}
+
 /* ------------------------------------------------ Modal ------ */
 
 export function Modal({
@@ -117,21 +190,20 @@ export function Modal({
   title?: string;
   maxWidth?: string;
 }) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open, onClose]);
+  const { panelRef, onKeyDown } = useOverlay(open, onClose);
 
   return (
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={title}>
+        <div
+          ref={panelRef}
+          tabIndex={-1}
+          onKeyDown={onKeyDown}
+          className="fixed inset-0 z-[80] flex items-center justify-center p-4 outline-none"
+          role="dialog"
+          aria-modal="true"
+          aria-label={title}
+        >
           <motion.div
             className="absolute inset-0"
             style={{ background: "var(--scrim)" }}
@@ -179,21 +251,12 @@ export function Drawer({
   side?: "right" | "left";
   width?: string;
 }) {
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open, onClose]);
+  const { panelRef, onKeyDown } = useOverlay(open, onClose);
 
   return (
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-[80]" role="dialog" aria-modal="true" aria-label={title}>
+        <div ref={panelRef} tabIndex={-1} onKeyDown={onKeyDown} className="fixed inset-0 z-[80] outline-none" role="dialog" aria-modal="true" aria-label={title}>
           <motion.div
             className="absolute inset-0"
             style={{ background: "var(--scrim)" }}

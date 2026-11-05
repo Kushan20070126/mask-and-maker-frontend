@@ -36,17 +36,24 @@ function ThemeToggle() {
     typeof document !== "undefined" ? document.documentElement.dataset.theme === "light" : false
   );
   useEffect(() => {
-    const stored = localStorage.getItem("mm-theme");
-    if (stored === "light") {
-      document.documentElement.dataset.theme = "light";
-      setLight(true);
+    try {
+      if (localStorage.getItem("mm-theme") === "light") {
+        document.documentElement.dataset.theme = "light";
+        setLight(true);
+      }
+    } catch {
+      /* storage unavailable: keep the default theme */
     }
   }, []);
   const toggle = () => {
     const next = !light;
     setLight(next);
     document.documentElement.dataset.theme = next ? "light" : "dark";
-    localStorage.setItem("mm-theme", next ? "light" : "dark");
+    try {
+      localStorage.setItem("mm-theme", next ? "light" : "dark");
+    } catch {
+      /* private mode / blocked storage: the theme still applies for this visit */
+    }
   };
   return (
     <button
@@ -63,12 +70,24 @@ export function Header() {
   const setPaletteOpen = useApp((s) => s.setPaletteOpen);
   const setCartOpen = useApp((s) => s.setCartOpen);
   const cartCount = useApp((s) => s.cart.reduce((n, i) => n + i.qty, 0));
+  const paletteOpen = useApp((s) => s.paletteOpen);
   const currency = useApp((s) => s.currency);
   const setCurrency = useApp((s) => s.setCurrency);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
+
+  /* Escape closes the mobile menu, and opening search shouldn't leave it hanging */
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobileOpen(false);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [mobileOpen]);
+  useEffect(() => {
+    if (paletteOpen) setMobileOpen(false);
+  }, [paletteOpen]);
 
   return (
     <header className="sticky top-0 z-[60] border-b border-line bg-canvas/85 backdrop-blur-md">
@@ -194,6 +213,14 @@ export function Header() {
                   {l.label}
                 </NavLink>
               ))}
+              <NavLink
+                to="/account"
+                className={({ isActive }) =>
+                  cn("block rounded-lg px-3 py-2.5 text-[15px] font-medium sm:hidden", isActive ? "bg-s2 text-gold" : "text-ink2")
+                }
+              >
+                Your account
+              </NavLink>
               <div className="flex items-center gap-3 px-3 pt-2 pb-1 sm:hidden">
                 <span className="text-[11px] uppercase tracking-[0.14em] text-ink4">Currency</span>
                 {(["LKR", "USD"] as const).map((c) => (

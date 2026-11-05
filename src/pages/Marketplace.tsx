@@ -1,5 +1,5 @@
 import { ArrowUpDown, Check, Inbox, LayoutGrid, List, RotateCcw, SlidersHorizontal } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { api, sizeOf, type MaskQuery } from "@/lib/mock/api";
 import { artisans } from "@/lib/mock/data";
@@ -31,8 +31,14 @@ type SortId = NonNullable<MaskQuery["sort"]>;
 export default function Marketplace() {
   usePageMeta("The collection", "Eighteen hand-carved Kaduru masks across the Raksha, Sanni and Kolam traditions — each with named maker and minted provenance.");
 
-  const [params] = useSearchParams();
-  const [tradition, setTradition] = useState<string>(params.get("tradition") ?? "all");
+  /* the tradition tab lives in the URL, so deep links, footer links and back/forward all agree */
+  const [params, setParams] = useSearchParams();
+  const tradeParam = params.get("tradition");
+  const tradition = traditionTabs.some((t) => t.id === tradeParam) ? (tradeParam as string) : "all";
+  const setTradition = useCallback(
+    (t: string) => setParams(t === "all" ? {} : { tradition: t }, { replace: true }),
+    [setParams]
+  );
   const [artisan, setArtisan] = useState("all");
   const [arOnly, setArOnly] = useState(false);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
@@ -41,20 +47,24 @@ export default function Marketplace() {
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortId>("featured");
   const [view, setView] = useState<"grid" | "list">("grid");
+  const [maxPriceSettled, setMaxPriceSettled] = useState(maxPrice);
   const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(true);
   const [results, setResults] = useState<Mask[]>([]);
   const [sheetOpen, setSheetOpen] = useState(false);
   const currency = useApp((s) => s.currency);
 
-  /* keep the tradition tab in sync with deep links like /masks?tradition=kolam */
+  /* dragging the price slider shouldn't fire a query per tick */
   useEffect(() => {
-    const t = params.get("tradition");
-    if (t && traditionTabs.some((x) => x.id === t)) setTradition(t);
-  }, [params]);
+    const t = window.setTimeout(() => setMaxPriceSettled(maxPrice), 180);
+    return () => window.clearTimeout(t);
+  }, [maxPrice]);
 
+  /* Only the first load shows skeletons; later filter changes keep the current
+     pieces on screen (dimmed) so the grid never collapses and jumps. */
   useEffect(() => {
     let alive = true;
-    setLoading(true);
+    setFetching(true);
     const t = window.setTimeout(() => {
       api
         .listMasks({
@@ -63,7 +73,7 @@ export default function Marketplace() {
           q: q || undefined,
           arOnly,
           verifiedOnly,
-          maxPriceLKR: maxPrice,
+          maxPriceLKR: maxPriceSettled,
           sizes,
           sort,
         })
@@ -71,6 +81,13 @@ export default function Marketplace() {
           if (alive) {
             setResults(r);
             setLoading(false);
+            setFetching(false);
+          }
+        })
+        .catch(() => {
+          if (alive) {
+            setLoading(false);
+            setFetching(false);
           }
         });
     }, q ? 200 : 0);
@@ -78,7 +95,7 @@ export default function Marketplace() {
       alive = false;
       window.clearTimeout(t);
     };
-  }, [tradition, artisan, arOnly, verifiedOnly, maxPrice, sizes, q, sort]);
+  }, [tradition, artisan, arOnly, verifiedOnly, maxPriceSettled, sizes, q, sort]);
 
   const activeChips = useMemo(() => {
     const chips: { key: string; label: string; clear: () => void }[] = [];
@@ -93,7 +110,7 @@ export default function Marketplace() {
     if (verifiedOnly) chips.push({ key: "v", label: "Verified", clear: () => setVerifiedOnly(false) });
     if (q) chips.push({ key: "q", label: `“${q}”`, clear: () => setQ("") });
     return chips;
-  }, [tradition, artisan, maxPrice, sizes, arOnly, verifiedOnly, q, currency]);
+  }, [tradition, artisan, maxPrice, sizes, arOnly, verifiedOnly, q, currency, setTradition]);
 
   const resetAll = () => {
     setTradition("all");
@@ -204,7 +221,7 @@ export default function Marketplace() {
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-gold">The collection</p>
           <h1 className="mt-2 font-display text-[34px] leading-tight tracking-[-0.01em] text-ink sm:text-[40px]">Eighteen faces, three traditions</h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink2">
-            Raksha guardians, the eighteeen Sanni, and Kolam's comic parliament. Each is one of one — carved, rested and
+            Raksha guardians, the eighteen Sanni, and Kolam's comic parliament. Each is one of one — carved, rested and
             painted by the maker whose name is on the back.
           </p>
         </div>
@@ -283,9 +300,9 @@ export default function Marketplace() {
         </aside>
 
         {/* results */}
-        <div aria-live="polite" aria-busy={loading}>
+        <div aria-live="polite" aria-busy={fetching} className={cn("transition-opacity duration-180", fetching && !loading && "opacity-60")}>
           <p className="mb-4 font-mono text-xs text-ink3 tnum">
-            {loading ? "Consulting the registry…" : `${results.length} ${results.length === 1 ? "piece" : "pieces"}`}
+            {fetching ? "Consulting the registry…" : `${results.length} ${results.length === 1 ? "piece" : "pieces"}`}
           </p>
 
           {loading ? (

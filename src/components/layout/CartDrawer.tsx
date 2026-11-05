@@ -1,5 +1,6 @@
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { masks } from "@/lib/mock/data";
 import { formatMoney } from "@/lib/utils";
 import { useApp } from "@/store/app";
@@ -15,6 +16,12 @@ export function CartDrawer() {
   const currency = useApp((s) => s.currency);
   const toast = useApp((s) => s.toast);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  /* browser back/forward shouldn't leave the drawer hanging over the new page */
+  useEffect(() => {
+    useApp.getState().setCartOpen(false);
+  }, [pathname]);
 
   const items = cart
     .map((i) => ({ ...i, mask: masks.find((m) => m.slug === i.slug) }))

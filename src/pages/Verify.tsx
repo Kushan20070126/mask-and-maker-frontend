@@ -1,5 +1,5 @@
 import { BadgeCheck, Fingerprint, Landmark, Loader2, Lock, QrCode, ScanLine, Search, ShieldCheck } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "@/lib/mock/api";
 import { artisans } from "@/lib/mock/data";
@@ -28,7 +28,7 @@ export default function Verify() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (code.trim()) navigate(`/verify/${code.trim().toUpperCase()}`);
+    if (code.trim()) navigate(`/verify/${encodeURIComponent(code.trim().toUpperCase())}`);
   };
 
   if (certId) return <VerifyRun certId={certId} />;
@@ -141,7 +141,9 @@ function VerifyRun({ certId }: { certId: string }) {
     setStage(0);
     setResult(null);
     setClaimed(false);
-    const promise = api.verifyCertificate(certId);
+    setClaiming(false);
+    /* a failed lookup must still end the animation, not spin forever */
+    const promise = api.verifyCertificate(certId).catch(() => ({ cert: null, found: false }));
     const timers = checkpoints.map((_, i) => window.setTimeout(() => alive && setStage(i + 1), 620 * (i + 1)));
     const doneTimer = window.setTimeout(async () => {
       const r = await promise;
@@ -162,9 +164,13 @@ function VerifyRun({ certId }: { certId: string }) {
   const artisan = result?.cert ? artisans.find((a) => a.slug === result.cert!.artisanSlug) : undefined;
   const isClaimed = claimed || result?.cert?.status === "claimed";
 
+  const claimTimer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(claimTimer.current), [certId]);
+
   const claim = () => {
+    if (claiming) return;
     setClaiming(true);
-    window.setTimeout(() => {
+    claimTimer.current = window.setTimeout(() => {
       setClaiming(false);
       setClaimed(true);
       toast("Digital twin claimed", { description: `${mask?.name} now answers to your name on the registry.`, kind: "success" });

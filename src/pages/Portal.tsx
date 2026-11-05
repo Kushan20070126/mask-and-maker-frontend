@@ -1,5 +1,5 @@
 import { BadgeCheck, Boxes, Camera, Check, Drama, HandCoins, Languages, Loader2, MapPin, ScanLine, TrendingUp, Upload, Wand2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { artisans, masks } from "@/lib/mock/data";
 import { usePageMeta } from "@/lib/meta";
 import { formatMoney } from "@/lib/utils";
@@ -87,8 +87,8 @@ export default function Portal() {
 
 const langCopy = {
   en: { welcome: "Welcome to the registry", next: "Continue", back: "Back", finish: "Join the registry" },
-  si: { welcome: "උපසිරැසියට සාදරයෙන්", next: "ඊළඟට", back: "ආපසු", finish: "ලැඛිස්තුවට එකතු වන්න" },
-  ta: { welcome: "பதிவேற்றுக்கு வரவேற்கிறோம்", next: "தொடரவும்", back: "பின்", finish: "சேரவும்" },
+  si: { welcome: "ලේඛනාගාරයට සාදරයෙන් පිළිගනිමු", next: "ඊළඟට", back: "ආපසු", finish: "ලේඛනාගාරයට එක්වන්න" },
+  ta: { welcome: "பதிவகத்திற்கு வரவேற்கிறோம்", next: "தொடரவும்", back: "பின்", finish: "பதிவகத்தில் இணையுங்கள்" },
 } as const;
 type Lang = keyof typeof langCopy;
 
@@ -302,7 +302,28 @@ function ListingFlow() {
   const [scanning, setScanning] = useState(false);
   const [mintStage, setMintStage] = useState(-1);
   const [minted, setMinted] = useState(false);
+  const [certId, setCertId] = useState("");
   const toast = useApp((s) => s.toast);
+
+  /* every timer the flow starts is tracked so leaving the tab can't leak or fire late */
+  const timers = useRef<number[]>([]);
+  const scanTimer = useRef<number | undefined>(undefined);
+  useEffect(
+    () => () => {
+      timers.current.forEach(window.clearTimeout);
+      window.clearInterval(scanTimer.current);
+    },
+    []
+  );
+
+  /* scan progress finishes outside the state updater: updaters must stay pure
+     (StrictMode runs them twice, which doubled the toast) */
+  useEffect(() => {
+    if (!scanning || scanProgress < 100) return;
+    window.clearInterval(scanTimer.current);
+    setScanning(false);
+    toast("3D study uploaded", { description: "The AR preview will render from this scan.", kind: "success" });
+  }, [scanning, scanProgress, toast]);
 
   const addPhoto = () => {
     if (photos.length >= 4) {
@@ -316,26 +337,19 @@ function ListingFlow() {
     if (scanning) return;
     setScanning(true);
     setScanProgress(0);
-    const iv = window.setInterval(() => {
-      setScanProgress((p) => {
-        if (p >= 100) {
-          window.clearInterval(iv);
-          setScanning(false);
-          toast("3D study uploaded", { description: "The AR preview will render from this scan.", kind: "success" });
-          return 100;
-        }
-        return Math.min(100, p + 4 + Math.random() * 9);
-      });
+    scanTimer.current = window.setInterval(() => {
+      setScanProgress((p) => Math.min(100, p + 4 + Math.random() * 9));
     }, 160);
   };
 
   const mint = () => {
     if (mintStage >= 0) return;
     setMintStage(0);
+    setCertId(`MM-2026-0${Math.floor(Math.random() * 900 + 100)}`);
     mintSteps.forEach((_, i) => {
-      window.setTimeout(() => setMintStage(i + 1), 900 * (i + 1));
+      timers.current.push(window.setTimeout(() => setMintStage(i + 1), 900 * (i + 1)));
     });
-    window.setTimeout(() => setMinted(true), 900 * mintSteps.length + 200);
+    timers.current.push(window.setTimeout(() => setMinted(true), 900 * mintSteps.length + 200));
   };
 
   return (
@@ -392,7 +406,7 @@ function ListingFlow() {
         {minted ? (
           <div className="mt-5 flex flex-col items-center gap-3 py-4">
             <VerifiedSeal size="lg" label="Certificate minted" />
-            <p className="font-mono text-xs text-ink3 tnum">MM-2026-0{Math.floor(Math.random() * 900 + 100)}</p>
+            <p className="font-mono text-xs text-ink3 tnum">{certId}</p>
           </div>
         ) : (
           <>

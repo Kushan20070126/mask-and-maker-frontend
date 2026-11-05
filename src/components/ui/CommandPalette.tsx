@@ -41,13 +41,32 @@ export function CommandPalette() {
     return () => document.removeEventListener("keydown", onKey);
   }, [setOpen]);
 
+  /* Escape works wherever focus is, and focus returns to what opened the palette */
+  useEffect(() => {
+    if (!open) return;
+    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("keydown", onEsc);
+      if (trigger && document.contains(trigger)) trigger.focus({ preventScroll: true });
+    };
+  }, [open, setOpen]);
+
   useEffect(() => {
     if (open) {
       setQ("");
+      setHits([]);
       setIdx(0);
-      window.setTimeout(() => inputRef.current?.focus(), 40);
+      const t = window.setTimeout(() => inputRef.current?.focus(), 40);
+      return () => window.clearTimeout(t);
     }
   }, [open]);
+
+  /* keep the highlighted row visible while arrowing through a long list */
+  useEffect(() => {
+    if (open) document.getElementById(`mm-hit-${idx}`)?.scrollIntoView({ block: "nearest" });
+  }, [idx, open]);
 
   /* debounced search */
   useEffect(() => {

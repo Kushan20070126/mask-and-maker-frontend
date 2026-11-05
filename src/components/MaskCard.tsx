@@ -35,8 +35,11 @@ export function MaskCard({ mask }: { mask: Mask }) {
   };
 
   const onAdd = () => {
-    addToCart(mask.slug);
-    toast("Added to your crate", { description: `${mask.name} · ${formatMoney(mask.priceLKR, currency)}`, kind: "success" });
+    if (addToCart(mask.slug)) {
+      toast("Added to your crate", { description: `${mask.name} · ${formatMoney(mask.priceLKR, currency)}`, kind: "success" });
+    } else {
+      toast("Already in your crate", { description: mask.stock === 1 ? `${mask.name} is one of one.` : `Every available ${mask.name} is crated.` });
+    }
   };
 
   return (
@@ -75,7 +78,7 @@ export function MaskCard({ mask }: { mask: Mask }) {
           <span className="font-mono text-[15px] text-ink tnum">{formatMoney(mask.priceLKR, currency)}</span>
           <button
             onClick={onAdd}
-            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-s3 px-3 text-[13px] font-medium text-ink transition-all duration-100 hover:bg-gold hover:text-[#16120A] active:scale-[0.98] pointer-fine:opacity-0 pointer-fine:group-hover/spot:opacity-100"
+            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-s3 px-3 text-[13px] font-medium text-ink transition-all duration-100 hover:bg-gold hover:text-[#16120A] active:scale-[0.98] pointer-fine:opacity-0 pointer-fine:group-hover/spot:opacity-100 pointer-fine:group-focus-within/spot:opacity-100"
           >
             <ShoppingBag className="size-3.5" aria-hidden="true" />
             Add

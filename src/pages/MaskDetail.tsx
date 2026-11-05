@@ -1,6 +1,6 @@
 import { ArrowLeft, BadgeCheck, ChevronDown, Copy, FileCheck2, Heart, Package, ShoppingBag, Star } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { api } from "@/lib/mock/api";
 import { usePageMeta } from "@/lib/meta";
 import type { Artisan, Mask } from "@/lib/types";
@@ -34,6 +34,8 @@ const includes = [
 
 export default function MaskDetail() {
   const { slug = "" } = useParams();
+  const [searchParams] = useSearchParams();
+  const wantsAR = searchParams.get("ar") === "1";
   const [mask, setMask] = useState<Mask | null>(null);
   const [artisan, setArtisan] = useState<Artisan | null>(null);
   const [related, setRelated] = useState<Mask[]>([]);
@@ -54,7 +56,8 @@ export default function MaskDetail() {
   useEffect(() => {
     let alive = true;
     setLoading(true);
-    setTab("photographs");
+    /* the desktop QR hand-off lands here with ?ar=1: open straight on the 3D/AR study */
+    setTab(wantsAR ? "model" : "photographs");
     api.getMask(slug).then(async (m) => {
       if (!alive) return;
       setMask(m ?? null);
@@ -70,7 +73,7 @@ export default function MaskDetail() {
     return () => {
       alive = false;
     };
-  }, [slug]);
+  }, [slug, wantsAR]);
 
   const provenance = useMemo<ProvStep[]>(() => {
     if (!mask || !artisan) return [];
@@ -253,8 +256,11 @@ export default function MaskDetail() {
               <Button
                 size="lg"
                 onClick={() => {
-                  addToCart(mask.slug);
-                  toast("Added to your crate", { description: mask.name, kind: "success" });
+                  if (addToCart(mask.slug)) {
+                    toast("Added to your crate", { description: mask.name, kind: "success" });
+                  } else {
+                    toast("Already in your crate", { description: mask.stock === 1 ? "This piece is one of one." : "Every available piece is crated." });
+                  }
                   setCartOpen(true);
                 }}
                 disabled={mask.stock === 0}

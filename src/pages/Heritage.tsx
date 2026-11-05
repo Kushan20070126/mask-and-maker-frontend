@@ -23,6 +23,7 @@ const markerBg: Record<string, string> = { vermilion: "bg-vermilion", forest: "b
 
 export default function Heritage() {
   const [params, setParams] = useSearchParams();
+  const currency = useApp((s) => s.currency);
   const articleSlug = params.get("article");
   const article = articles.find((a) => a.slug === articleSlug) ?? null;
 
@@ -121,7 +122,7 @@ export default function Heritage() {
               <h3 className="mt-3 font-display text-lg leading-snug text-ink">{w.title}</h3>
               <p className="mt-1.5 text-[13px] text-ink3">{w.place}</p>
               <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-                <span className="font-mono text-[15px] text-ink tnum">{formatMoney(w.priceLKR, useAppCurrency())}</span>
+                <span className="font-mono text-[15px] text-ink tnum">{formatMoney(w.priceLKR, currency)}</span>
                 <ReserveButton title={w.title} spots={w.spotsLeft} />
               </div>
             </div>
@@ -130,10 +131,6 @@ export default function Heritage() {
       </section>
     </div>
   );
-}
-
-function useAppCurrency() {
-  return useApp((s) => s.currency);
 }
 
 function ReserveButton({ title, spots }: { title: string; spots: number }) {

@@ -47,7 +47,11 @@ export function RouteLoading() {
 
 /* ---------------- error boundary ---------------- */
 
-export class ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+/**
+ * `resetKey` clears the error when it changes — the route-level boundary is keyed
+ * by pathname, so one broken page never strands the header or blocks navigation.
+ */
+export class ErrorBoundary extends Component<{ children: ReactNode; resetKey?: string }, { hasError: boolean }> {
   state = { hasError: false };
 
   static getDerivedStateFromError() {
@@ -58,24 +62,36 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, { hasError
     console.error("Mask & Maker boundary:", error, info);
   }
 
+  componentDidUpdate(prev: { resetKey?: string }) {
+    if (this.state.hasError && prev.resetKey !== this.props.resetKey) this.setState({ hasError: false });
+  }
+
   render() {
     if (this.state.hasError) {
       return (
-        <div className="mx-auto flex max-w-lg flex-col items-center px-4 pt-28 pb-16 text-center">
+        <div className="mx-auto flex max-w-lg flex-col items-center px-4 pt-28 pb-16 text-center" role="alert">
           <span className="grid size-14 place-items-center rounded-full border border-danger/40 bg-danger/10">
             <Drama className="size-6 text-danger" aria-hidden="true" />
           </span>
           <h1 className="mt-6 font-display text-2xl text-ink">The shelf gave way</h1>
           <p className="mt-3 text-sm leading-relaxed text-ink2">
-            Something in this page broke; the registry itself is untouched. Reload — and if it breaks twice, it is our fault, not yours.
+            Something in this page broke; the registry itself is untouched. Try again — and if it breaks twice, it is our fault, not yours.
           </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-7 inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]"
-          >
-            <RotateCcw className="size-4" aria-hidden="true" />
-            Reload the page
-          </button>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <button
+              onClick={() => this.setState({ hasError: false })}
+              className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]"
+            >
+              <RotateCcw className="size-4" aria-hidden="true" />
+              Try again
+            </button>
+            <button
+              onClick={() => window.location.reload()}
+              className="inline-flex h-10 items-center rounded-lg border border-line bg-s2 px-4 text-sm font-medium text-ink transition-colors hover:bg-s3"
+            >
+              Reload the page
+            </button>
+          </div>
         </div>
       );
     }

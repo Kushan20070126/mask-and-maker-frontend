@@ -35,6 +35,8 @@ export function Reveal({ children, className, delay = 0 }: { children: ReactNode
   );
 }
 
+const defaultFormat = (n: number) => new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Math.round(n));
+
 interface NumberTickerProps {
   value: number;
   duration?: number;
@@ -44,8 +46,11 @@ interface NumberTickerProps {
 
 /** requestAnimationFrame count-up with tabular-nums; re-animates when `value` changes. */
 export function NumberTicker({ value, duration = 1100, format, className }: NumberTickerProps) {
-  const fmt = format ?? ((n: number) => new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(Math.round(n)));
-  const [display, setDisplay] = useState(() => fmt(0));
+  /* Callers pass inline formatters; keep the latest in a ref so a new function
+     identity each render never restarts the count-up. */
+  const fmtRef = useRef<(n: number) => string>(defaultFormat);
+  fmtRef.current = format ?? defaultFormat;
+  const [display, setDisplay] = useState(() => fmtRef.current(0));
   const [started, setStarted] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
   const fromRef = useRef(0);
@@ -70,6 +75,7 @@ export function NumberTicker({ value, duration = 1100, format, className }: Numb
 
   useEffect(() => {
     if (!started) return;
+    const fmt = (n: number) => fmtRef.current(n);
     if (reduce) {
       setDisplay(fmt(value));
       fromRef.current = value;
@@ -87,7 +93,12 @@ export function NumberTicker({ value, duration = 1100, format, className }: Numb
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [value, started, duration, fmt, reduce]);
+  }, [value, started, duration, reduce]);
+
+  /* currency switch: re-format the settled value without re-animating */
+  useEffect(() => {
+    if (started && fromRef.current === value) setDisplay(fmtRef.current(value));
+  }, [format, started, value]);
 
   return (
     <span ref={ref} className={cn("font-mono tnum", className)}>
