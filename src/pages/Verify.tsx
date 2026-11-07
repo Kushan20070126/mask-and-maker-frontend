@@ -13,7 +13,8 @@ import { Button, EmptyState } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
 import { BorderBeam, VerifiedSeal } from "@/components/ui/surfaces";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
-import { CertificateArt, TagArt } from "@/components/art";
+import { ImageFrame } from "@/components/ui/MaskImage";
+import { photos } from "@/lib/photos";
 
 const checkpoints = [
   { icon: Landmark, label: "Checking the registry", done: "In the registry" },
@@ -95,9 +96,10 @@ export default function Verify() {
         </div>
 
         <div className="relative rounded-lg bg-s2 p-6 sm:p-8">
-          <div className="mb-6 overflow-hidden rounded-lg">
-            <TagArt label="The back of a mask with its NFC pocket and QR tag, and a phone reading it" />
-          </div>
+          <figure className="mb-6">
+            <ImageFrame src={photos.maskDetail.src} alt={photos.maskDetail.alt} ratio="aspect-[16/10]" position={photos.maskDetail.position} className="rounded-lg" />
+            <figcaption className="mt-2 text-[13px] text-ink3">{photos.maskDetail.caption}</figcaption>
+          </figure>
           <h2 className="font-display text-2xl text-ink">Holding the mask now?</h2>
           <p className="mt-2 text-sm leading-relaxed text-ink2">
             Tap the tag with an NFC phone, or point any camera at the printed QR. Both routes end on this page with the
@@ -206,7 +208,7 @@ function VerifyRun({ certId }: { certId: string }) {
       {result && !result.found && (
         <div className="mt-10">
           <EmptyState
-            art={<CertificateArt />}
+            photo={photos.masksBanner}
             title="Not on the registry"
             body="This number doesn't match any certificate we've minted. Check the digits — and if a seller gave you this tag, write to the registry desk. Counterfeit reports are investigated within 48 hours."
           >

@@ -5,7 +5,8 @@ import type { Mask } from "@/lib/types";
 import { cn } from "@/utils/cn";
 import { Button, Modal } from "./kit";
 import { ArchivePlate } from "./MaskImage";
-import { CraftStageArt } from "../art";
+import { ImageFrame } from "./MaskImage";
+import { photos } from "@/lib/photos";
 
 type ViewerStatus = "idle" | "lib-loading" | "loading" | "error";
 
@@ -29,8 +30,8 @@ function ViewerFallback({ mask, onRetry, scanning }: { mask: Mask; onRetry?: () 
       {scanning ? (
         <Loader2 className="size-6 animate-spin text-gold" aria-hidden="true" />
       ) : (
-        <div className="w-full max-w-[220px] overflow-hidden rounded-md">
-          <CraftStageArt stage={3} />
+        <div className="w-full max-w-[240px]">
+          <ImageFrame src={photos.cobraMask.src} alt={photos.cobraMask.alt} ratio="aspect-[4/3]" position={photos.cobraMask.position} className="rounded-md" />
         </div>
       )}
       <div>

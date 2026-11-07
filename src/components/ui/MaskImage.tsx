@@ -177,6 +177,7 @@ export function ImageFrame({
   className,
   eager,
   fallback,
+  position,
 }: {
   src?: string;
   alt: string;
@@ -184,6 +185,8 @@ export function ImageFrame({
   className?: string;
   eager?: boolean;
   fallback?: ReactNode;
+  /** CSS object-position, to keep the subject of a crop in frame */
+  position?: string;
 }) {
   const [loaded, setLoaded] = useState(false);
   const [err, setErr] = useState(false);
@@ -200,6 +203,7 @@ export function ImageFrame({
             alt={alt}
             loading={eager ? "eager" : "lazy"}
             decoding="async"
+            style={position ? { objectPosition: position } : undefined}
             onLoad={() => setLoaded(true)}
             onError={() => setErr(true)}
             className={cn(

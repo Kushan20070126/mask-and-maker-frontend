@@ -8,8 +8,9 @@ import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { AnimatedTabs } from "@/components/ui/surfaces";
 import { Button, Modal } from "@/components/ui/kit";
-import { ArchivePlate, ImageFrame } from "@/components/ui/MaskImage";
-import { CraftStageArt, FlameBand, Rosette } from "@/components/art";
+import { ImageFrame } from "@/components/ui/MaskImage";
+import { FlameBand } from "@/components/art";
+import { photos, traditionPhoto } from "@/lib/photos";
 import { Reveal } from "@/components/ui/motion";
 import type { Article } from "@/lib/types";
 
@@ -20,11 +21,7 @@ const kindTabs = [
   { id: "field-notes", label: "Field notes" },
 ];
 
-const plateFor: Record<string, { seed: number; variant: number }> = {
-  raksha: { seed: 11, variant: 1 },
-  sanni: { seed: 23, variant: 2 },
-  kolam: { seed: 37, variant: 0 },
-};
+
 
 export default function Heritage() {
   const [params, setParams] = useSearchParams();
@@ -60,11 +57,12 @@ export default function Heritage() {
                 to={`/heritage/${t.slug}`}
                 className="group flex h-full flex-col rounded-lg border border-line bg-s2 p-6 transition-colors duration-180 hover:border-gold/30 hover:bg-s3"
               >
-                <ArchivePlate
-                  seed={plateFor[t.slug]?.seed ?? 11}
-                  variant={plateFor[t.slug]?.variant ?? 0}
-                  tradition={t.slug}
-                  className="mb-5 aspect-[16/10] rounded-md"
+                <ImageFrame
+                  src={traditionPhoto[t.slug]?.src}
+                  alt={traditionPhoto[t.slug]?.alt ?? t.name}
+                  ratio="aspect-[4/3]"
+                  position={traditionPhoto[t.slug]?.position}
+                  className="mb-5 rounded-md"
                 />
                 <div className="flex items-baseline justify-between gap-3">
                   <h2 className="font-display text-[22px] text-ink group-hover:text-gold-strong">{t.name}</h2>
@@ -101,7 +99,7 @@ export default function Heritage() {
               <FilmCard key={a.slug} article={a} />
             ))}
           <div className="flex flex-col justify-center rounded-lg bg-s1 p-8">
-            <Rosette className="-ml-2 size-24" />
+            <ImageFrame src={photos.kolamDance.src} alt={photos.kolamDance.alt} ratio="aspect-[16/9]" position={photos.kolamDance.position} className="mb-5 rounded-md" />
             <p className="mt-4 font-display text-xl leading-snug text-ink">One new film a moon</p>
             <p className="mt-2 text-sm leading-relaxed text-ink2">
               Slow documentaries from the workshops and the tovil grounds, made with the families on camera — never about them.
@@ -187,6 +185,10 @@ function ScrollStory() {
           <p className="mt-6 text-[13px] text-ink3 tnum" aria-live="polite">
             Stage {active + 1} / {craftStages.length}
           </p>
+          <figure className="mt-8 hidden lg:block">
+            <ImageFrame src={photos.carvingBench.src} alt={photos.carvingBench.alt} ratio="aspect-[4/3]" position={photos.carvingBench.position} className="rounded-lg" />
+            <figcaption className="mt-2 text-[13px] text-ink3">{photos.carvingBench.caption}</figcaption>
+          </figure>
           <div className="mt-2 h-[3px] w-full overflow-hidden rounded-full bg-s3" aria-hidden="true">
             <div className="h-full rounded-full bg-gold transition-all duration-300" style={{ width: `${((active + 1) / craftStages.length) * 100}%` }} />
           </div>
@@ -197,20 +199,17 @@ function ScrollStory() {
               key={s.n}
               data-stage={i}
               className={cn(
-                "grid gap-5 rounded-lg p-5 transition-colors duration-300 sm:grid-cols-[1fr_250px] sm:items-center sm:gap-8 sm:p-6",
+                "rounded-lg p-5 transition-colors duration-300 sm:p-7",
                 i === active ? "bg-s3" : "bg-s2"
               )}
             >
-              <div className="order-2 sm:order-1">
+              <div>
                 <p className={cn("text-[13px] font-medium", i === active ? "text-gold" : "text-ink3")}>Station {s.n}</p>
                 <h3 className="mt-1 font-display text-[22px] leading-snug text-ink">
                   {s.title} <span className="ml-1 font-sinhala text-sm text-ink3">{s.sinhala}</span>
                 </h3>
                 <p className="mt-2.5 max-w-xl text-sm leading-relaxed text-ink2">{s.body}</p>
                 <p className="mt-3 text-[13px] leading-relaxed text-ink3">{s.detail}</p>
-              </div>
-              <div className="order-1 overflow-hidden rounded-md sm:order-2">
-                <CraftStageArt stage={i} label={s.title} />
               </div>
             </li>
           ))}

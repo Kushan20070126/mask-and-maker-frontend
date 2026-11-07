@@ -5,7 +5,7 @@ import { CartDrawer } from "@/components/layout/CartDrawer";
 import { CookieNotice, Footer, Header } from "@/components/layout/Shell";
 import { CommandPalette } from "@/components/ui/CommandPalette";
 import { ToastHost } from "@/components/ui/kit";
-import { ErrorBoundary, LegalPage, NotFound, RouteLoading } from "@/pages/System";
+import { CreditsPage, ErrorBoundary, LegalPage, NotFound, RouteLoading } from "@/pages/System";
 
 const Home = lazy(() => import("@/pages/Home"));
 const Marketplace = lazy(() => import("@/pages/Marketplace"));
@@ -62,6 +62,7 @@ function AnimatedRoutes() {
             <Route path="/legal/privacy" element={<LegalPage doc="privacy" />} />
             <Route path="/legal/terms" element={<LegalPage doc="terms" />} />
             <Route path="/legal/shipping" element={<LegalPage doc="shipping" />} />
+            <Route path="/legal/credits" element={<CreditsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>

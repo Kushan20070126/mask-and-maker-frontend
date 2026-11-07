@@ -13,6 +13,8 @@ import {
 import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { EXPO } from "@/lib/utils";
+import type { Photo } from "@/lib/photos";
+import { ImageFrame } from "./MaskImage";
 
 /* ------------------------------------------------ Button ----- */
 
@@ -100,22 +102,24 @@ export function Skeleton({ className }: { className?: string }) {
 
 export function EmptyState({
   icon: Icon,
-  art,
+  photo,
   title,
   body,
   children,
 }: {
   icon?: LucideIcon;
-  /** An illustration from components/art; replaces the icon when given. */
-  art?: ReactNode;
+  /** A real photograph shown above the title; replaces the icon when given. */
+  photo?: Photo;
   title: string;
   body: string;
   children?: ReactNode;
 }) {
   return (
     <div className="rounded-lg bg-s1 px-6 py-12 text-center">
-      {art ? (
-        <div className="mx-auto mb-6 w-full max-w-[260px] overflow-hidden rounded-lg">{art}</div>
+      {photo ? (
+        <div className="mx-auto mb-6 w-full max-w-md">
+          <ImageFrame src={photo.src} alt={photo.alt} ratio="aspect-[16/7]" position={photo.position} className="rounded-lg" />
+        </div>
       ) : (
         Icon && (
           <div className="mx-auto mb-5 grid size-12 place-items-center rounded-full border border-gold/30 bg-s2">

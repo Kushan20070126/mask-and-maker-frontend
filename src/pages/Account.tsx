@@ -11,7 +11,7 @@ import { AnimatedTabs, VerifiedSeal } from "@/components/ui/surfaces";
 import { EmptyState, Skeleton } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
 import { ProvenanceTimeline } from "@/components/ui/ProvenanceTimeline";
-import { CertificateArt, WallArt } from "@/components/art";
+import { photos } from "@/lib/photos";
 import { cn } from "@/utils/cn";
 
 const tabs = [
@@ -147,9 +147,6 @@ export default function Account() {
               );
             })}
           <div className="flex flex-col items-start justify-center gap-1 rounded-lg bg-s1 p-5">
-            <div className="mb-3 w-full max-w-[220px] overflow-hidden rounded-md">
-              <CertificateArt label="A certificate of provenance with its seal" />
-            </div>
             <p className="text-sm font-medium text-ink">Scanned a tag on a piece you own?</p>
             <p className="mt-1 text-[13px] leading-relaxed text-ink2">Claim its twin here and the certificate starts answering to your name.</p>
             <Link to="/verify" className="mt-4 inline-flex h-9 items-center gap-2 rounded-lg bg-gold px-3.5 text-[13px] font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
@@ -164,7 +161,7 @@ export default function Account() {
       {tab === "wishlist" &&
         (wishlist.length === 0 ? (
           <div className="mt-8">
-            <EmptyState art={<WallArt />} title="Nothing kept yet" body="Tap the heart on any mask and it waits here — privately, on this device.">
+            <EmptyState photo={photos.masksWall2} title="Nothing kept yet" body="Tap the heart on any mask and it waits here — privately, on this device.">
               <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] hover:bg-gold-strong active:scale-[0.98] transition-transform duration-100">
                 Browse the collection
               </Link>

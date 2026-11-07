@@ -8,10 +8,10 @@ import { formatMoney } from "@/lib/utils";
 import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { MaskCard } from "@/components/MaskCard";
-import { ArtisanAvatar } from "@/pages/Artisans";
 import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
 import { ImageFrame } from "@/components/ui/MaskImage";
-import { BenchScene, FlameBand, MagnifierArt, ToolArt, toolKind } from "@/components/art";
+import { FlameBand } from "@/components/art";
+import { photos } from "@/lib/photos";
 
 const patronAmounts = [1500, 4500, 12000];
 
@@ -60,7 +60,7 @@ export default function ArtisanDetail() {
   if (!artisan) {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
-        <EmptyState art={<MagnifierArt />} title="No maker by that name" body="The registry lists eight workshops. One of them is bound to have carved what you're looking for.">
+        <EmptyState photo={photos.masksBanner} title="No maker by that name" body="The registry lists eight workshops. One of them is bound to have carved what you're looking for.">
           <Link to="/artisans" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Meet the makers
           </Link>
@@ -116,13 +116,18 @@ export default function ArtisanDetail() {
               alt={`${artisan.name} in the workshop`}
               ratio="aspect-[4/4.6]"
               fallback={
-                <div className="relative h-full w-full bg-s1">
-                  <BenchScene className="h-full w-full object-cover" label={`${artisan.name}'s carving bench`} />
-                  <div className="absolute inset-x-0 bottom-0 flex items-center gap-3 bg-s1 p-4">
-                    <ArtisanAvatar artisan={artisan} size="size-12" />
-                    <p className="text-[13px] leading-snug text-ink2">Portrait sitting not yet booked; this is the bench as it stands.</p>
-                  </div>
-                </div>
+                <figure className="relative h-full w-full bg-s1">
+                  <img
+                    src={photos.carvingBench.src}
+                    alt={photos.carvingBench.alt}
+                    className="h-full w-full object-cover"
+                    style={{ objectPosition: photos.carvingBench.position }}
+                    loading="lazy"
+                  />
+                  <figcaption className="absolute inset-x-0 bottom-0 bg-s1 p-4 text-[13px] leading-snug text-ink2">
+                    No portrait sitting yet. Pictured: {photos.carvingBench.caption}, not this maker.
+                  </figcaption>
+                </figure>
               }
             />
             <span className="absolute top-3 right-3 rounded-md bg-scrim px-2 py-1 text-[12px] text-ink2">
@@ -156,11 +161,8 @@ export default function ArtisanDetail() {
             <h2 className="font-display text-xl text-ink">On the bench</h2>
             <ul className="mt-4 space-y-3">
               {artisan.tools.map((t) => (
-                <li key={t} className="flex items-center gap-3.5 rounded-lg bg-s1 p-2.5 pr-4">
-                  <span className="w-11 shrink-0 overflow-hidden rounded-md bg-s2">
-                    <ToolArt kind={toolKind(t)} />
-                  </span>
-                  <span className="text-[14px] leading-snug text-ink2">{t}</span>
+                <li key={t} className="rounded-lg bg-s1 px-4 py-3 text-[14px] leading-snug text-ink2">
+                  {t}
                 </li>
               ))}
             </ul>

@@ -264,6 +264,7 @@ const legalLinks = [
   { to: "/legal/privacy", label: "Privacy" },
   { to: "/legal/terms", label: "Terms of trade" },
   { to: "/legal/shipping", label: "Shipping & care" },
+  { to: "/legal/credits", label: "Picture credits" },
 ];
 
 export function Footer() {

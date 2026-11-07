@@ -9,7 +9,7 @@ import { EmptyState } from "@/components/ui/kit";
 import { NumberTicker } from "@/components/ui/motion";
 import { AnimatedTabs, BorderBeam, VerifiedSeal } from "@/components/ui/surfaces";
 import { ProvenanceTimeline } from "@/components/ui/ProvenanceTimeline";
-import { BenchScene } from "@/components/art";
+import { photos } from "@/lib/photos";
 
 type Role = "buyer" | "artisan" | "verifier" | "admin";
 const roles: { id: Role; label: string }[] = [
@@ -48,7 +48,7 @@ export default function Portal() {
       {role !== "artisan" ? (
         <div className="mt-8">
           <EmptyState
-            art={<BenchScene label="A carver's bench with tools on the wall rack" />}
+            photo={photos.carvingBench}
             title={`The ${roles.find((r) => r.id === role)?.label} desk opens with the pilot`}
             body="This portal is designed with and for the carving workshops first — switch back to the artisan persona to walk the whole flow. Registry staff tooling ships after the second village cohort."
           />

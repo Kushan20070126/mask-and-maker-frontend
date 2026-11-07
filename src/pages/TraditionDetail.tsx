@@ -7,8 +7,9 @@ import { usePageMeta } from "@/lib/meta";
 import type { Mask } from "@/lib/types";
 import { cn } from "@/utils/cn";
 import { MaskCard, TraditionTag } from "@/components/MaskCard";
-import { ArchivePlate } from "@/components/ui/MaskImage";
-import { FlameBand, MagnifierArt } from "@/components/art";
+import { ImageFrame } from "@/components/ui/MaskImage";
+import { FlameBand } from "@/components/art";
+import { photos, traditionPhoto } from "@/lib/photos";
 import { EmptyState, Skeleton } from "@/components/ui/kit";
 
 const washColor: Record<string, string> = {
@@ -33,7 +34,7 @@ export default function TraditionDetail() {
   if (!doc) {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
-        <EmptyState art={<MagnifierArt />} title="No such tradition" body="The island keeps three. They are Raksha, Sanni and Kolam — and they are a scroll away.">
+        <EmptyState photo={photos.masksBanner} title="No such tradition" body="The island keeps three. They are Raksha, Sanni and Kolam — and they are a scroll away.">
           <Link to="/heritage" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Back to the hub
           </Link>
@@ -75,13 +76,14 @@ export default function TraditionDetail() {
           </div>
           </div>
           <div className="mx-auto w-full max-w-[240px] lg:col-span-4 lg:max-w-none">
-            <ArchivePlate
-              seed={doc.slug === "raksha" ? 11 : doc.slug === "sanni" ? 23 : 37}
-              variant={doc.slug === "raksha" ? 1 : doc.slug === "sanni" ? 2 : 0}
-              tradition={doc.slug}
-              label={doc.name}
-              className="aspect-[4/5] rounded-lg"
+            <ImageFrame
+              src={traditionPhoto[doc.slug]?.src}
+              alt={traditionPhoto[doc.slug]?.alt ?? doc.name}
+              ratio="aspect-[4/5]"
+              position={traditionPhoto[doc.slug]?.position}
+              className="rounded-lg"
             />
+            <p className="mt-2 text-[13px] text-ink3">{traditionPhoto[doc.slug]?.caption}</p>
           </div>
         </div>
       </header>

@@ -7,7 +7,6 @@ import type { SearchHit } from "@/lib/types";
 import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { EXPO } from "@/lib/utils";
-import { MagnifierArt } from "@/components/art";
 
 const pages: SearchHit[] = [
   { kind: "page", title: "Collection", subtitle: "All masks", href: "/masks" },
@@ -162,10 +161,7 @@ export function CommandPalette() {
             <div className="max-h-[46vh] overflow-y-auto p-1.5" id="mm-palette-list" role="listbox">
               {grouped.length === 0 && (
                 <div className="px-3 py-5 text-center">
-                  <div className="mx-auto w-40 overflow-hidden rounded-md">
-                    <MagnifierArt />
-                  </div>
-                  <p className="mt-3 text-sm text-ink3">
+                  <p className="text-sm text-ink3">
                     Nothing in the registry matches “{q}”. Try a tradition — raksha, sanni, kolam — or a maker's region.
                   </p>
                 </div>

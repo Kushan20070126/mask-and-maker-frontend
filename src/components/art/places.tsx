@@ -1,9 +1,9 @@
-import { Face, Svg } from "./parts";
+import { Svg } from "./parts";
 import { cn } from "@/utils/cn";
 
 /* ------------------------------------------------------------------
-   Places: the southern coast with the carving villages pinned on it,
-   and the carver's bench.
+   The southern coast with the carving villages pinned on it. A working
+   control on the Artisans page: tapping a pin filters the makers.
    ------------------------------------------------------------------ */
 
 export const coastVillages = [
@@ -93,43 +93,6 @@ export function CoastMap({
           </g>
         );
       })}
-    </Svg>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-
-/** The carver's bench: gouges on the wall rack, a face clamped in progress, an oil lamp. */
-export function BenchScene({ className, label }: { className?: string; label?: string }) {
-  const gouges = [58, 84, 110, 136, 162, 188];
-  return (
-    <Svg viewBox="0 0 320 240" className={className} label={label}>
-      <rect width="320" height="240" className="a-ground2" />
-      {/* window */}
-      <rect x="226" y="26" width="60" height="70" rx="2" className="a-paper" opacity=".5" />
-      <path className="a-soft" d="M256 26 V96 M226 61 H286" />
-      <circle className="a-gold-f" cx="270" cy="44" r="6" opacity=".5" />
-      {/* tool rack */}
-      <path className="a-bark" d="M38 40 H210 V52 H38 Z" />
-      {gouges.map((x, i) => (
-        <g key={x}>
-          <path className="a-line" d={`M${x} 52 V${100 + (i % 3) * 8}`} />
-          <path className="a-wood-d" d={`M${x - 5} ${100 + (i % 3) * 8} h10 v${22 - (i % 2) * 4} q-5 6 -10 0 z`} />
-        </g>
-      ))}
-      {/* bench */}
-      <path className="a-ground" d="M0 190 H320 V240 H0 Z" />
-      <path className="a-bark" d="M30 170 H290 V184 H30 Z" />
-      <path className="a-line" d="M48 184 V232 M272 184 V232 M48 214 H272" />
-      {/* the work */}
-      <path className="a-bark" d="M126 156 H196 V170 H126 Z" />
-      <Face x={161} y={118} s={1.4} crown="naga" />
-      {/* lamp */}
-      <path className="a-wood" d="M62 170 q2 -14 18 -14 q12 0 14 14 z" />
-      <path className="a-line" d="M78 156 V150" />
-      <path className="a-verm" d="M78 150 q-5 -8 1 -16 q1 5 5 7 q3 -5 1 -10 q9 8 3 19 z" />
-      {/* shavings */}
-      <path className="a-wood-d" d="M108 164 l8 -4 l3 6 z M214 166 l8 -3 l2 6 z M236 168 l6 -4 l3 6 z" />
     </Svg>
   );
 }

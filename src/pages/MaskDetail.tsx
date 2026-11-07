@@ -13,8 +13,8 @@ import { ArchivePlate, MaskArtwork } from "@/components/ui/MaskImage";
 import { AnimatedTabs, BorderBeam, VerifiedSeal } from "@/components/ui/surfaces";
 import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
-import { craftStages } from "@/lib/mock/data";
-import { CraftStageArt, MagnifierArt } from "@/components/art";
+import { ImageFrame as Photograph } from "@/components/ui/MaskImage";
+import { photos } from "@/lib/photos";
 
 /* Mock carrier quotes derived from weight. */
 function shipRows(country: string, weightKg: number): { carrier: string; eta: string; priceLKR: number }[] {
@@ -111,7 +111,7 @@ export default function MaskDetail() {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
         <EmptyState
-          art={<MagnifierArt />}
+          photo={photos.masksBanner}
           title="That face isn't in the registry"
           body="The piece you're after has either found its keeper or never left the workshop. The shelf it came from is well worth a look."
         >
@@ -424,18 +424,13 @@ export default function MaskDetail() {
               Read about the {mask.tradition[0].toUpperCase() + mask.tradition.slice(1)} tradition →
             </Link>
           </div>
-          <div className="lg:col-span-7">
-            <h3 className="font-display text-lg text-ink">How it was made, station by station</h3>
-            <ol className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {craftStages.map((st, i) => (
-                <li key={st.n}>
-                  <div className="overflow-hidden rounded-md">
-                    <CraftStageArt stage={i} label={st.title} />
-                  </div>
-                  <p className="mt-1.5 text-[13px] leading-snug text-ink3">{st.title}</p>
-                </li>
-              ))}
-            </ol>
+          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+            {[photos.carvingBench, photos.sohonaYakka].map((p) => (
+              <figure key={p.src}>
+                <Photograph src={p.src} alt={p.alt} ratio="aspect-[4/3]" position={p.position} className="rounded-lg" />
+                <figcaption className="mt-2 text-[13px] text-ink3">{p.caption}</figcaption>
+              </figure>
+            ))}
           </div>
         </div>
       </section>

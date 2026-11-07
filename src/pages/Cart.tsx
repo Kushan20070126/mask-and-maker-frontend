@@ -6,7 +6,7 @@ import { formatMoney } from "@/lib/utils";
 import { useApp } from "@/store/app";
 import { EmptyState } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
-import { CrateArt } from "@/components/art";
+import { photos } from "@/lib/photos";
 import { TraditionTag } from "@/components/MaskCard";
 
 export default function Cart() {
@@ -31,7 +31,7 @@ export default function Cart() {
       {items.length === 0 ? (
         <div className="mt-10">
           <EmptyState
-            art={<CrateArt />}
+            photo={photos.masksBanner}
             title="The crate is empty"
             body="Each piece here is one of one — the good ones don't linger. Have a look round the collection while the shelf is full."
           >

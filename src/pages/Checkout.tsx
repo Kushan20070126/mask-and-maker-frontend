@@ -11,7 +11,7 @@ import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { Button, EmptyState, Field, Input, Stepper } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
-import { CrateArt } from "@/components/art";
+import { photos } from "@/lib/photos";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
 
 const addressSchema = z.object({
@@ -150,7 +150,7 @@ export default function Checkout() {
   if (items.length === 0) {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
-        <EmptyState art={<CrateArt />} title="Nothing to check out" body="Your crate is empty — the shelves, however, are not.">
+        <EmptyState photo={photos.masksBanner} title="Nothing to check out" body="Your crate is empty — the shelves, however, are not.">
           <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Browse the collection
           </Link>

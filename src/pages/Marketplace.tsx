@@ -12,7 +12,7 @@ import { MaskCard, TraditionTag } from "@/components/MaskCard";
 import { AnimatedTabs, SpotlightCard } from "@/components/ui/surfaces";
 import { Button, Drawer, EmptyState, Skeleton } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
-import { ShelfArt } from "@/components/art";
+import { photos } from "@/lib/photos";
 
 const traditionTabs = [
   { id: "all", label: "All traditions" },
@@ -313,7 +313,7 @@ export default function Marketplace() {
             </div>
           ) : results.length === 0 ? (
             <EmptyState
-              art={<ShelfArt />}
+              photo={photos.masksWall}
               title="The shelf is bare under these filters"
               body="No piece matches every box you've ticked. Loosen one filter — or let us commission the face you're imagining."
             >

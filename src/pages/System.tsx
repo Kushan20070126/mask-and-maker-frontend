@@ -1,7 +1,8 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { ArrowLeft, Drama, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
-import { MagnifierArt } from "@/components/art";
+import { ImageFrame } from "@/components/ui/MaskImage";
+import { photos, type Photo } from "@/lib/photos";
 import { usePageMeta } from "@/lib/meta";
 
 /* ---------------- 404 ---------------- */
@@ -10,8 +11,8 @@ export function NotFound() {
   usePageMeta("Not found");
   return (
     <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-24 pb-10 text-center sm:px-6">
-      <div className="w-full max-w-xs overflow-hidden rounded-lg">
-        <MagnifierArt />
+      <div className="w-full max-w-md">
+        <ImageFrame src={photos.masksBanner.src} alt={photos.masksBanner.alt} ratio="aspect-[16/7]" className="rounded-lg" />
       </div>
       <p className="mt-8 font-display text-[64px] leading-none font-light text-ink3">404</p>
       <h1 className="mt-3 font-display text-2xl text-ink">This wall bears no face</h1>
@@ -149,6 +150,40 @@ export function LegalPage({ doc }: { doc: keyof typeof legal }) {
           </section>
         ))}
       </div>
+    </div>
+  );
+}
+
+/* ---------------- picture credits ---------------- */
+
+export function CreditsPage() {
+  usePageMeta("Picture credits");
+  const list: Photo[] = Object.values(photos);
+  return (
+    <div className="mx-auto max-w-2xl px-4 pt-14 pb-4 sm:px-6">
+      <h1 className="font-display text-[34px] text-ink">Picture credits</h1>
+      <p className="mt-3 text-sm leading-relaxed text-ink2">
+        The photographs and the map on this site come from Wikimedia Commons and are used under their open licences. They show the
+        world around the craft — workshops, performances and museum pieces in Sri Lanka — and are not Mask &amp; Maker products.
+      </p>
+      <ul className="mt-8 space-y-6">
+        {list.map((p) => (
+          <li key={p.src} className="flex gap-4">
+            <img src={p.src} alt="" className="h-20 w-20 shrink-0 rounded-md object-cover" loading="lazy" style={{ objectPosition: p.position }} />
+            <p className="text-sm leading-relaxed text-ink2">
+              <a href={p.page} className="font-medium text-ink underline-offset-2 hover:underline" target="_blank" rel="noreferrer">
+                {p.title}
+              </a>
+              <br />
+              {p.creator && p.creator !== "-" ? `by ${p.creator}, ` : ""}
+              <a href={p.licenseUrl} className="text-gold hover:text-gold-strong" target="_blank" rel="noreferrer">
+                {p.license}
+              </a>
+              , via Wikimedia Commons
+            </p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

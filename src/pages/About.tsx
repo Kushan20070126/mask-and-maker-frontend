@@ -4,7 +4,8 @@ import { usePageMeta } from "@/lib/meta";
 import { NumberTicker, Stagger, StaggerItem } from "@/components/ui/motion";
 import { ProvenanceTimeline } from "@/components/ui/ProvenanceTimeline";
 import { ImageFrame } from "@/components/ui/MaskImage";
-import { CoastMap, FlameBand } from "@/components/art";
+import { FlameBand } from "@/components/art";
+import { photos } from "@/lib/photos";
 
 const problems = [
   {
@@ -128,9 +129,10 @@ export default function About() {
               ))}
             </dl>
           </div>
-          <div className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none">
-            <CoastMap />
-          </div>
+          <figure className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none">
+            <ImageFrame src={photos.ceylonMap.src} alt={photos.ceylonMap.alt} ratio="aspect-[4/3]" className="rounded-lg" />
+            <figcaption className="mt-2 text-center text-[13px] text-ink3">{photos.ceylonMap.caption}</figcaption>
+          </figure>
         </div>
       </section>
 

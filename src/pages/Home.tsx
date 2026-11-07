@@ -11,7 +11,8 @@ import { NumberTicker, Reveal, Stagger, StaggerItem } from "@/components/ui/moti
 import { MaskArtwork } from "@/components/ui/MaskImage";
 import { SpotlightCard } from "@/components/ui/surfaces";
 import { ImageFrame } from "@/components/ui/MaskImage";
-import { ArWallArt, CoastMap, CraftStageArt, FlameBand, GalleryArt, TagArt } from "@/components/art";
+import { FlameBand } from "@/components/art";
+import { photos } from "@/lib/photos";
 
 /* ------------------------------------------------ magnetic CTA --- */
 
@@ -68,21 +69,21 @@ const trust = [
 
 const steps = [
   {
-    art: <GalleryArt label="Three masks hung on a gallery wall, each with its plaque" />,
+    photo: photos.masksWall,
     title: "Find the face you keep thinking about",
     body: "Browse a living registry — Raksha guardians, the eighteen Sanni, Kolam’s comic parliament. Every piece names its maker and its tree.",
     to: "/masks",
     cta: "Open the collection",
   },
   {
-    art: <ArWallArt label="A phone showing a mask life-size against a living-room wall" />,
+    photo: photos.masksWall2,
     title: "Hold it against your own wall",
     body: "Life-size AR straight from your phone. See how a 58 cm Naga Raksha sits above the sideboard before you commit.",
     to: "/masks/naga-raksha",
     cta: "Try it on a mask",
   },
   {
-    art: <TagArt label="The back of a mask with its NFC pocket, QR tag and a phone reading it" />,
+    photo: photos.carvingBench,
     title: "Scan the back, read its whole life",
     body: "Scan the tag any time — before you pay, and for decades after. The certificate travels with the mask.",
     to: "/verify",
@@ -146,24 +147,21 @@ export default function Home() {
               <p className="mt-9 text-sm text-ink3">Eighteen masks, eight lineages, no middlemen.</p>
             </StaggerItem>
             <StaggerItem>
-              <Link to="/heritage" className="group mt-10 block max-w-xl" aria-label="See how a mask is made, from tree to waking the eyes">
-                <div className="grid grid-cols-4 gap-2">
+              <Link to="/heritage" className="group mt-10 block max-w-xl" aria-label="Read how a mask is made and danced">
+                <div className="grid grid-cols-3 gap-2">
                   {[
-                    [0, "The tree"],
-                    [3, "The carving"],
-                    [6, "The paint"],
-                    [7, "The eyes"],
-                  ].map(([stage, cap]) => (
-                    <figure key={cap as string}>
-                      <div className="overflow-hidden rounded-md transition-transform duration-300 group-hover:-translate-y-0.5">
-                        <CraftStageArt stage={stage as number} />
-                      </div>
+                    { p: photos.carvingBench, cap: "The bench" },
+                    { p: photos.masksWall2, cap: "The masks" },
+                    { p: photos.kolamDance, cap: "The dance" },
+                  ].map(({ p, cap }) => (
+                    <figure key={cap}>
+                      <ImageFrame src={p.src} alt={p.alt} ratio="aspect-[4/5]" position={p.position} className="rounded-md" />
                       <figcaption className="mt-1.5 text-[12.5px] text-ink3">{cap}</figcaption>
                     </figure>
                   ))}
                 </div>
                 <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-gold transition-colors group-hover:text-gold-strong">
-                  Eight stations from tree to mask
+                  How a mask is made and danced
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </span>
               </Link>
@@ -259,7 +257,10 @@ export default function Home() {
           {steps.map((st, i) => (
             <Reveal key={st.title}>
               <div className="grid items-center gap-6 rounded-lg bg-s2 p-4 sm:p-6 lg:grid-cols-12 lg:gap-12 lg:p-8">
-                <div className={cn("overflow-hidden rounded-lg lg:col-span-6", i % 2 === 1 && "lg:order-2")}>{st.art}</div>
+                <figure className={cn("lg:col-span-6", i % 2 === 1 && "lg:order-2")}>
+                  <ImageFrame src={st.photo.src} alt={st.photo.alt} ratio="aspect-[3/2]" position={st.photo.position} className="rounded-lg" />
+                  <figcaption className="mt-2 text-[13px] text-ink3">{st.photo.caption}</figcaption>
+                </figure>
                 <div className={cn("lg:col-span-6", i % 2 === 1 ? "lg:order-1 lg:pl-6" : "lg:pr-6")}>
                   <h3 className="font-display text-[26px] leading-tight text-ink sm:text-[30px]">{st.title}</h3>
                   <p className="mt-3 max-w-md text-[15px] leading-relaxed text-ink2">{st.body}</p>
@@ -384,10 +385,10 @@ export default function Home() {
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
           </div>
-          <div className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none">
-            <CoastMap />
-            <p className="mt-2 text-center text-[13px] text-ink3">Ambalangoda to Mirissa — where the carving still happens.</p>
-          </div>
+          <figure className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none">
+            <ImageFrame src={photos.ceylonMap.src} alt={photos.ceylonMap.alt} ratio="aspect-[4/3]" className="rounded-lg" />
+            <figcaption className="mt-2 text-center text-[13px] text-ink3">{photos.ceylonMap.caption}. Ambalangoda sits on the south-west coast.</figcaption>
+          </figure>
         </div>
       </section>
     </>
