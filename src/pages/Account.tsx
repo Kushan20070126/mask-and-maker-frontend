@@ -60,7 +60,7 @@ export default function Account() {
           ].map(([k, v]) => (
             <div key={k} className="text-right">
               <p className="font-mono text-xl text-ink tnum">{v}</p>
-              <p className="mt-0.5 text-[12.5px]  text-ink4">{k}</p>
+              <p className="mt-0.5 text-[12.5px]  text-ink3">{k}</p>
             </div>
           ))}
         </div>
@@ -101,7 +101,7 @@ export default function Account() {
                             <Link to={`/masks/${m.slug}`} className="block truncate text-sm font-medium text-ink hover:text-gold-strong">
                               {m.name}
                             </Link>
-                            <p className="font-mono text-[11px] text-ink4 tnum">×{i.qty}</p>
+                            <p className="font-mono text-[11px] text-ink3 tnum">×{i.qty}</p>
                           </div>
                           <span className="font-mono text-[13px] text-ink2 tnum">{formatMoney(i.priceLKR * i.qty, currency)}</span>
                         </li>
@@ -149,7 +149,7 @@ export default function Account() {
           <div className="flex flex-col items-start justify-center gap-1 rounded-lg bg-s1 p-5">
             <p className="text-sm font-medium text-ink">Scanned a tag on a piece you own?</p>
             <p className="mt-1 text-[13px] leading-relaxed text-ink2">Claim its twin here and the certificate starts answering to your name.</p>
-            <Link to="/verify" className="mt-4 inline-flex h-9 items-center gap-2 rounded-lg bg-gold px-3.5 text-[13px] font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+            <Link to="/verify" className="mt-4 inline-flex h-9 items-center gap-2 rounded-lg bg-gold px-3.5 text-[13px] font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
               <BadgeCheck className="size-4" aria-hidden="true" />
               Verify & claim
             </Link>
@@ -162,7 +162,7 @@ export default function Account() {
         (wishlist.length === 0 ? (
           <div className="mt-8">
             <EmptyState photo={photos.masksWall2} title="Nothing kept yet" body="Tap the heart on any mask and it waits here — privately, on this device.">
-              <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] hover:bg-gold-strong active:scale-[0.98] transition-transform duration-100">
+              <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold hover:bg-gold-strong active:scale-[0.98] transition-transform duration-100">
                 Browse the collection
               </Link>
             </EmptyState>
@@ -221,7 +221,7 @@ function WishlistRemove({ slug, name }: { slug: string; name: string }) {
         toggle(slug);
         toast("Removed from wishlist", { description: name });
       }}
-      className="grid size-8 shrink-0 place-items-center rounded-lg text-ink4 transition-colors hover:bg-s2 hover:text-danger"
+      className="grid size-8 shrink-0 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-danger"
       aria-label={`Remove ${name} from wishlist`}
     >
       <Trash2 className="size-4" />

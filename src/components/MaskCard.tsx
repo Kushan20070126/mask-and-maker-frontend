@@ -68,7 +68,7 @@ export function MaskCard({ mask }: { mask: Mask }) {
             </Link>
             <p className="mt-0.5 truncate text-xs text-ink3">
               <span className="font-sinhala">{mask.sinhala}</span>
-              <span className="mx-1.5 text-ink4">·</span>
+              <span className="mx-1.5 text-ink3">·</span>
               {mask.region}
             </p>
           </div>
@@ -78,7 +78,7 @@ export function MaskCard({ mask }: { mask: Mask }) {
           <span className="font-mono text-[15px] text-ink tnum">{formatMoney(mask.priceLKR, currency)}</span>
           <button
             onClick={onAdd}
-            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-s3 px-3 text-[13px] font-medium text-ink transition-all duration-100 hover:bg-gold hover:text-[#16120A] active:scale-[0.98] pointer-fine:opacity-0 pointer-fine:group-hover/spot:opacity-100 pointer-fine:group-focus-within/spot:opacity-100"
+            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-s3 px-3 text-[13px] font-medium text-ink transition-all duration-100 hover:bg-gold hover:text-on-gold active:scale-[0.98] pointer-fine:opacity-0 pointer-fine:group-hover/spot:opacity-100 pointer-fine:group-focus-within/spot:opacity-100"
           >
             <ShoppingBag className="size-3.5" aria-hidden="true" />
             Add

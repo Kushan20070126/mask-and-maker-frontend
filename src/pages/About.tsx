@@ -167,7 +167,7 @@ export default function About() {
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link to="/masks" className="inline-flex h-11 items-center gap-2 rounded-lg bg-gold px-5 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+            <Link to="/masks" className="inline-flex h-11 items-center gap-2 rounded-lg bg-gold px-5 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
               Explore the collection
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>

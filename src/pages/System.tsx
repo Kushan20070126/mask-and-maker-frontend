@@ -21,7 +21,7 @@ export function NotFound() {
         to a well-lit room.
       </p>
       <div className="mt-8 flex gap-3">
-        <Link to="/" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+        <Link to="/" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
           <ArrowLeft className="size-4" aria-hidden="true" />
           Home
         </Link>
@@ -81,7 +81,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode; resetKey?: s
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <button
               onClick={() => this.setState({ hasError: false })}
-              className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]"
+              className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]"
             >
               <RotateCcw className="size-4" aria-hidden="true" />
               Try again

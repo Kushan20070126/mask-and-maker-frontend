@@ -129,7 +129,7 @@ export default function Home() {
                 <Magnetic>
                   <Link
                     to="/masks"
-                    className="inline-flex h-12 items-center gap-2 rounded-lg bg-gold px-6 text-[15px] font-medium text-[#16120A] shadow-[0_1px_0_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]"
+                    className="inline-flex h-12 items-center gap-2 rounded-lg bg-gold px-6 text-[15px] font-medium text-on-gold shadow-[0_1px_0_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]"
                   >
                     Explore the collection
                     <ArrowRight className="size-4" aria-hidden="true" />
@@ -307,7 +307,7 @@ export default function Home() {
                   ["Collector rating", `${sirisena.rating} / 5`],
                 ].map(([k, v]) => (
                   <div key={k}>
-                    <p className="text-[12.5px]  text-ink4">{k}</p>
+                    <p className="text-[12.5px]  text-ink3">{k}</p>
                     <p className="mt-0.5 font-mono text-[15px] text-ink tnum">{v}</p>
                   </div>
                 ))}
@@ -341,7 +341,7 @@ export default function Home() {
                         {a.kind === "film" ? "Film" : "Essay"} · {a.readMinutes} min · {formatDate(a.date)}
                       </p>
                     </div>
-                    <ArrowRight className="size-4 shrink-0 text-ink4 transition-all duration-180 group-hover:translate-x-0.5 group-hover:text-gold" aria-hidden="true" />
+                    <ArrowRight className="size-4 shrink-0 text-ink3 transition-all duration-180 group-hover:translate-x-0.5 group-hover:text-gold" aria-hidden="true" />
                   </Link>
                 </li>
               ))}

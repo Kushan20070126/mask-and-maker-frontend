@@ -43,7 +43,7 @@ export function CartDrawer() {
           <Link
             to="/masks"
             onClick={() => setOpen(false)}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]"
           >
             Browse the collection
           </Link>
@@ -91,7 +91,7 @@ export function CartDrawer() {
                         removeFromCart(mask.slug);
                         toast("Removed from crate", { description: mask.name });
                       }}
-                      className="grid size-7 place-items-center rounded-lg text-ink4 transition-colors hover:bg-s2 hover:text-danger"
+                      className="grid size-7 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-danger"
                       aria-label={`Remove ${mask.name} from cart`}
                     >
                       <Trash2 className="size-3.5" />

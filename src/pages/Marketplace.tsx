@@ -231,7 +231,7 @@ export default function Marketplace() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search pieces or regions…"
-              className="h-10 w-full rounded-lg border border-line bg-s2 pr-10 pl-3.5 text-sm text-ink outline-none transition placeholder:text-ink4 focus:border-gold/50 focus:ring-2 focus:ring-gold/20"
+              className="h-10 w-full rounded-lg border border-line bg-s2 pr-10 pl-3.5 text-sm text-ink outline-none transition placeholder:text-ink3 focus:border-gold/50 focus:ring-2 focus:ring-gold/20"
               aria-label="Search the collection"
             />
             <kbd className="kbd pointer-events-none absolute top-1/2 right-2 -translate-y-1/2">⌘K</kbd>
@@ -259,10 +259,10 @@ export default function Marketplace() {
             <option value="newest">Newest carving</option>
           </select>
           <div className="flex rounded-lg border border-line bg-s1 p-0.5" role="group" aria-label="View">
-            <button onClick={() => setView("grid")} aria-pressed={view === "grid"} aria-label="Grid view" className={cn("grid size-8 place-items-center rounded-md transition-colors", view === "grid" ? "bg-s3 text-ink" : "text-ink4 hover:text-ink2")}>
+            <button onClick={() => setView("grid")} aria-pressed={view === "grid"} aria-label="Grid view" className={cn("grid size-8 place-items-center rounded-md transition-colors", view === "grid" ? "bg-s3 text-ink" : "text-ink3 hover:text-ink2")}>
               <LayoutGrid className="size-3.5" />
             </button>
-            <button onClick={() => setView("list")} aria-pressed={view === "list"} aria-label="List view" className={cn("grid size-8 place-items-center rounded-md transition-colors", view === "list" ? "bg-s3 text-ink" : "text-ink4 hover:text-ink2")}>
+            <button onClick={() => setView("list")} aria-pressed={view === "list"} aria-label="List view" className={cn("grid size-8 place-items-center rounded-md transition-colors", view === "list" ? "bg-s3 text-ink" : "text-ink3 hover:text-ink2")}>
               <List className="size-3.5" />
             </button>
           </div>
@@ -364,7 +364,7 @@ function ListView({ results }: { results: Mask[] }) {
                 <TraditionTag tradition={m.tradition} />
               </div>
               <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-ink3">{m.story}</p>
-              <p className="mt-1.5 text-xs text-ink4">
+              <p className="mt-1.5 text-xs text-ink3">
                 {m.heightCm} cm · {sizeOf(m)} · {m.region} · {m.year}
               </p>
             </div>

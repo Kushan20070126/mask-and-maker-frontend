@@ -134,7 +134,7 @@ export default function Checkout() {
             <ProvenanceTimeline steps={next} />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/account" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+            <Link to="/account" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
               Track in your account
             </Link>
             <Link to="/masks" className="inline-flex h-10 items-center rounded-lg border border-line bg-s2 px-4 text-sm font-medium text-ink transition-colors hover:bg-s3">
@@ -151,7 +151,7 @@ export default function Checkout() {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
         <EmptyState photo={photos.masksBanner} title="Nothing to check out" body="Your crate is empty — the shelves, however, are not.">
-          <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+          <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Browse the collection
           </Link>
         </EmptyState>
@@ -330,7 +330,7 @@ export default function Checkout() {
             <div className="edge space-y-5 rounded-lg bg-s1 p-6" aria-label="Review order">
               <div className="grid gap-5 sm:grid-cols-3">
                 <div>
-                  <p className="text-[12.5px]  text-ink4">Deliver to</p>
+                  <p className="text-[12.5px]  text-ink3">Deliver to</p>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
                     {address?.name}
                     <br />
@@ -340,7 +340,7 @@ export default function Checkout() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[12.5px]  text-ink4">Carrier</p>
+                  <p className="text-[12.5px]  text-ink3">Carrier</p>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
                     {ship?.label}
                     <br />
@@ -348,7 +348,7 @@ export default function Checkout() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-[12.5px]  text-ink4">Paying with</p>
+                  <p className="text-[12.5px]  text-ink3">Paying with</p>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
                     Card ···· {pay.number.replace(/\s/g, "").slice(-4)}
                     <br />
@@ -374,7 +374,7 @@ export default function Checkout() {
                 <MaskArtwork mask={mask} ratio="" className="size-12 shrink-0 rounded-lg" />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-[13px] font-medium text-ink">{mask.name}</span>
-                  <span className="font-mono text-[11px] text-ink4 tnum">×{qty}</span>
+                  <span className="font-mono text-[11px] text-ink3 tnum">×{qty}</span>
                 </span>
                 <span className="font-mono text-[13px] text-ink2 tnum">{formatMoney(mask.priceLKR * qty, currency)}</span>
               </li>

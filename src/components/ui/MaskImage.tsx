@@ -160,8 +160,8 @@ export function ArchivePlate({
         </g>
       </svg>
       <div className="absolute inset-x-0 bottom-0 flex items-baseline justify-between p-3">
-        <span className="font-mono text-[10px] tracking-wide text-ink4 tnum">№ {String(seed * 137 + 109).padStart(5, "0")}</span>
-        {label && <span className="text-[12.5px]  text-ink4">{label}</span>}
+        <span className="font-mono text-[10px] tracking-wide text-ink3 tnum">№ {String(seed * 137 + 109).padStart(5, "0")}</span>
+        {label && <span className="text-[12.5px]  text-ink3">{label}</span>}
       </div>
     </div>
   );

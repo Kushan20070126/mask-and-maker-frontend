@@ -115,7 +115,7 @@ export default function MaskDetail() {
           title="That face isn't in the registry"
           body="The piece you're after has either found its keeper or never left the workshop. The shelf it came from is well worth a look."
         >
-          <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+          <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Back to the collection
           </Link>
         </EmptyState>
@@ -223,7 +223,7 @@ export default function MaskDetail() {
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <TraditionTag tradition={mask.tradition} />
-            <span className="text-[12.5px]  text-ink4">{mask.region} · {mask.year}</span>
+            <span className="text-[12.5px]  text-ink3">{mask.region} · {mask.year}</span>
           </div>
           <h1 className="mt-3 font-display text-[36px] leading-[1.05] tracking-[-0.01em] text-ink sm:text-[42px]">{mask.name}</h1>
           <p className="mt-1.5 font-sinhala text-[17px] text-ink2">{mask.sinhala}</p>
@@ -234,7 +234,7 @@ export default function MaskDetail() {
           <div className="edge relative mt-7 rounded-lg bg-s2 p-5">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-[12.5px]  text-ink4">Workshop price</p>
+                <p className="text-[12.5px]  text-ink3">Workshop price</p>
                 <p className="mt-1 font-mono text-[28px] leading-none text-ink tnum">{formatMoney(mask.priceLKR, currency)}</p>
                 <p className="mt-1.5 text-xs text-ink3">
                   {mask.stock === 1 ? "One of one — when it's gone, it's gone" : `${mask.stock} pieces from this carving run`}
@@ -310,7 +310,7 @@ export default function MaskDetail() {
                 <li key={qt.carrier} className="flex items-center justify-between gap-3 py-2 text-[13px]">
                   <span className="text-ink2">
                     {qt.carrier}
-                    <span className="ml-2 font-mono text-[11px] text-ink4 tnum">{qt.eta}</span>
+                    <span className="ml-2 font-mono text-[11px] text-ink3 tnum">{qt.eta}</span>
                   </span>
                   <span className="font-mono text-ink tnum">{formatMoney(qt.priceLKR, currency)}</span>
                 </li>
@@ -346,7 +346,7 @@ export default function MaskDetail() {
               ["Year carved", String(mask.year)],
             ].map(([k, v]) => (
               <div key={k} className="border-b border-line py-2.5 last:border-0 odd:border-r odd:pr-4 even:pl-4">
-                <dt className="text-[12.5px]  text-ink4">{k}</dt>
+                <dt className="text-[12.5px]  text-ink3">{k}</dt>
                 <dd className="mt-0.5 text-ink2">{v}</dd>
               </div>
             ))}
@@ -401,7 +401,7 @@ export default function MaskDetail() {
                   ["Registry hash", `keccak256 · ${techId}…e7`],
                 ].map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-4">
-                    <dt className="text-ink4">{k}</dt>
+                    <dt className="text-ink3">{k}</dt>
                     <dd className="text-right text-ink2">{v}</dd>
                   </div>
                 ))}

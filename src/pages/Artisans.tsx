@@ -93,7 +93,7 @@ export default function Artisans() {
                 <p className="mt-0.5 font-sinhala text-sm text-ink3">{a.sinhalaName}</p>
                 <p className="mt-1.5 text-[13px] leading-snug text-ink2">{a.role}</p>
                 <p className="mt-auto flex items-center gap-1.5 pt-4 text-xs text-ink3">
-                  <MapPin className="size-3.5 text-ink4" aria-hidden="true" />
+                  <MapPin className="size-3.5 text-ink3" aria-hidden="true" />
                   {a.village}
                 </p>
                 <div className="mt-3 flex items-center justify-between border-t border-line pt-3 text-xs text-ink3">

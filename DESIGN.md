@@ -22,7 +22,8 @@ in `src/index.css` (Tailwind v4, CSS-first). Components must reference tokens, n
 
 | Token            | Value     | Role |
 |------------------|-----------|------|
-| `--gold`         | `#C9A45C` | Primary accent: CTAs, key lines, verified states. Used sparingly. |
+| `--gold`         | `#C9A45C` (light theme `#735520`) | Primary accent: CTAs, key lines, verified states. Used sparingly. |
+| `--on-gold`      | `#16120A` (light theme `#F7F2E8`) | Text on a gold fill (buttons, badges). |
 | `--gold-strong`  | `#DDB983` | Hover/emphasis on gold text. |
 | `--vermilion`    | `#E2561F` | Kolam vermilion — cultural marker only (tradition tags, folklore). Never chrome. |
 | `--forest`       | `#1F5B45` | Deep Kolam green — cultural marker only. |
@@ -34,9 +35,9 @@ in `src/index.css` (Tailwind v4, CSS-first). Components must reference tokens, n
 | Token      | Dark       | Light      | Use |
 |------------|------------|------------|-----|
 | `--text-1` | `#EDE7DB`  | `#211C15`  | Headings, body emphasis |
-| `--text-2` | `#ABA399`  | `#5C554A`  | Secondary copy |
-| `--text-3` | `#7A7268`  | `#837A6C`  | Captions, meta |
-| `--text-4` | `#50493F`  | `#B4AB9C`  | Disabled |
+| `--text-2` | `#ABA399`  | `#48423A`  | Secondary copy |
+| `--text-3` | `#8E867A`  | `#625A4E`  | Captions, meta |
+| `--text-4` | `#50493F`  | `#B4AB9C`  | Disabled and decorative only — never readable text |
 
 ## 3. Typography
 

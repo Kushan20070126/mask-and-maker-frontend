@@ -153,7 +153,7 @@ export function ARLauncher({ mask }: { mask: Mask }) {
   if (!mask.arAvailable) {
     return (
       <p className="edge flex items-center gap-2.5 rounded-lg bg-s1 px-4 py-3 text-[13px] text-ink3">
-        <ScanLine className="size-4 shrink-0 text-ink4" aria-hidden="true" />
+        <ScanLine className="size-4 shrink-0 text-ink3" aria-hidden="true" />
         This piece predates our scanning programme — photographs and measurements only, for now.
       </p>
     );

@@ -27,15 +27,21 @@
   /* text */
   --ink: #ede7db;
   --ink2: #aba399;
-  --ink3: #7a7268;
+  --ink3: #8e867a;
   --ink4: #50493f;
 
   /* overlay */
   --scrim: rgba(6, 5, 4, 0.72);
+
+  /* text on a gold fill */
+  --on-gold: #16120a;
 }
 
 html[data-theme="light"] {
   color-scheme: light;
+  --gold: #735520;
+  --gold-strong: #5e4419;
+  --on-gold: #f7f2e8;
   --canvas: #f4efe6;
   --s1: #ede7db;
   --s2: #e7e0d1;
@@ -43,8 +49,8 @@ html[data-theme="light"] {
   --line: rgba(28, 22, 14, 0.1);
   --edge-hi: rgba(255, 255, 255, 0.7);
   --ink: #211c15;
-  --ink2: #5c554a;
-  --ink3: #837a6c;
+  --ink2: #48423a;
+  --ink3: #625a4e;
   --ink4: #b4ab9c;
   --scrim: rgba(244, 239, 230, 0.72);
 }
@@ -57,6 +63,7 @@ html[data-theme="light"] {
   --color-line: var(--line);
   --color-gold: var(--gold);
   --color-gold-strong: var(--gold-strong);
+  --color-on-gold: var(--on-gold);
   --color-vermilion: var(--vermilion);
   --color-forest: var(--forest);
   --color-success: var(--success);

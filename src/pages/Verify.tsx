@@ -61,7 +61,7 @@ export default function Verify() {
                 placeholder="MM-2024-0117"
                 autoComplete="off"
                 spellCheck={false}
-                className="h-11 w-full max-w-xs rounded-lg border border-line bg-s2 px-3.5 font-mono text-sm text-ink uppercase outline-none transition placeholder:normal-case placeholder:text-ink4 focus:border-gold/50 focus:ring-2 focus:ring-gold/20 tnum"
+                className="h-11 w-full max-w-xs rounded-lg border border-line bg-s2 px-3.5 font-mono text-sm text-ink uppercase outline-none transition placeholder:normal-case placeholder:text-ink3 focus:border-gold/50 focus:ring-2 focus:ring-gold/20 tnum"
               />
               <Button type="submit" size="lg" disabled={!code.trim()}>
                 <Search className="size-4" />
@@ -189,12 +189,12 @@ function VerifyRun({ certId }: { certId: string }) {
                     "grid size-7 shrink-0 place-items-center rounded-full border",
                     state === "done" && "border-gold/60 bg-gold/15 text-gold",
                     state === "current" && "border-gold text-gold",
-                    state === "pending" && "border-line text-ink4"
+                    state === "pending" && "border-line text-ink3"
                   )}
                 >
                   {state === "current" ? <Loader2 className="size-3.5 animate-spin" /> : state === "done" ? <BadgeCheck className="size-3.5" /> : <c.icon className="size-3.5" />}
                 </span>
-                <span className={cn("text-sm", state === "pending" ? "text-ink4" : "text-ink2")}>
+                <span className={cn("text-sm", state === "pending" ? "text-ink3" : "text-ink2")}>
                   {state === "done" ? c.done : c.label}
                 </span>
               </li>
@@ -253,7 +253,7 @@ function VerifyRun({ certId }: { certId: string }) {
                   ["Keeper", isClaimed ? claimed ? "You — just now" : result.cert.owner ?? "—" : "Unclaimed"],
                 ].map(([k, v]) => (
                   <div key={k}>
-                    <dt className="text-[12.5px]  text-ink4">{k}</dt>
+                    <dt className="text-[12.5px]  text-ink3">{k}</dt>
                     <dd className={cn("mt-0.5", k === "Chain" || k === "Minted" ? "font-mono text-ink2 tnum" : "text-ink2", k === "Certificate" && "font-mono text-gold tnum")}>{v}</dd>
                   </div>
                 ))}

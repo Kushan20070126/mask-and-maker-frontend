@@ -94,7 +94,7 @@ export function Header() {
     <header className="sticky top-0 z-[60] border-b border-line bg-canvas">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[70] focus:rounded-lg focus:bg-gold focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-[#16120A]"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[70] focus:rounded-lg focus:bg-gold focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-on-gold"
       >
         Skip to content
       </a>
@@ -175,7 +175,7 @@ export function Header() {
           >
             <ShoppingBag className="size-4" />
             {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 grid size-[18px] place-items-center rounded-full bg-gold font-mono text-[10px] font-medium text-[#16120A] tnum">
+              <span className="absolute -top-1.5 -right-1.5 grid size-[18px] place-items-center rounded-full bg-gold font-mono text-[10px] font-medium text-on-gold tnum">
                 {cartCount}
               </span>
             )}
@@ -223,7 +223,7 @@ export function Header() {
                 Your account
               </NavLink>
               <div className="flex items-center gap-3 px-3 pt-2 pb-1 sm:hidden">
-                <span className="text-[12.5px]  text-ink4">Currency</span>
+                <span className="text-[12.5px]  text-ink3">Currency</span>
                 {(["LKR", "USD"] as const).map((c) => (
                   <button
                     key={c}
@@ -303,7 +303,7 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="h-10 w-full rounded-lg border border-line bg-s2 px-3.5 text-sm text-ink outline-none transition placeholder:text-ink4 focus:border-gold/50 focus:ring-2 focus:ring-gold/20"
+                  className="h-10 w-full rounded-lg border border-line bg-s2 px-3.5 text-sm text-ink outline-none transition placeholder:text-ink3 focus:border-gold/50 focus:ring-2 focus:ring-gold/20"
                 />
                 <Button type="submit">Join</Button>
               </div>

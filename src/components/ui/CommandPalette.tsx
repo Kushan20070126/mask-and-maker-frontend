@@ -148,7 +148,7 @@ export function CommandPalette() {
                 }}
                 onKeyDown={onKeyDown}
                 placeholder="Search masks, artisans, folklore…"
-                className="h-12 w-full bg-transparent text-[15px] text-ink outline-none placeholder:text-ink4"
+                className="h-12 w-full bg-transparent text-[15px] text-ink outline-none placeholder:text-ink3"
                 role="combobox"
                 aria-expanded="true"
                 aria-controls="mm-palette-list"
@@ -173,7 +173,7 @@ export function CommandPalette() {
                 return (
                   <div key={`${hit.kind}-${hit.href}-${hit.title}`}>
                     {header && (
-                      <p className="px-3 pt-2.5 pb-1 text-[12.5px] font-medium  text-ink4">{kindLabel[hit.kind]}</p>
+                      <p className="px-3 pt-2.5 pb-1 text-[12.5px] font-medium  text-ink3">{kindLabel[hit.kind]}</p>
                     )}
                     <button
                       id={`mm-hit-${i}`}
@@ -200,7 +200,7 @@ export function CommandPalette() {
               })}
             </div>
 
-            <div className="flex items-center gap-4 border-t border-line px-4 py-2.5 text-[11px] text-ink4">
+            <div className="flex items-center gap-4 border-t border-line px-4 py-2.5 text-[11px] text-ink3">
               <span className="flex items-center gap-1.5"><kbd className="kbd">↑↓</kbd> navigate</span>
               <span className="flex items-center gap-1.5"><kbd className="kbd">↵</kbd> open</span>
               <span className="ml-auto hidden sm:block">The registry, at a keystroke</span>

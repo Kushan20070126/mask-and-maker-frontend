@@ -61,7 +61,7 @@ export default function ArtisanDetail() {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
         <EmptyState photo={photos.masksBanner} title="No maker by that name" body="The registry lists eight workshops. One of them is bound to have carved what you're looking for.">
-          <Link to="/artisans" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+          <Link to="/artisans" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
             Meet the makers
           </Link>
         </EmptyState>
@@ -103,7 +103,7 @@ export default function ArtisanDetail() {
               ["Generations", String(artisan.generations.length)],
             ].map(([k, v]) => (
               <div key={k}>
-                <p className="text-[12.5px]  text-ink4">{k}</p>
+                <p className="text-[12.5px]  text-ink3">{k}</p>
                 <p className="mt-1 font-mono text-xl text-ink tnum">{v}</p>
               </div>
             ))}

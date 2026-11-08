@@ -35,7 +35,7 @@ export default function Cart() {
             title="The crate is empty"
             body="Each piece here is one of one — the good ones don't linger. Have a look round the collection while the shelf is full."
           >
-            <Link to="/masks" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+            <Link to="/masks" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
               Browse the collection
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>
@@ -83,13 +83,13 @@ export default function Cart() {
                       </button>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-[11px] text-ink4 tnum">{formatMoney(mask.priceLKR, currency)} each</span>
+                      <span className="font-mono text-[11px] text-ink3 tnum">{formatMoney(mask.priceLKR, currency)} each</span>
                       <button
                         onClick={() => {
                           removeFromCart(mask.slug);
                           toast("Removed from crate", { description: mask.name });
                         }}
-                        className="grid size-8 place-items-center rounded-lg text-ink4 transition-colors hover:bg-s2 hover:text-danger"
+                        className="grid size-8 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-danger"
                         aria-label={`Remove ${mask.name}`}
                       >
                         <Trash2 className="size-4" />
@@ -117,7 +117,7 @@ export default function Cart() {
                 <dd className="font-mono text-lg text-gold tnum">{formatMoney(subtotal, currency)}</dd>
               </div>
             </dl>
-            <Link to="/checkout" className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gold text-sm font-medium text-[#16120A] transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]">
+            <Link to="/checkout" className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gold text-sm font-medium text-on-gold transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]">
               Proceed to checkout
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>

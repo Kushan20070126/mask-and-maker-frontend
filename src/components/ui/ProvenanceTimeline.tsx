@@ -34,7 +34,7 @@ export function ProvenanceTimeline({ steps, className }: { steps: ProvStep[]; cl
                 "relative z-10 mt-0.5 grid size-[21px] place-items-center rounded-full border",
                 s.state === "done" && "border-gold/70 bg-gold/15 text-gold",
                 s.state === "current" && "border-gold bg-canvas text-gold",
-                s.state === "pending" && "border-line bg-s2 text-ink4"
+                s.state === "pending" && "border-line bg-s2 text-ink3"
               )}
             >
               {s.state === "done" ? (
@@ -56,7 +56,7 @@ export function ProvenanceTimeline({ steps, className }: { steps: ProvStep[]; cl
               {(s.date || s.actor) && (
                 <p className="mt-0.5 text-xs leading-relaxed text-ink3">
                   {s.date && <span className="font-mono tnum">{s.date}</span>}
-                  {s.date && s.actor && <span className="mx-1.5 text-ink4">·</span>}
+                  {s.date && s.actor && <span className="mx-1.5 text-ink3">·</span>}
                   {s.actor}
                 </p>
               )}

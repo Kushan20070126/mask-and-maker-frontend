@@ -36,7 +36,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         size === "sm" && "h-8 px-3 text-[13px]",
         size === "md" && "h-10 px-4 text-sm",
         size === "lg" && "h-12 px-6 text-[15px]",
-        variant === "primary" && "bg-gold text-[#16120A] shadow-[0_1px_0_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.22)] hover:bg-gold-strong",
+        variant === "primary" && "bg-gold text-on-gold shadow-[0_1px_0_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.22)] hover:bg-gold-strong",
         variant === "outline" && "edge bg-s2 text-ink hover:bg-s3",
         variant === "ghost" && "text-ink2 hover:bg-s2 hover:text-ink",
         variant === "danger" && "border border-danger/40 bg-danger/10 text-danger hover:bg-danger/15",
@@ -68,7 +68,7 @@ export function Tag({ tone = "neutral", children, className }: { tone?: keyof ty
 /* ------------------------------------------------ Inputs ----- */
 
 export const inputCls =
-  "w-full rounded-lg border border-line bg-s2 px-3.5 h-10 text-sm text-ink placeholder:text-ink4 outline-none transition focus:border-gold/50 focus:ring-2 focus:ring-gold/20";
+  "w-full rounded-lg border border-line bg-s2 px-3.5 h-10 text-sm text-ink placeholder:text-ink3 outline-none transition focus:border-gold/50 focus:ring-2 focus:ring-gold/20";
 
 export const Input = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInputElement>>(function Input({ className, ...props }, ref) {
   return <input ref={ref} className={cn(inputCls, className)} {...props} />;
@@ -330,14 +330,14 @@ export function Stepper({ steps, current, className }: { steps: string[]; curren
               <span
                 className={cn(
                   "grid size-7 shrink-0 place-items-center rounded-full border font-mono text-[11px] tnum transition-colors duration-180",
-                  done && "border-gold bg-gold text-[#16120A]",
+                  done && "border-gold bg-gold text-on-gold",
                   active && "border-gold/70 text-gold",
-                  !done && !active && "border-line text-ink4"
+                  !done && !active && "border-line text-ink3"
                 )}
               >
                 {done ? <CheckCircle2 className="size-3.5" /> : i + 1}
               </span>
-              <span className={cn("hidden text-[13px] font-medium sm:block", active ? "text-ink" : done ? "text-ink2" : "text-ink4")}>{label}</span>
+              <span className={cn("hidden text-[13px] font-medium sm:block", active ? "text-ink" : done ? "text-ink2" : "text-ink3")}>{label}</span>
             </div>
             {i < steps.length - 1 && <span className={cn("mx-3 h-px flex-1", i < current ? "bg-gold/50" : "bg-line")} aria-hidden="true" />}
           </li>
@@ -375,7 +375,7 @@ export function ToastHost() {
                 <p className="text-sm font-medium text-ink">{t.title}</p>
                 {t.description && <p className="mt-0.5 text-[13px] leading-snug text-ink2">{t.description}</p>}
               </div>
-              <button onClick={() => dismiss(t.id)} aria-label="Dismiss notification" className="rounded p-0.5 text-ink4 hover:text-ink2">
+              <button onClick={() => dismiss(t.id)} aria-label="Dismiss notification" className="rounded p-0.5 text-ink3 hover:text-ink2">
                 <X className="size-3.5" />
               </button>
             </motion.div>

@@ -121,7 +121,7 @@ function Onboarding() {
                 )}
                 aria-current={state === "current" ? "step" : undefined}
               >
-                <span className={cn("grid size-11 shrink-0 place-items-center rounded-lg", state === "current" ? "bg-gold text-[#16120A]" : "bg-s2 text-ink3")}>
+                <span className={cn("grid size-11 shrink-0 place-items-center rounded-lg", state === "current" ? "bg-gold text-on-gold" : "bg-s2 text-ink3")}>
                   {state === "done" ? <Check className="size-5" /> : <s.icon className="size-5" />}
                 </span>
                 <span className="min-w-0">
@@ -185,7 +185,7 @@ function Onboarding() {
           <button
             onClick={() => setStep((s) => Math.max(0, s - 1))}
             disabled={step === 0}
-            className={cn("h-11 rounded-lg px-5 text-sm font-medium transition-colors", lang !== "en" && "font-sinhala", step === 0 ? "text-ink4" : "text-ink2 hover:bg-s2 hover:text-ink")}
+            className={cn("h-11 rounded-lg px-5 text-sm font-medium transition-colors", lang !== "en" && "font-sinhala", step === 0 ? "text-ink3" : "text-ink2 hover:bg-s2 hover:text-ink")}
           >
             {copy.back}
           </button>
@@ -198,7 +198,7 @@ function Onboarding() {
                 setStep((s) => s + 1);
               }
             }}
-            className={cn("h-11 rounded-lg bg-gold px-6 text-sm font-medium text-[#16120A] transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]", lang !== "en" && "font-sinhala")}
+            className={cn("h-11 rounded-lg bg-gold px-6 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]", lang !== "en" && "font-sinhala")}
           >
             {step === onboardingSteps.length - 1 ? copy.finish : copy.next}
           </button>
@@ -257,7 +257,7 @@ function Dashboard({ goListing }: { goListing: () => void }) {
               <li key={o.id} className="flex flex-wrap items-center justify-between gap-2 py-3">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-ink">{o.piece}</p>
-                  <p className="font-mono text-[11px] text-ink4 tnum">{o.id} · {o.buyer}</p>
+                  <p className="font-mono text-[11px] text-ink3 tnum">{o.id} · {o.buyer}</p>
                 </div>
                 <span className="rounded-md border border-line bg-s2 px-2 py-1 text-[11px] text-ink2">{o.status}</span>
               </li>
@@ -275,7 +275,7 @@ function Dashboard({ goListing }: { goListing: () => void }) {
               <li key={m.slug} className="flex items-center justify-between gap-3 py-3">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-ink">{m.name}</p>
-                  <p className="font-mono text-[11px] text-ink4 tnum">{formatMoney(m.priceLKR, currency)} · {m.stock} left</p>
+                  <p className="font-mono text-[11px] text-ink3 tnum">{formatMoney(m.priceLKR, currency)} · {m.stock} left</p>
                 </div>
                 <button
                   onClick={() => toast("Editing unlocks at pilot", { description: "For now the registry desk makes changes on your phone call." })}
@@ -363,7 +363,7 @@ function ListingFlow() {
         <div className="mt-4 grid grid-cols-4 gap-2">
           {photos.map((p) => (
             <div key={p} className="skel relative aspect-square overflow-hidden rounded-lg border border-line bg-s3">
-              <span className="absolute inset-x-1 bottom-1 truncate font-mono text-[8px] text-ink4">{p}</span>
+              <span className="absolute inset-x-1 bottom-1 truncate font-mono text-[8px] text-ink3">{p}</span>
             </div>
           ))}
           <button
@@ -413,7 +413,7 @@ function ListingFlow() {
             <button
               onClick={mint}
               disabled={mintStage >= 0}
-              className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gold text-sm font-medium text-[#16120A] transition-all duration-100 hover:bg-gold-strong active:scale-[0.98] disabled:opacity-60"
+              className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gold text-sm font-medium text-on-gold transition-all duration-100 hover:bg-gold-strong active:scale-[0.98] disabled:opacity-60"
             >
               {mintStage >= 0 ? <Loader2 className="size-4 animate-spin" /> : <Wand2 className="size-4" />}
               {mintStage >= 0 ? "Minting…" : "Mint certificate"}
@@ -451,10 +451,10 @@ function ListingFlow() {
           disabled={!minted}
           className="mt-6 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-line bg-s2 text-sm font-medium text-ink transition-colors hover:bg-s3 disabled:opacity-40"
         >
-          <BadgeCheck className={cn("size-4", minted ? "text-gold" : "text-ink4")} />
+          <BadgeCheck className={cn("size-4", minted ? "text-gold" : "text-ink3")} />
           Publish listing
         </button>
-        {!minted && <p className="mt-2 text-center text-xs text-ink4">Mint the certificate first — every listing carries one.</p>}
+        {!minted && <p className="mt-2 text-center text-xs text-ink3">Mint the certificate first — every listing carries one.</p>}
       </section>
     </div>
   );

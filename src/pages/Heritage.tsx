@@ -72,7 +72,7 @@ export default function Heritage() {
                 <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-ink2">{t.description}</p>
                 <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
                   <span className="text-[13.5px] text-ink3 tnum">{masks.filter((m) => m.tradition === t.slug).length} pieces in the registry</span>
-                  <ArrowRight className="size-4 text-ink4 transition-all duration-180 group-hover:translate-x-1 group-hover:text-gold" aria-hidden="true" />
+                  <ArrowRight className="size-4 text-ink3 transition-all duration-180 group-hover:translate-x-1 group-hover:text-gold" aria-hidden="true" />
                 </div>
               </Link>
             </Reveal>
@@ -284,7 +284,7 @@ function ArticleIndex() {
               <span className="hidden shrink-0 text-[13px] text-ink3 sm:block tnum">
                 {a.readMinutes} min · {formatDate(a.date)}
               </span>
-              <ArrowRight className="size-4 shrink-0 text-ink4 transition-all duration-180 group-hover:translate-x-0.5 group-hover:text-gold" aria-hidden="true" />
+              <ArrowRight className="size-4 shrink-0 text-ink3 transition-all duration-180 group-hover:translate-x-0.5 group-hover:text-gold" aria-hidden="true" />
             </button>
           </li>
         ))}
@@ -306,7 +306,7 @@ function ArticleReader({ article, onBack }: { article: Article; onBack: () => vo
       </button>
       <p className="mt-8 text-[12.5px] font-medium  text-gold">
         {article.kind === "film" ? "Film notes" : article.kind === "field-notes" ? "Field notes" : "Essay"}
-        {article.tradition && <span className="text-ink4"> · {article.tradition}</span>}
+        {article.tradition && <span className="text-ink3"> · {article.tradition}</span>}
       </p>
       <h1 className="mt-3 font-display text-[34px] leading-[1.08] font-light tracking-[-0.01em] text-ink sm:text-[44px]">{article.title}</h1>
       <p className="mt-4 text-[13px] text-ink3">
