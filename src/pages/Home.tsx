@@ -12,7 +12,7 @@ import { MaskArtwork } from "@/components/ui/MaskImage";
 import { SpotlightCard } from "@/components/ui/surfaces";
 import { ImageFrame } from "@/components/ui/MaskImage";
 import { FlameBand } from "@/components/art";
-import { photos } from "@/lib/photos";
+import { craftHands, photos } from "@/lib/photos";
 
 /* ------------------------------------------------ magnetic CTA --- */
 
@@ -83,7 +83,7 @@ const steps = [
     cta: "Try it on a mask",
   },
   {
-    photo: photos.carvingBench,
+    photo: craftHands,
     title: "Scan the back, read its whole life",
     body: "Scan the tag any time — before you pay, and for decades after. The certificate travels with the mask.",
     to: "/verify",
@@ -150,7 +150,7 @@ export default function Home() {
               <Link to="/heritage" className="group mt-10 block max-w-xl" aria-label="Read how a mask is made and danced">
                 <div className="grid grid-cols-3 gap-2">
                   {[
-                    { p: photos.carvingBench, cap: "The bench" },
+                    { p: craftHands, cap: "The bench" },
                     { p: photos.masksWall2, cap: "The masks" },
                     { p: photos.kolamDance, cap: "The dance" },
                   ].map(({ p, cap }) => (

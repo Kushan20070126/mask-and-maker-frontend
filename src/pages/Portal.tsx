@@ -48,7 +48,7 @@ export default function Portal() {
       {role !== "artisan" ? (
         <div className="mt-8">
           <EmptyState
-            photo={photos.carvingBench}
+            photo={photos.masksBanner}
             title={`The ${roles.find((r) => r.id === role)?.label} desk opens with the pilot`}
             body="This portal is designed with and for the carving workshops first — switch back to the artisan persona to walk the whole flow. Registry staff tooling ships after the second village cohort."
           />

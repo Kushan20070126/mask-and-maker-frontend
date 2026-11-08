@@ -14,7 +14,7 @@ import { AnimatedTabs, BorderBeam, VerifiedSeal } from "@/components/ui/surfaces
 import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
 import { ImageFrame as Photograph } from "@/components/ui/MaskImage";
-import { photos } from "@/lib/photos";
+import { craftHands, photos } from "@/lib/photos";
 
 /* Mock carrier quotes derived from weight. */
 function shipRows(country: string, weightKg: number): { carrier: string; eta: string; priceLKR: number }[] {
@@ -425,7 +425,7 @@ export default function MaskDetail() {
             </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:col-span-7">
-            {[photos.carvingBench, photos.sohonaYakka].map((p) => (
+            {[craftHands, photos.sohonaYakka].map((p) => (
               <figure key={p.src}>
                 <Photograph src={p.src} alt={p.alt} ratio="aspect-[4/3]" position={p.position} className="rounded-lg" />
                 <figcaption className="mt-2 text-[13px] text-ink3">{p.caption}</figcaption>

@@ -10,7 +10,7 @@ import { AnimatedTabs } from "@/components/ui/surfaces";
 import { Button, Modal } from "@/components/ui/kit";
 import { ImageFrame } from "@/components/ui/MaskImage";
 import { FlameBand } from "@/components/art";
-import { photos, traditionPhoto } from "@/lib/photos";
+import { craftHands, photos, traditionPhoto } from "@/lib/photos";
 import { Reveal } from "@/components/ui/motion";
 import type { Article } from "@/lib/types";
 
@@ -186,8 +186,8 @@ function ScrollStory() {
             Stage {active + 1} / {craftStages.length}
           </p>
           <figure className="mt-8 hidden lg:block">
-            <ImageFrame src={photos.carvingBench.src} alt={photos.carvingBench.alt} ratio="aspect-[4/3]" position={photos.carvingBench.position} className="rounded-lg" />
-            <figcaption className="mt-2 text-[13px] text-ink3">{photos.carvingBench.caption}</figcaption>
+            <ImageFrame src={craftHands.src} alt={craftHands.alt} ratio="aspect-[4/3]" position={craftHands.position} className="rounded-lg" />
+            <figcaption className="mt-2 text-[13px] text-ink3">{craftHands.caption}</figcaption>
           </figure>
           <div className="mt-2 h-[3px] w-full overflow-hidden rounded-full bg-s3" aria-hidden="true">
             <div className="h-full rounded-full bg-gold transition-all duration-300" style={{ width: `${((active + 1) / craftStages.length) * 100}%` }} />

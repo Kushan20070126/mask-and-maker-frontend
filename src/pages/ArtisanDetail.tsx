@@ -118,14 +118,14 @@ export default function ArtisanDetail() {
               fallback={
                 <figure className="relative h-full w-full bg-s1">
                   <img
-                    src={photos.carvingBench.src}
-                    alt={photos.carvingBench.alt}
+                    src={photos.masksWall2.src}
+                    alt={photos.masksWall2.alt}
                     className="h-full w-full object-cover"
-                    style={{ objectPosition: photos.carvingBench.position }}
+                    style={{ objectPosition: photos.masksWall2.position }}
                     loading="lazy"
                   />
                   <figcaption className="absolute inset-x-0 bottom-0 bg-s1 p-4 text-[13px] leading-snug text-ink2">
-                    No portrait sitting yet. Pictured: {photos.carvingBench.caption}, not this maker.
+                    No portrait sitting yet. Pictured: {photos.masksWall2.caption}.
                   </figcaption>
                 </figure>
               }

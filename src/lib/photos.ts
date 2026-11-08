@@ -21,16 +21,6 @@ const CC_BY_SA_4 = { license: "CC BY-SA 4.0", licenseUrl: "https://creativecommo
 const CC_BY_4 = { license: "CC BY 4.0", licenseUrl: "https://creativecommons.org/licenses/by/4.0" };
 
 const raw = {
-  carvingBench: {
-    src: "/images/photos/carving-bench.jpg",
-    alt: "A carver working at a bench of chisels and gouges, shaping a wooden mask",
-    caption: "Carving at the bench, Ambalangoda",
-    title: "Ambalangoda mask manufacturing 03",
-    creator: "Dan arndt",
-    ...CC_BY_SA_4,
-    page: "https://commons.wikimedia.org/wiki/File:Ambalangoda_mask_manufacturing_03.jpg",
-    position: "40% 40%",
-  },
   masksWall: {
     src: "/images/photos/masks-wall.jpg",
     alt: "A wall crowded with painted Sri Lankan demon and kolam masks",
@@ -131,4 +121,12 @@ export const traditionPhoto: Record<string, Photo> = {
   raksha: photos.cobraMask,
   sanni: photos.sanniMasks,
   kolam: photos.kolamDance,
+};
+
+/** The project's own close-up of hands cutting a face into pale wood (no person shown). */
+export const craftHands: Pick<Photo, "src" | "alt" | "caption" | "position"> = {
+  src: "/images/craft/carving.jpg",
+  alt: "Hands cutting a face into pale wood with a curved gouge, curls of shavings below",
+  caption: "Cutting a face with the gouge",
+  position: "50% 50%",
 };
