@@ -1,5 +1,5 @@
 import { ArrowLeft, BadgeCheck, ChevronDown, Copy, FileCheck2, Heart, Package, ShoppingBag, Star } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { api } from "@/lib/mock/api";
 import { usePageMeta } from "@/lib/meta";
@@ -51,6 +51,17 @@ export default function MaskDetail() {
   const wishlisted = useApp((s) => s.wishlist.includes(slug));
   const toggleWishlist = useApp((s) => s.toggleWishlist);
   const toast = useApp((s) => s.toast);
+
+  /* phones: once the buy box scrolls away, keep the price and "Add to crate" in reach */
+  const buyRef = useRef<HTMLDivElement>(null);
+  const [buyOffscreen, setBuyOffscreen] = useState(false);
+  useEffect(() => {
+    const el = buyRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => setBuyOffscreen(!e.isIntersecting && e.boundingClientRect.top < 0));
+    io.observe(el);
+    return () => io.disconnect();
+  }, [loading, mask]);
 
   usePageMeta(mask ? mask.name : "Mask detail");
 
@@ -126,6 +137,15 @@ export default function MaskDetail() {
   const quotes = shipRows(country, mask.weightKg);
   const techId = hashString(mask.slug).toString(16).slice(0, 8);
 
+  const onAdd = () => {
+    if (addToCart(mask.slug)) {
+      toast("Added to your crate", { description: mask.name, kind: "success" });
+    } else {
+      toast("Already in your crate", { description: mask.stock === 1 ? "This piece is one of one." : "Every available piece is crated." });
+    }
+    setCartOpen(true);
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -143,7 +163,7 @@ export default function MaskDetail() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-8 pb-4 sm:px-6">
+    <div className="mx-auto max-w-7xl px-4 pt-8 pb-28 sm:px-6 lg:pb-4">
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
 
       <Link to="/masks" className="inline-flex items-center gap-1.5 text-[13px] text-ink3 transition-colors hover:text-ink">
@@ -231,7 +251,7 @@ export default function MaskDetail() {
           <p className="mt-5 text-[15px] leading-relaxed text-ink2">{mask.story}</p>
 
           {/* price + buy */}
-          <div className="edge relative mt-7 rounded-lg bg-s2 p-5">
+          <div ref={buyRef} className="edge relative mt-7 rounded-lg bg-s2 p-5">
             <div className="flex items-end justify-between gap-4">
               <div>
                 <p className="text-[12.5px]  text-ink3">Workshop price</p>
@@ -256,14 +276,7 @@ export default function MaskDetail() {
             <div className="mt-5 grid grid-cols-[1fr_auto] gap-2.5">
               <Button
                 size="lg"
-                onClick={() => {
-                  if (addToCart(mask.slug)) {
-                    toast("Added to your crate", { description: mask.name, kind: "success" });
-                  } else {
-                    toast("Already in your crate", { description: mask.stock === 1 ? "This piece is one of one." : "Every available piece is crated." });
-                  }
-                  setCartOpen(true);
-                }}
+                onClick={onAdd}
                 disabled={mask.stock === 0}
               >
                 <ShoppingBag className="size-4" />
@@ -445,6 +458,21 @@ export default function MaskDetail() {
             ))}
           </div>
         </section>
+      )}
+
+      {buyOffscreen && mask.stock > 0 && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-canvas px-4 py-3 lg:hidden" role="region" aria-label="Quick buy">
+          <div className="mx-auto flex max-w-7xl items-center gap-3">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-ink">{mask.name}</p>
+              <p className="font-mono text-[13px] text-gold tnum">{formatMoney(mask.priceLKR, currency)}</p>
+            </div>
+            <Button onClick={onAdd}>
+              <ShoppingBag className="size-4" />
+              Add to crate
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );

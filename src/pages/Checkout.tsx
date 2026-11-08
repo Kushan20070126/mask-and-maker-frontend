@@ -162,7 +162,7 @@ export default function Checkout() {
   return (
     <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
       <h1 className="mt-2 font-display text-[30px] text-ink">Two minutes, handled gently</h1>
-      <Stepper steps={stepNames} current={step} className="mt-7 max-w-2xl" />
+      <Stepper steps={stepNames} current={step} className="mt-7 max-w-2xl" onStep={(i) => !placing && setStep(i)} />
 
       <div className="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_360px]">
         <div>

@@ -269,6 +269,12 @@ export default function Marketplace() {
           <Button variant="outline" size="sm" className="lg:hidden" onClick={() => setSheetOpen(true)}>
             <SlidersHorizontal className="size-3.5" />
             Filters
+            {activeChips.length > 0 && (
+              <span className="grid min-w-5 place-items-center rounded-full bg-gold px-1.5 font-mono text-[11px] leading-5 text-on-gold tnum">
+                {activeChips.length}
+                <span className="sr-only"> active</span>
+              </span>
+            )}
           </Button>
         </div>
       </div>

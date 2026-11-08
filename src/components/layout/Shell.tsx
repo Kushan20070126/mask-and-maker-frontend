@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Heart, Menu, Moon, Search, ShoppingBag, Sun, User } from "lucide-react";
+import { Heart, Menu, Moon, Search, ShoppingBag, Sun, User, X } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useApp } from "@/store/app";
@@ -187,7 +187,7 @@ export function Header() {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >
-            <Menu className="size-4" />
+            {mobileOpen ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
         </div>
       </div>

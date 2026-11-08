@@ -318,15 +318,42 @@ export function Drawer({
 
 /* ------------------------------------------------ Stepper ---- */
 
-export function Stepper({ steps, current, className }: { steps: string[]; current: number; className?: string }) {
+export function Stepper({
+  steps,
+  current,
+  className,
+  onStep,
+}: {
+  steps: string[];
+  current: number;
+  className?: string;
+  /** when given, finished steps become buttons that jump back to them */
+  onStep?: (index: number) => void;
+}) {
   return (
     <ol className={cn("flex items-center", className)} aria-label="Progress">
       {steps.map((label, i) => {
         const done = i < current;
         const active = i === current;
         return (
-          <li key={label} className={cn("flex items-center", i < steps.length - 1 && "flex-1")}>
-            <div className="flex items-center gap-2.5">
+          <li key={label} className={cn("flex items-center", i < steps.length - 1 && "flex-1")} aria-current={active ? "step" : undefined}>
+            <div
+              className={cn("flex items-center gap-2.5", done && onStep && "cursor-pointer rounded-md hover:opacity-80")}
+              role={done && onStep ? "button" : undefined}
+              tabIndex={done && onStep ? 0 : undefined}
+              aria-label={done && onStep ? `Back to ${label}` : undefined}
+              onClick={done && onStep ? () => onStep(i) : undefined}
+              onKeyDown={
+                done && onStep
+                  ? (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onStep(i);
+                      }
+                    }
+                  : undefined
+              }
+            >
               <span
                 className={cn(
                   "grid size-7 shrink-0 place-items-center rounded-full border font-mono text-[11px] tnum transition-colors duration-180",
