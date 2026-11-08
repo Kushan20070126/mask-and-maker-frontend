@@ -212,7 +212,7 @@ export default function ArtisanDetail() {
                 Patronage, done plainly
               </p>
               <h2 className="mt-2 font-display text-[26px] leading-tight text-ink">Keep this bench lit</h2>
-              <p className="mt-3 text-sm leading-relaxed text-ink2">
+              <p className="mt-3 text-[15px] leading-relaxed text-ink2">
                 A patronage pays for timber seasons, pigment grinding days and apprentice hours — the slow parts of the craft that
                 sales alone can't fund. 96% of your pledge reaches the workshop; the registry keeps the books open.
               </p>

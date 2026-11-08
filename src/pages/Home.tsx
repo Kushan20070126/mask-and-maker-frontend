@@ -215,7 +215,7 @@ export default function Home() {
           {trust.map((t) => (
             <div key={t.title}>
               <p className="font-display text-lg text-ink">{t.title}</p>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink2">{t.body}</p>
+              <p className="mt-1.5 text-[15px] leading-relaxed text-ink2">{t.body}</p>
             </div>
           ))}
         </div>
@@ -296,7 +296,7 @@ export default function Home() {
               <blockquote className="mt-6 font-display text-lg leading-relaxed font-light text-ink2 italic sm:text-xl">
                 “My father said the wood will tell you what it wants to be. First you must earn the right to listen.”
               </blockquote>
-              <p className="mt-5 max-w-lg text-sm leading-relaxed text-ink2">
+              <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-ink2">
                 Fourth-generation master of the Sanni faces. Ninety-day-rested timber, nine-wash pigment grounds, and a
                 workshop his great-grandfather opened before the railway reached Ambalangoda.
               </p>

@@ -69,7 +69,7 @@ export default function Heritage() {
                   <span className="font-sinhala text-sm text-ink3">{t.sinhala}</span>
                 </div>
                 <p className="mt-1 text-[13px] font-medium text-gold/90">{t.tagline}</p>
-                <p className="mt-3 line-clamp-3 flex-1 text-sm leading-relaxed text-ink2">{t.description}</p>
+                <p className="mt-3 line-clamp-3 flex-1 text-[15px] leading-relaxed text-ink2">{t.description}</p>
                 <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
                   <span className="text-[13.5px] text-ink3 tnum">{masks.filter((m) => m.tradition === t.slug).length} pieces in the registry</span>
                   <ArrowRight className="size-4 text-ink3 transition-all duration-180 group-hover:translate-x-1 group-hover:text-gold" aria-hidden="true" />
@@ -101,7 +101,7 @@ export default function Heritage() {
           <div className="flex flex-col justify-center rounded-lg bg-s1 p-8">
             <ImageFrame src={photos.kolamDance.src} alt={photos.kolamDance.alt} ratio="aspect-[16/9]" position={photos.kolamDance.position} className="mb-5 rounded-md" />
             <p className="mt-4 font-display text-xl leading-snug text-ink">One new film a moon</p>
-            <p className="mt-2 text-sm leading-relaxed text-ink2">
+            <p className="mt-2 text-[15px] leading-relaxed text-ink2">
               Slow documentaries from the workshops and the tovil grounds, made with the families on camera — never about them.
               Registry letter subscribers see each first.
             </p>
@@ -179,7 +179,7 @@ function ScrollStory() {
       <div className="grid gap-10 lg:grid-cols-[300px_1fr]">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <h2 className="mt-2 font-display text-[28px] leading-[1.15] text-ink">Ninety days of patience, then nine gouges</h2>
-          <p className="mt-3 text-sm leading-relaxed text-ink2">
+          <p className="mt-3 text-[15px] leading-relaxed text-ink2">
             Every registry mask passes these eight stations in order. The timeline on its certificate begins at stage one — the tree.
           </p>
           <p className="mt-6 text-[13px] text-ink3 tnum" aria-live="polite">
@@ -208,8 +208,8 @@ function ScrollStory() {
                 <h3 className="mt-1 font-display text-[22px] leading-snug text-ink">
                   {s.title} <span className="ml-1 font-sinhala text-sm text-ink3">{s.sinhala}</span>
                 </h3>
-                <p className="mt-2.5 max-w-xl text-sm leading-relaxed text-ink2">{s.body}</p>
-                <p className="mt-3 text-[13px] leading-relaxed text-ink3">{s.detail}</p>
+                <p className="mt-2.5 max-w-xl text-[15px] leading-relaxed text-ink2">{s.body}</p>
+                <p className="mt-3 text-sm leading-relaxed text-ink3">{s.detail}</p>
               </div>
             </li>
           ))}
@@ -239,7 +239,7 @@ function FilmCard({ article }: { article: Article }) {
         </span>
       </button>
       <Modal open={open} onClose={() => setOpen(false)} title={article.title} maxWidth="max-w-xl">
-        <p className="text-sm leading-relaxed text-ink2">{article.body[0]}</p>
+        <p className="text-[15px] leading-relaxed text-ink2">{article.body[0]}</p>
         <p className="mt-4 rounded-lg bg-s2 px-4 py-3 text-[13.5px] leading-relaxed text-ink2">
           The film travels with the piece it documents. It unlocks on certificate scan — scan a tag, or read the transcript in the registry letter.
         </p>

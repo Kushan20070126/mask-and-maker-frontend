@@ -148,7 +148,7 @@ export default function Account() {
             })}
           <div className="flex flex-col items-start justify-center gap-1 rounded-lg bg-s1 p-5">
             <p className="text-sm font-medium text-ink">Scanned a tag on a piece you own?</p>
-            <p className="mt-1 text-[13px] leading-relaxed text-ink2">Claim its twin here and the certificate starts answering to your name.</p>
+            <p className="mt-1 text-sm leading-relaxed text-ink2">Claim its twin here and the certificate starts answering to your name.</p>
             <Link to="/verify" className="mt-4 inline-flex h-9 items-center gap-2 rounded-lg bg-gold px-3.5 text-[13px] font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
               <BadgeCheck className="size-4" aria-hidden="true" />
               Verify & claim
@@ -198,7 +198,7 @@ export default function Account() {
                 {a.label}
               </p>
               <p className="mt-3 text-sm font-medium text-ink">{a.name}</p>
-              <p className="mt-1 text-[13px] leading-relaxed text-ink2">
+              <p className="mt-1 text-sm leading-relaxed text-ink2">
                 {a.lines[0]}
                 <br />
                 {a.lines[1]}

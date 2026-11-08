@@ -152,7 +152,7 @@ function Onboarding() {
         </div>
 
         <h2 className={cn("font-display text-[26px] text-ink", lang !== "en" && "font-sinhala")}>{step === 0 ? copy.welcome : onboardingSteps[step].title}</h2>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-ink2">{onboardingSteps[step].note}</p>
+        <p className="mt-3 max-w-md text-[15px] leading-relaxed text-ink2">{onboardingSteps[step].note}</p>
 
         {step === 1 && (
           <div className="mt-6 grid max-w-md grid-cols-2 gap-2.5">
@@ -359,7 +359,7 @@ function ListingFlow() {
         <h2 className="flex items-baseline gap-3 font-display text-lg text-ink">
           Photographs
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-ink2">Daylight, plain wall, one straight on. The registry colour-corrects; the craft stays yours.</p>
+        <p className="mt-2 text-[15px] leading-relaxed text-ink2">Daylight, plain wall, one straight on. The registry colour-corrects; the craft stays yours.</p>
         <div className="mt-4 grid grid-cols-4 gap-2">
           {photos.map((p) => (
             <div key={p} className="skel relative aspect-square overflow-hidden rounded-lg border border-line bg-s3">
@@ -381,7 +381,7 @@ function ListingFlow() {
         <h2 className="flex items-baseline gap-3 font-display text-lg text-ink">
           3D scan
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-ink2">The scanning kit visits your village on Fridays, or borrow the bench kit. Ninety seconds of orbiting does it.</p>
+        <p className="mt-2 text-[15px] leading-relaxed text-ink2">The scanning kit visits your village on Fridays, or borrow the bench kit. Ninety seconds of orbiting does it.</p>
         <button
           onClick={startScan}
           className="mt-4 grid h-28 w-full place-items-center rounded-lg border border-dashed border-line text-ink3 transition-colors hover:border-gold/40 hover:text-gold"
@@ -402,7 +402,7 @@ function ListingFlow() {
         <h2 className="flex items-baseline gap-3 font-display text-lg text-ink">
           Mint the certificate
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-ink2">One tap writes the piece into the registry forever. Gas is on us — you never touch crypto.</p>
+        <p className="mt-2 text-[15px] leading-relaxed text-ink2">One tap writes the piece into the registry forever. Gas is on us — you never touch crypto.</p>
         {minted ? (
           <div className="mt-5 flex flex-col items-center gap-3 py-4">
             <VerifiedSeal size="lg" label="Certificate minted" />
@@ -440,7 +440,7 @@ function ListingFlow() {
             "Stick the printed QR beneath it, one thumb's width from the chip.",
             "Test-scan with any phone: the certificate should answer before you publish.",
           ].map((t, i) => (
-            <li key={t} className="flex gap-3 text-sm leading-relaxed text-ink2">
+            <li key={t} className="flex gap-3 text-[15px] leading-relaxed text-ink2">
               <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-gold/40 font-mono text-[10px] text-gold tnum">{i + 1}</span>
               {t}
             </li>

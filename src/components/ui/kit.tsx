@@ -33,7 +33,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       type={type}
       className={cn(
         "inline-flex select-none items-center justify-center gap-2 rounded-lg font-medium transition-all duration-100 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45",
-        size === "sm" && "h-8 px-3 text-[13px]",
+        size === "sm" && "h-9 px-3.5 text-[13px]",
         size === "md" && "h-10 px-4 text-sm",
         size === "lg" && "h-12 px-6 text-[15px]",
         variant === "primary" && "bg-gold text-on-gold shadow-[0_1px_0_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.22)] hover:bg-gold-strong",
@@ -128,7 +128,7 @@ export function EmptyState({
         )
       )}
       <h3 className="font-display text-xl text-ink">{title}</h3>
-      <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-ink2">{body}</p>
+      <p className="mx-auto mt-2 max-w-sm text-[15px] leading-relaxed text-ink2">{body}</p>
       {children && <div className="mt-6 flex flex-wrap items-center justify-center gap-3">{children}</div>}
     </div>
   );
@@ -245,7 +245,7 @@ export function Modal({
           >
             <div className="flex items-center justify-between border-b border-line px-5 py-4">
               <h2 className="font-display text-lg text-ink">{title}</h2>
-              <button onClick={onClose} aria-label="Close dialog" className="rounded-lg p-1.5 text-ink3 transition-colors hover:bg-s2 hover:text-ink">
+              <button onClick={onClose} aria-label="Close dialog" className="grid size-10 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-ink">
                 <X className="size-4" />
               </button>
             </div>
@@ -303,7 +303,7 @@ export function Drawer({
             {title !== undefined && (
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
                 <h2 className="font-display text-lg text-ink">{title}</h2>
-                <button onClick={onClose} aria-label="Close panel" className="rounded-lg p-1.5 text-ink3 transition-colors hover:bg-s2 hover:text-ink">
+                <button onClick={onClose} aria-label="Close panel" className="grid size-10 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-ink">
                   <X className="size-4" />
                 </button>
               </div>
@@ -375,7 +375,7 @@ export function ToastHost() {
                 <p className="text-sm font-medium text-ink">{t.title}</p>
                 {t.description && <p className="mt-0.5 text-[13px] leading-snug text-ink2">{t.description}</p>}
               </div>
-              <button onClick={() => dismiss(t.id)} aria-label="Dismiss notification" className="rounded p-0.5 text-ink3 hover:text-ink2">
+              <button onClick={() => dismiss(t.id)} aria-label="Dismiss notification" className="grid size-8 place-items-center rounded-md text-ink3 hover:text-ink2">
                 <X className="size-3.5" />
               </button>
             </motion.div>

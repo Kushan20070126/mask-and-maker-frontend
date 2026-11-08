@@ -53,7 +53,7 @@ export function MaskCard({ mask }: { mask: Mask }) {
           aria-label={wishlisted ? `Remove ${mask.name} from wishlist` : `Add ${mask.name} to wishlist`}
           aria-pressed={wishlisted}
           className={cn(
-            "absolute top-3 right-3 z-10 grid size-8 place-items-center rounded-lg border transition-all duration-100 active:scale-95",
+            "absolute top-3 right-3 z-10 grid size-10 place-items-center rounded-lg border transition-all duration-100 active:scale-95",
             wishlisted ? "border-gold/50 bg-scrim text-gold" : "border-line bg-scrim text-ink3 hover:text-ink"
           )}
         >
@@ -78,7 +78,7 @@ export function MaskCard({ mask }: { mask: Mask }) {
           <span className="font-mono text-[15px] text-ink tnum">{formatMoney(mask.priceLKR, currency)}</span>
           <button
             onClick={onAdd}
-            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-s3 px-3 text-[13px] font-medium text-ink transition-all duration-100 hover:bg-gold hover:text-on-gold active:scale-[0.98] pointer-fine:opacity-0 pointer-fine:group-hover/spot:opacity-100 pointer-fine:group-focus-within/spot:opacity-100"
+            className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-s3 px-3 text-[13px] font-medium text-ink transition-colors duration-100 hover:bg-gold hover:text-on-gold active:scale-[0.98]"
           >
             <ShoppingBag className="size-3.5" aria-hidden="true" />
             Add

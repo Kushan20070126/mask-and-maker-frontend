@@ -101,7 +101,7 @@ export default function Verify() {
             <figcaption className="mt-2 text-[13px] text-ink3">{photos.maskDetail.caption}</figcaption>
           </figure>
           <h2 className="font-display text-2xl text-ink">Holding the mask now?</h2>
-          <p className="mt-2 text-sm leading-relaxed text-ink2">
+          <p className="mt-2 text-[15px] leading-relaxed text-ink2">
             Tap the tag with an NFC phone, or point any camera at the printed QR. Both routes end on this page with the
             certificate filled in for you.
           </p>
@@ -110,7 +110,7 @@ export default function Verify() {
             Simulate a tag scan
           </Button>
           <div className="mt-8 border-t border-line pt-5">
-            <p className="text-[13px] leading-relaxed text-ink3">
+            <p className="text-sm leading-relaxed text-ink3">
               191 certificates live. Counterfeit reports are answered within 48 hours.
             </p>
           </div>
@@ -267,7 +267,7 @@ function VerifyRun({ certId }: { certId: string }) {
                     <BadgeCheck className="mt-0.5 size-5 shrink-0 text-gold" aria-hidden="true" />
                     <div>
                       <p className="text-sm font-semibold text-ink">{claimed ? "The twin is yours" : "Already with its keeper"}</p>
-                      <p className="mt-1 text-[13px] leading-relaxed text-ink2">
+                      <p className="mt-1 text-sm leading-relaxed text-ink2">
                         {claimed
                           ? "This certificate now names you. Ownership notes, care reminders and the collector's cut of future folklore releases travel with it."
                           : `Claimed by ${result.cert.owner ?? "its keeper"}. Any resale re-registers from this certificate, not from gold words.`}

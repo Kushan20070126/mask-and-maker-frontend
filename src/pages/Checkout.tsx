@@ -125,7 +125,7 @@ export default function Checkout() {
             <BadgeCheck className="size-6 text-gold" aria-hidden="true" />
           </span>
           <h1 className="mt-5 font-display text-[30px] text-ink">It's on its way to its tree again</h1>
-          <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-ink2">
+          <p className="mx-auto mt-2 max-w-sm text-[15px] leading-relaxed text-ink2">
             Order <span className="font-mono text-gold tnum">{orderId}</span> is registered. The maker has been notified and
             settlement begins on their side today.
           </p>
@@ -331,7 +331,7 @@ export default function Checkout() {
               <div className="grid gap-5 sm:grid-cols-3">
                 <div>
                   <p className="text-[12.5px]  text-ink3">Deliver to</p>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink2">
                     {address?.name}
                     <br />
                     {address?.line1}
@@ -341,7 +341,7 @@ export default function Checkout() {
                 </div>
                 <div>
                   <p className="text-[12.5px]  text-ink3">Carrier</p>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink2">
                     {ship?.label}
                     <br />
                     <span className="font-mono text-ink3 tnum">{ship?.eta}</span>
@@ -349,7 +349,7 @@ export default function Checkout() {
                 </div>
                 <div>
                   <p className="text-[12.5px]  text-ink3">Paying with</p>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-ink2">
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink2">
                     Card ···· {pay.number.replace(/\s/g, "").slice(-4)}
                     <br />
                     <span className="text-ink3">{pay.name}</span>

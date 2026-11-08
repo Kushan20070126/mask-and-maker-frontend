@@ -18,7 +18,7 @@ const navLinks = [
 export function Wordmark({ compact = false }: { compact?: boolean }) {
   return (
     <Link to="/" className="group flex items-center gap-2.5" aria-label="Mask & Maker home">
-      <span className="relative grid size-9 shrink-0 place-items-center rounded-lg border border-gold/50 bg-s1 transition-colors group-hover:border-gold">
+      <span className="relative grid size-10 shrink-0 place-items-center rounded-lg border border-gold/50 bg-s1 transition-colors group-hover:border-gold">
         <span className="absolute inset-[3px] rounded-[5px] border border-gold/25" aria-hidden="true" />
         <span className="font-display text-[13px] tracking-tight text-gold">M&amp;M</span>
       </span>
@@ -60,7 +60,7 @@ function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label={light ? "Switch to dark theme" : "Switch to gallery light theme"}
-      className="grid size-9 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
+      className="grid size-10 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
     >
       {light ? <Moon className="size-4" /> : <Sun className="size-4" />}
     </button>
@@ -127,7 +127,7 @@ export function Header() {
         <div className="ml-auto flex items-center gap-1.5">
           <button
             onClick={() => setPaletteOpen(true)}
-            className="hidden h-9 items-center gap-2 rounded-lg border border-line bg-s1 px-3 text-[13px] text-ink3 transition-colors hover:bg-s2 hover:text-ink2 md:inline-flex"
+            className="hidden h-10 items-center gap-2 rounded-lg border border-line bg-s1 px-3 text-[13px] text-ink3 transition-colors hover:bg-s2 hover:text-ink2 md:inline-flex"
             aria-label="Search (Ctrl K)"
           >
             <Search className="size-3.5" aria-hidden="true" />
@@ -136,7 +136,7 @@ export function Header() {
           </button>
           <button
             onClick={() => setPaletteOpen(true)}
-            className="grid size-9 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink md:hidden"
+            className="grid size-10 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink md:hidden"
             aria-label="Search"
           >
             <Search className="size-4" />
@@ -149,7 +149,7 @@ export function Header() {
                 onClick={() => setCurrency(c)}
                 aria-pressed={currency === c}
                 className={cn(
-                  "h-7 rounded-md px-2 transition-colors duration-180 tnum",
+                  "h-8 rounded-md px-2.5 transition-colors duration-180 tnum",
                   currency === c ? "bg-s3 text-gold" : "text-ink3 hover:text-ink2"
                 )}
               >
@@ -162,7 +162,7 @@ export function Header() {
 
           <Link
             to="/account"
-            className="hidden size-9 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink sm:grid"
+            className="hidden size-10 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink sm:grid"
             aria-label="Your account"
           >
             <User className="size-4" />
@@ -170,7 +170,7 @@ export function Header() {
 
           <button
             onClick={() => setCartOpen(true)}
-            className="relative grid size-9 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
+            className="relative grid size-10 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
             aria-label={`Open cart, ${cartCount} ${cartCount === 1 ? "piece" : "pieces"}`}
           >
             <ShoppingBag className="size-4" />
@@ -183,7 +183,7 @@ export function Header() {
 
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="grid size-9 place-items-center rounded-lg border border-line text-ink2 lg:hidden"
+            className="grid size-10 place-items-center rounded-lg border border-line text-ink2 lg:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >
@@ -228,7 +228,7 @@ export function Header() {
                   <button
                     key={c}
                     onClick={() => setCurrency(c)}
-                    className={cn("rounded-md border px-2 py-1 font-mono text-[11px] tnum", currency === c ? "border-gold/50 text-gold" : "border-line text-ink3")}
+                    className={cn("rounded-md border px-3 py-2 font-mono text-[12px] tnum", currency === c ? "border-gold/50 text-gold" : "border-line text-ink3")}
                   >
                     {c}
                   </button>
@@ -288,7 +288,7 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Wordmark />
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-ink2">
+            <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-ink2">
               Hand-carved Kaduru masks from Sri Lanka's southern masters — with provenance you can check, prices you can trust,
               and the maker's name on the back.
             </p>
@@ -387,7 +387,7 @@ export function CookieNotice() {
       aria-label="Cookie notice"
     >
       <p className="text-sm font-medium text-ink">A word on cookies</p>
-      <p className="mt-1 text-[13px] leading-relaxed text-ink2">
+      <p className="mt-1 text-sm leading-relaxed text-ink2">
         We keep your crate and currency on this device, and measure the pages — nothing follows you off the registry.
       </p>
       <div className="mt-3 flex gap-2">

@@ -16,7 +16,7 @@ export function NotFound() {
       </div>
       <p className="mt-8 font-display text-[64px] leading-none font-light text-ink3">404</p>
       <h1 className="mt-3 font-display text-2xl text-ink">This wall bears no face</h1>
-      <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink2">
+      <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-ink2">
         The page has moved, sold, or never left the workshop. Search the registry — <kbd className="kbd">⌘K</kbd> — or walk back
         to a well-lit room.
       </p>
@@ -75,7 +75,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode; resetKey?: s
             <Drama className="size-6 text-danger" aria-hidden="true" />
           </span>
           <h1 className="mt-6 font-display text-2xl text-ink">The shelf gave way</h1>
-          <p className="mt-3 text-sm leading-relaxed text-ink2">
+          <p className="mt-3 text-[15px] leading-relaxed text-ink2">
             Something in this page broke; the registry itself is untouched. Try again — and if it breaks twice, it is our fault, not yours.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
@@ -143,7 +143,7 @@ export function LegalPage({ doc }: { doc: keyof typeof legal }) {
           <section key={h}>
             <h2 className="font-display text-lg text-ink">{h}</h2>
             {paras.map((p) => (
-              <p key={p} className="mt-2.5 text-sm leading-relaxed text-ink2">
+              <p key={p} className="mt-2.5 text-[15px] leading-relaxed text-ink2">
                 {p}
               </p>
             ))}
@@ -162,7 +162,7 @@ export function CreditsPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 pt-14 pb-4 sm:px-6">
       <h1 className="font-display text-[34px] text-ink">Picture credits</h1>
-      <p className="mt-3 text-sm leading-relaxed text-ink2">
+      <p className="mt-3 text-[15px] leading-relaxed text-ink2">
         The photographs and the map on this site come from Wikimedia Commons and are used under their open licences. They show the
         world around the craft — workshops, performances and museum pieces in Sri Lanka — and are not Mask &amp; Maker products.
       </p>
@@ -170,7 +170,7 @@ export function CreditsPage() {
         {list.map((p) => (
           <li key={p.src} className="flex gap-4">
             <img src={p.src} alt="" className="h-20 w-20 shrink-0 rounded-md object-cover" loading="lazy" style={{ objectPosition: p.position }} />
-            <p className="text-sm leading-relaxed text-ink2">
+            <p className="text-[15px] leading-relaxed text-ink2">
               <a href={p.page} className="font-medium text-ink underline-offset-2 hover:underline" target="_blank" rel="noreferrer">
                 {p.title}
               </a>

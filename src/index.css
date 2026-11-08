@@ -123,8 +123,8 @@ html[data-theme="light"] {
   }
   body {
     @apply bg-canvas text-ink font-sans antialiased;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.55;
   }
   ::selection {
     background: color-mix(in oklab, var(--gold) 28%, transparent);

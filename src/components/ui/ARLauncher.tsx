@@ -36,7 +36,7 @@ function ViewerFallback({ mask, onRetry, scanning }: { mask: Mask; onRetry?: () 
       )}
       <div>
         <p className="text-sm font-medium text-ink">{scanning ? "Preparing the 3D study" : "3D scan in preparation"}</p>
-        <p className="mx-auto mt-1 max-w-xs text-[13px] leading-relaxed text-ink3">
+        <p className="mx-auto mt-1 max-w-xs text-sm leading-relaxed text-ink3">
           {scanning
             ? "Loading the photogrammetry viewer…"
             : `The ${mask.name} is being photogrammetry-scanned at the Ambalangoda studio. The studio photographs and archival plate remain fully available.`}
@@ -167,7 +167,7 @@ export function ARLauncher({ mask }: { mask: Mask }) {
       </Button>
 
       <Modal open={viewerOpen} onClose={() => setViewerOpen(false)} title={mask.name} maxWidth="max-w-2xl">
-        <p className="mb-4 flex items-start gap-2 text-[13px] leading-relaxed text-ink2">
+        <p className="mb-4 flex items-start gap-2 text-sm leading-relaxed text-ink2">
           <Smartphone className="mt-0.5 size-4 shrink-0 text-gold" aria-hidden="true" />
           Point your phone at a wall with a metre of clear space. The mask appears life-size — all {mask.heightCm} cm of it.
         </p>
@@ -179,7 +179,7 @@ export function ARLauncher({ mask }: { mask: Mask }) {
           <div className="rounded-lg bg-[#F4EFE6] p-3">
             {qr ? <img src={qr} alt={`QR code to open the ${mask.name} AR preview`} className="size-44" /> : <div className="skel size-44 rounded-md" />}
           </div>
-          <div className="text-[13px] leading-relaxed text-ink2">
+          <div className="text-sm leading-relaxed text-ink2">
             <p className="font-medium text-ink">Scan with your phone camera</p>
             <p className="mt-1.5">
               The preview opens full-screen on your device. On iPhone it uses Quick Look; on Android, Scene Viewer — no app to install.

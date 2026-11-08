@@ -246,7 +246,7 @@ export default function MaskDetail() {
                     key={c}
                     onClick={() => setCurrency(c)}
                     aria-pressed={currency === c}
-                    className={cn("h-7 rounded-md px-2.5 transition-colors duration-180 tnum", currency === c ? "bg-s3 text-gold" : "text-ink3 hover:text-ink2")}
+                    className={cn("h-8 rounded-md px-3 transition-colors duration-180 tnum", currency === c ? "bg-s3 text-gold" : "text-ink3 hover:text-ink2")}
                   >
                     {c}
                   </button>
@@ -358,7 +358,7 @@ export default function MaskDetail() {
       <section className="mt-14 grid gap-8 lg:grid-cols-5" aria-label="Provenance">
         <div className="lg:col-span-2">
           <h2 className="mt-2 font-display text-[26px] leading-tight text-ink">A lineage you can check</h2>
-          <p className="mt-3 text-sm leading-relaxed text-ink2">
+          <p className="mt-3 text-[15px] leading-relaxed text-ink2">
             From the felling date of its Kaduru tree to the tag on its back, this piece carries a public record. The plain-english
             version is on the timeline; the cryptography is one tap below.
           </p>

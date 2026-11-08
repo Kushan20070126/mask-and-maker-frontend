@@ -95,7 +95,7 @@ export default function TraditionDetail() {
             {doc.ritual.map((r, i) => (
               <li key={r} className="flex gap-4">
                 <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border border-gold/40 font-mono text-[10px] text-gold tnum">{i + 1}</span>
-                <p className="text-sm leading-relaxed text-ink2">{r}</p>
+                <p className="text-[15px] leading-relaxed text-ink2">{r}</p>
               </li>
             ))}
           </ol>
@@ -110,7 +110,7 @@ export default function TraditionDetail() {
               </li>
             ))}
           </ul>
-          <p className="mt-5 border-t border-line pt-4 text-[13px] leading-relaxed text-ink3">
+          <p className="mt-5 border-t border-line pt-4 text-sm leading-relaxed text-ink3">
             Names vary by village; a carver in Mirissa and a carver in Elpitiya will argue the taxonomy over tea and both be right.
           </p>
         </section>

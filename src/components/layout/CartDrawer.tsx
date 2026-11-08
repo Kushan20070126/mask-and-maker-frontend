@@ -69,16 +69,16 @@ export function CartDrawer() {
                   <div className="mt-2.5 flex items-center justify-between">
                     <div className="inline-flex items-center rounded-lg border border-line">
                       <button
-                        className="grid size-7 place-items-center text-ink3 transition-colors hover:text-ink disabled:opacity-40"
+                        className="grid size-9 place-items-center text-ink3 transition-colors hover:text-ink disabled:opacity-40"
                         onClick={() => setQty(mask.slug, qty - 1)}
                         disabled={qty <= 1}
                         aria-label={`Decrease quantity of ${mask.name}`}
                       >
                         <Minus className="size-3" />
                       </button>
-                      <span className="w-7 text-center font-mono text-xs text-ink tnum">{qty}</span>
+                      <span className="w-8 text-center font-mono text-xs text-ink tnum">{qty}</span>
                       <button
-                        className="grid size-7 place-items-center text-ink3 transition-colors hover:text-ink disabled:opacity-40"
+                        className="grid size-9 place-items-center text-ink3 transition-colors hover:text-ink disabled:opacity-40"
                         onClick={() => setQty(mask.slug, Math.min(qty + 1, mask.stock))}
                         disabled={qty >= mask.stock}
                         aria-label={`Increase quantity of ${mask.name}`}
@@ -91,7 +91,7 @@ export function CartDrawer() {
                         removeFromCart(mask.slug);
                         toast("Removed from crate", { description: mask.name });
                       }}
-                      className="grid size-7 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-danger"
+                      className="grid size-9 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-danger"
                       aria-label={`Remove ${mask.name} from cart`}
                     >
                       <Trash2 className="size-3.5" />

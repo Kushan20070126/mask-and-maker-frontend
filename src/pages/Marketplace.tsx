@@ -220,7 +220,7 @@ export default function Marketplace() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="mt-2 font-display text-[34px] leading-tight tracking-[-0.01em] text-ink sm:text-[40px]">Eighteen faces, three traditions</h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink2">
+          <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-ink2">
             Raksha guardians, the eighteen Sanni, and Kolam's comic parliament. Each is one of one — carved, rested and
             painted by the maker whose name is on the back.
           </p>

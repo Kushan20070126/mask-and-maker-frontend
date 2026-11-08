@@ -72,7 +72,7 @@ export default function About() {
               <div className="h-full rounded-lg bg-s2 p-6">
                 <p className="font-display text-[34px] leading-none font-light text-gold tnum">{p.stat}</p>
                 <p className="mt-3 font-display text-lg leading-snug text-ink">{p.label}</p>
-                <p className="mt-2.5 text-[13px] leading-relaxed text-ink2">{p.body}</p>
+                <p className="mt-2.5 text-sm leading-relaxed text-ink2">{p.body}</p>
               </div>
             </StaggerItem>
           ))}
@@ -85,7 +85,7 @@ export default function About() {
           <p className="font-display text-[26px] leading-[1.35] font-light text-ink sm:text-[30px]">
             Make the honest face the easier one to buy. Then make the honest carver the obvious one to pay.
           </p>
-          <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink2">
+          <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-ink2">
             The toolset is unglamorous on purpose: a public registry, a tag on the reverse, photos and 3D studies buyers can
             interrogate, and settlement rules that favour the workshops. Technology stays in the plumbing; the craft stays at the front.
           </p>
@@ -97,7 +97,7 @@ export default function About() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-ink">{pr.title}</p>
-                  <p className="mt-1 text-[13px] leading-relaxed text-ink2">{pr.body}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-ink2">{pr.body}</p>
                 </div>
               </li>
             ))}
@@ -140,7 +140,7 @@ export default function About() {
       <section className="mt-24 grid gap-10 lg:grid-cols-5" aria-label="Roadmap">
         <div className="lg:col-span-2">
           <h2 className="mt-2 font-display text-[26px] leading-tight text-ink">Done, doing, promised</h2>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink2">
+          <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-ink2">
             We publish the roadmap in the same registry style as our certificates — each station dated, each promise checkable.
           </p>
         </div>
