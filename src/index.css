@@ -250,3 +250,10 @@ html[data-theme="light"] {
   .a-ink { fill: var(--ink); stroke: none; }
   .a-text { fill: var(--ink2); font-family: var(--font-sans); }
 }
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+@layer components {
+  .marquee-track { animation: marquee var(--marquee-seconds, 55s) linear infinite; will-change: transform; }
+}

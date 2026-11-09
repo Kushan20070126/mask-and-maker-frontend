@@ -12,6 +12,7 @@ import { MaskArtwork } from "@/components/ui/MaskImage";
 import { SpotlightCard } from "@/components/ui/surfaces";
 import { ImageFrame } from "@/components/ui/MaskImage";
 import { FlameBand } from "@/components/art";
+import { Marquee } from "@/components/ui/Marquee";
 import { craftHands, photos } from "@/lib/photos";
 import { ButtonLink } from "@/components/ui/kit";
 
@@ -197,6 +198,13 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      {/* ---------------------------------------------- TICKER */}
+      <Marquee
+        label="Raksha guardians, Sanni healers, Kolam theatre, Kaduru wood, natural pigments, verified provenance"
+        items={["Raksha guardians", "Sanni healers", "Kolam theatre", "Carved in Kaduru", "Natural pigments", "Verified provenance", "Made in Ambalangoda"]}
+        className="border-y border-line py-7"
+      />
 
       {/* ---------------------------------------------- TRUST STRIP */}
       <section aria-label="Assurances">
