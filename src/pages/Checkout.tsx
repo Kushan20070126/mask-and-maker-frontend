@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, BadgeCheck, CreditCard, Landmark, Loader2, Lock, PackageCheck, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgeCheck, ChevronDown, CreditCard, Landmark, Loader2, Lock, PackageCheck, Truck } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -96,7 +96,7 @@ export default function Checkout() {
     defaultValues: address ?? { country: "Sri Lanka" },
   });
 
-  const payValid = pay.number.replace(/\s/g, "").length >= 15 && expiryValid(pay.expiry) && pay.cvc.length >= 3 && pay.name.trim().length > 1;
+  const payValid = pay.number.replace(/\s/g, "").length >= 15 && expiryValid(pay.expiry) && pay.cvc.length >= 3;
   const expiryBad = pay.expiry.length === 5 && !expiryValid(pay.expiry);
 
   const placeOrder = () => {
@@ -156,10 +156,54 @@ export default function Checkout() {
     );
   }
 
+  const summaryBody = (
+    <>
+      <h2 className="text-sm font-semibold text-ink">In the crate</h2>
+          <ul className="mt-3 divide-y divide-line">
+            {items.map(({ mask, qty }) => (
+              <li key={mask.slug} className="flex items-center gap-3 py-3">
+                <MaskArtwork mask={mask} ratio="" className="size-12 shrink-0 rounded-lg" />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[13px] font-medium text-ink">{mask.name}</span>
+                  <span className="font-mono text-[11px] text-ink3 tnum">×{qty}</span>
+                </span>
+                <span className="font-mono text-[13px] text-ink2 tnum">{formatMoney(mask.priceLKR * qty, currency)}</span>
+              </li>
+            ))}
+          </ul>
+          <dl className="mt-3 space-y-1.5 border-t border-line pt-3 text-sm">
+            <div className="flex justify-between">
+              <dt className="text-ink2">Subtotal</dt>
+              <dd className="font-mono text-ink tnum">{formatMoney(subtotal, currency)}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-ink2">Shipping</dt>
+              <dd className="font-mono text-ink tnum">{ship ? formatMoney(ship.priceLKR, currency) : "—"}</dd>
+            </div>
+            <div className="flex justify-between pt-1.5">
+              <dt className="font-medium text-ink">Total</dt>
+              <dd className="font-mono text-[17px] text-gold tnum">{formatMoney(total, currency)}</dd>
+            </div>
+          </dl>
+    </>
+  );
+
   return (
     <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
       <h1 className="mt-2 font-display text-[30px] text-ink">Two minutes, handled gently</h1>
+      <p className="mt-2 text-sm text-ink2">Guest checkout — no account needed.</p>
       <Stepper steps={stepNames} current={step} className="mt-7 max-w-2xl" onStep={(i) => !placing && setStep(i)} />
+
+      <details className="group mt-6 rounded-lg bg-s2 lg:hidden">
+        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-medium text-ink">
+          <span>Order summary · {items.length} {items.length === 1 ? "piece" : "pieces"}</span>
+          <span className="flex items-center gap-2 font-mono text-[15px] text-gold tnum">
+            {formatMoney(total, currency)}
+            <ChevronDown className="size-4 text-ink3 transition-transform duration-180 group-open:rotate-180" aria-hidden="true" />
+          </span>
+        </summary>
+        <div className="px-4 pb-4">{summaryBody}</div>
+      </details>
 
       <div className="mt-10 grid items-start gap-10 lg:grid-cols-[1fr_360px]">
         <div>
@@ -272,7 +316,7 @@ export default function Checkout() {
                 </span>
               </div>
               <div className="space-y-4">
-                <Field label="Name on card">
+                <Field label="Name on card (optional)">
                   <Input autoComplete="cc-name" value={pay.name} onChange={(e) => setPay({ ...pay, name: e.target.value })} placeholder="R Jayasuriya" />
                 </Field>
                 <Field label="Card number">
@@ -349,7 +393,7 @@ export default function Checkout() {
                   <p className="mt-1.5 text-sm leading-relaxed text-ink2">
                     Card ···· {pay.number.replace(/\s/g, "").slice(-4)}
                     <br />
-                    <span className="text-ink3">{pay.name}</span>
+                    {pay.name.trim() && <span className="text-ink3">{pay.name}</span>}
                   </p>
                 </div>
               </div>
@@ -362,35 +406,9 @@ export default function Checkout() {
           )}
         </div>
 
-        {/* summary rail */}
-        <aside className="edge sticky top-24 rounded-lg bg-s2 p-5" aria-label="Order summary">
-          <h2 className="text-sm font-semibold text-ink">In the crate</h2>
-          <ul className="mt-3 divide-y divide-line">
-            {items.map(({ mask, qty }) => (
-              <li key={mask.slug} className="flex items-center gap-3 py-3">
-                <MaskArtwork mask={mask} ratio="" className="size-12 shrink-0 rounded-lg" />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px] font-medium text-ink">{mask.name}</span>
-                  <span className="font-mono text-[11px] text-ink3 tnum">×{qty}</span>
-                </span>
-                <span className="font-mono text-[13px] text-ink2 tnum">{formatMoney(mask.priceLKR * qty, currency)}</span>
-              </li>
-            ))}
-          </ul>
-          <dl className="mt-3 space-y-1.5 border-t border-line pt-3 text-sm">
-            <div className="flex justify-between">
-              <dt className="text-ink2">Subtotal</dt>
-              <dd className="font-mono text-ink tnum">{formatMoney(subtotal, currency)}</dd>
-            </div>
-            <div className="flex justify-between">
-              <dt className="text-ink2">Shipping</dt>
-              <dd className="font-mono text-ink tnum">{ship ? formatMoney(ship.priceLKR, currency) : "—"}</dd>
-            </div>
-            <div className="flex justify-between pt-1.5">
-              <dt className="font-medium text-ink">Total</dt>
-              <dd className="font-mono text-[17px] text-gold tnum">{formatMoney(total, currency)}</dd>
-            </div>
-          </dl>
+        {/* summary rail (desktop) */}
+        <aside className="edge sticky top-24 hidden rounded-lg bg-s2 p-5 lg:block" aria-label="Order summary">
+          {summaryBody}
         </aside>
       </div>
     </div>
