@@ -60,7 +60,7 @@ function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label={light ? "Switch to dark theme" : "Switch to gallery light theme"}
-      className="grid size-11 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
+      className="grid size-11 place-items-center rounded-full border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
     >
       {light ? <Moon className="size-4" /> : <Sun className="size-4" />}
     </button>
@@ -91,14 +91,14 @@ export function Header() {
   }, [paletteOpen]);
 
   return (
-    <header className="sticky top-0 z-[60] border-b border-line bg-canvas">
+    <header className="sticky top-0 z-[60] px-3 pt-3 sm:px-6">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[70] focus:rounded-lg focus:bg-gold focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-on-gold"
       >
         Skip to content
       </a>
-      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 rounded-full border border-line bg-canvas/95 pl-4 pr-2.5 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)] backdrop-blur-sm sm:pl-5">
         <Wordmark />
         <nav aria-label="Primary" className="ml-6 hidden items-center gap-1 lg:flex">
           {navLinks.map((l) => (
@@ -107,7 +107,7 @@ export function Header() {
               to={l.to}
               className={({ isActive }) =>
                 cn(
-                  "relative rounded-lg px-3 py-2 text-[13.5px] font-medium transition-colors duration-180",
+                  "relative rounded-full px-3.5 py-2 text-[13.5px] font-medium transition-colors duration-180",
                   isActive ? "text-ink" : "text-ink3 hover:text-ink2"
                 )
               }
@@ -116,7 +116,7 @@ export function Header() {
                 <>
                   {l.label}
                   {isActive && (
-                    <motion.span layoutId="nav-underline" className="absolute inset-x-3 -bottom-[1px] h-px bg-gold" transition={{ duration: 0.3 }} />
+                    <motion.span layoutId="nav-underline" className="absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-full bg-gold" transition={{ duration: 0.3 }} />
                   )}
                 </>
               )}
@@ -127,7 +127,7 @@ export function Header() {
         <div className="ml-auto flex items-center gap-1.5">
           <button
             onClick={() => setPaletteOpen(true)}
-            className="hidden h-11 items-center gap-2 rounded-lg border border-line bg-s1 px-3 text-[13px] text-ink3 transition-colors hover:bg-s2 hover:text-ink2 md:inline-flex"
+            className="hidden h-11 items-center gap-2 rounded-full border border-line bg-s1 px-3 text-[13px] text-ink3 transition-colors hover:bg-s2 hover:text-ink2 md:inline-flex"
             aria-label="Search (Ctrl K)"
           >
             <Search className="size-3.5" aria-hidden="true" />
@@ -136,20 +136,20 @@ export function Header() {
           </button>
           <button
             onClick={() => setPaletteOpen(true)}
-            className="grid size-11 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink md:hidden"
+            className="grid size-11 place-items-center rounded-full border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink md:hidden"
             aria-label="Search"
           >
             <Search className="size-4" />
           </button>
 
-          <div className="hidden items-center rounded-lg border border-line bg-s1 p-0.5 font-mono text-[11px] sm:flex" role="group" aria-label="Currency">
+          <div className="hidden items-center rounded-full border border-line bg-s1 p-0.5 font-mono text-[11px] sm:flex" role="group" aria-label="Currency">
             {(["LKR", "USD"] as const).map((c) => (
               <button
                 key={c}
                 onClick={() => setCurrency(c)}
                 aria-pressed={currency === c}
                 className={cn(
-                  "h-9 rounded-md px-3 transition-colors duration-180 tnum",
+                  "h-9 rounded-full px-3 transition-colors duration-180 tnum",
                   currency === c ? "bg-s3 text-gold" : "text-ink3 hover:text-ink2"
                 )}
               >
@@ -162,7 +162,7 @@ export function Header() {
 
           <Link
             to="/account"
-            className="hidden size-11 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink sm:grid"
+            className="hidden size-11 place-items-center rounded-full border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink sm:grid"
             aria-label="Your account"
           >
             <User className="size-4" />
@@ -170,20 +170,19 @@ export function Header() {
 
           <button
             onClick={() => setCartOpen(true)}
-            className="relative grid size-11 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
+            className="group/btn inline-flex h-11 items-center gap-2 rounded-full bg-gold pl-3.5 pr-1.5 text-on-gold transition-colors hover:bg-gold-strong active:scale-[0.98] sm:pl-4"
             aria-label={`Open cart, ${cartCount} ${cartCount === 1 ? "piece" : "pieces"}`}
           >
-            <ShoppingBag className="size-4" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 grid size-[18px] place-items-center rounded-full bg-gold font-mono text-[10px] font-medium text-on-gold tnum">
-                {cartCount}
-              </span>
-            )}
+            <ShoppingBag className="size-4" aria-hidden="true" />
+            <span className="hidden text-[13.5px] font-medium sm:inline">Your crate</span>
+            <span className="grid size-8 place-items-center rounded-full bg-on-gold font-mono text-[12px] text-gold transition-transform duration-200 group-hover/btn:translate-x-0.5 tnum">
+              {cartCount}
+            </span>
           </button>
 
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="grid size-11 place-items-center rounded-lg border border-line text-ink2 lg:hidden"
+            className="grid size-11 place-items-center rounded-full border border-line text-ink2 lg:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >
@@ -196,7 +195,7 @@ export function Header() {
         {mobileOpen && (
           <motion.nav
             aria-label="Mobile"
-            className="border-t border-line bg-canvas lg:hidden"
+            className="mx-auto mt-2 max-w-7xl overflow-hidden rounded-3xl border border-line bg-canvas shadow-[0_8px_30px_-12px_rgba(0,0,0,0.45)] lg:hidden"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -228,7 +227,7 @@ export function Header() {
                   <button
                     key={c}
                     onClick={() => setCurrency(c)}
-                    className={cn("rounded-md border px-3 py-2 font-mono text-[12px] tnum", currency === c ? "border-gold/50 text-gold" : "border-line text-ink3")}
+                    className={cn("min-h-11 rounded-full border px-4 font-mono text-[12px] tnum", currency === c ? "border-gold/50 text-gold" : "border-line text-ink3")}
                   >
                     {c}
                   </button>
