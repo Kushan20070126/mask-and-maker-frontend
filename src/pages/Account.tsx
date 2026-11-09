@@ -1,4 +1,4 @@
-import { BadgeCheck, BookUser, MapPin, PackageOpen, ScanLine, Trash2 } from "lucide-react";
+import { BadgeCheck, BookUser, LogOut, Mail, MapPin, PackageOpen, ScanLine, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "@/lib/mock/api";
@@ -7,6 +7,8 @@ import { usePageMeta } from "@/lib/meta";
 import type { Order } from "@/lib/types";
 import { formatDate, formatMoney } from "@/lib/utils";
 import { useApp } from "@/store/app";
+import { useAuth } from "@/store/auth";
+import { Avatar, useSignOut } from "@/components/layout/Shell";
 import { AnimatedTabs, VerifiedSeal } from "@/components/ui/surfaces";
 import { EmptyState, Skeleton } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
@@ -34,6 +36,8 @@ export default function Account() {
   const [orderList, setOrderList] = useState<Order[] | null>(null);
   const wishlist = useApp((s) => s.wishlist);
   const currency = useApp((s) => s.currency);
+  const user = useAuth((s) => s.user)!; // the route is wrapped in RequireAuth
+  const doSignOut = useSignOut();
 
   useEffect(() => {
     api.listOrders().then(setOrderList);
@@ -43,15 +47,24 @@ export default function Account() {
     <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6">
       {/* identity */}
       <div className="edge flex flex-wrap items-center gap-5 rounded-lg bg-s1 p-6">
-        <span className="grid size-16 shrink-0 place-items-center rounded-full border border-gold/40 bg-s3 font-display text-xl text-gold">
-          RJ
+        <span className="shrink-0 rounded-full border border-gold/40 p-0.5">
+          <Avatar user={user} className="size-16 text-xl" />
         </span>
         <div className="min-w-0 flex-1">
-          <h1 className="font-display text-[26px] text-ink">Ruwin Jayasuriya</h1>
+          <h1 className="truncate font-display text-[26px] text-ink">{user.name}</h1>
           <p className="mt-0.5 flex items-center gap-1.5 text-sm text-ink3">
-            <MapPin className="size-3.5" aria-hidden="true" />
-            Colombo 07 · collector since 2024
+            <Mail className="size-3.5 shrink-0" aria-hidden="true" />
+            <span className="truncate">{user.email}</span>
+            <span aria-hidden="true">·</span>
+            <span className="shrink-0">{user.provider === "google" ? "Signed in with Google" : "Preview account"}</span>
           </p>
+          <button
+            onClick={doSignOut}
+            className="mt-3 inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line px-3.5 text-[13px] font-medium text-ink2 transition-colors hover:bg-s2 hover:text-ink"
+          >
+            <LogOut className="size-3.5" aria-hidden="true" />
+            Sign out
+          </button>
         </div>
         <div className="flex gap-8">
           {[

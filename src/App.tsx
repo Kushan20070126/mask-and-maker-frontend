@@ -3,6 +3,7 @@ import { Suspense, lazy, useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { CartDrawer } from "@/components/layout/CartDrawer";
 import { CookieNotice, Footer, Header } from "@/components/layout/Shell";
+import { RequireAuth } from "@/components/layout/RequireAuth";
 import { CommandPalette } from "@/components/ui/CommandPalette";
 import { ToastHost } from "@/components/ui/kit";
 import { CreditsPage, ErrorBoundary, LegalPage, NotFound, RouteLoading } from "@/pages/System";
@@ -18,6 +19,7 @@ const Verify = lazy(() => import("@/pages/Verify"));
 const Cart = lazy(() => import("@/pages/Cart"));
 const Checkout = lazy(() => import("@/pages/Checkout"));
 const Account = lazy(() => import("@/pages/Account"));
+const Login = lazy(() => import("@/pages/Login"));
 const Portal = lazy(() => import("@/pages/Portal"));
 const About = lazy(() => import("@/pages/About"));
 
@@ -56,7 +58,8 @@ function AnimatedRoutes() {
             <Route path="/verify/:certId" element={<Verify />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="/account" element={<Account />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/account" element={<RequireAuth><Account /></RequireAuth>} />
             <Route path="/portal" element={<Portal />} />
             <Route path="/about" element={<About />} />
             <Route path="/legal/privacy" element={<LegalPage doc="privacy" />} />

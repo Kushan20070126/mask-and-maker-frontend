@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Heart, Menu, Moon, Search, ShoppingBag, Sun, User, X } from "lucide-react";
-import { useEffect, useState, type FormEvent } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { useEffect, useRef, useState, type FormEvent } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "@/store/app";
+import { initialsOf, useAuth, type AuthUser } from "@/store/auth";
 import { cn } from "@/utils/cn";
 import { Button } from "../ui/kit";
 import { FlameBand } from "../art";
@@ -77,7 +78,122 @@ function ThemeToggle() {
   );
 }
 
+export function Avatar({ user, className }: { user: AuthUser; className?: string }) {
+  const [broken, setBroken] = useState(false);
+  return user.picture && !broken ? (
+    <img
+      src={user.picture}
+      alt=""
+      referrerPolicy="no-referrer"
+      onError={() => setBroken(true)}
+      className={cn("rounded-full object-cover", className)}
+    />
+  ) : (
+    <span className={cn("grid place-items-center rounded-full bg-s3 font-display text-gold", className)} aria-hidden="true">
+      {initialsOf(user.name)}
+    </span>
+  );
+}
+
+export function useSignOut() {
+  const signOut = useAuth((s) => s.signOut);
+  const toast = useApp((s) => s.toast);
+  const navigate = useNavigate();
+  return () => {
+    signOut();
+    toast("You're signed out", { description: "Your crate and wishlist stay on this device." });
+    navigate("/");
+  };
+}
+
+function AccountMenu() {
+  const user = useAuth((s) => s.user);
+  const doSignOut = useSignOut();
+  const [open, setOpen] = useState(false);
+  const wrap = useRef<HTMLDivElement>(null);
+  const { pathname } = useLocation();
+
+  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (!wrap.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        wrap.current?.querySelector<HTMLButtonElement>("button")?.focus();
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  if (!user) {
+    return (
+      <Link
+        to="/login"
+        className="hidden h-11 items-center gap-2 rounded-full border border-line px-4 text-[13.5px] font-medium whitespace-nowrap text-ink2 transition-colors hover:bg-s2 hover:text-ink sm:inline-flex"
+      >
+        <User className="size-4" aria-hidden="true" />
+        Sign in
+      </Link>
+    );
+  }
+
+  return (
+    <div ref={wrap} className="relative hidden sm:block">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-label={`Account menu for ${user.name}`}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className="grid size-11 place-items-center rounded-full border border-line transition-colors hover:border-gold/60"
+      >
+        <Avatar user={user} className="size-9 text-[13px]" />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            role="menu"
+            initial={{ opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.16 }}
+            className="absolute right-0 top-[calc(100%+8px)] z-50 w-64 origin-top-right rounded-2xl border border-line bg-canvas p-2 shadow-[0_12px_32px_-12px_rgba(0,0,0,0.5)]"
+          >
+            <div className="flex items-center gap-3 px-3 py-2.5">
+              <Avatar user={user} className="size-10 shrink-0 text-sm" />
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-ink">{user.name}</p>
+                <p className="truncate text-[12.5px] text-ink3">{user.email}</p>
+              </div>
+            </div>
+            <div className="my-1 h-px bg-line" />
+            <Link role="menuitem" to="/account" className="flex min-h-11 items-center rounded-lg px-3 text-sm text-ink2 hover:bg-s2 hover:text-ink">
+              Your account
+            </Link>
+            <button
+              role="menuitem"
+              onClick={doSignOut}
+              className="flex min-h-11 w-full items-center rounded-lg px-3 text-left text-sm text-ink2 hover:bg-s2 hover:text-ink"
+            >
+              Sign out
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export function Header() {
+  const user = useAuth((s) => s.user);
+  const doSignOut = useSignOut();
   const setPaletteOpen = useApp((s) => s.setPaletteOpen);
   const setCartOpen = useApp((s) => s.setCartOpen);
   const cartCount = useApp((s) => s.cart.reduce((n, i) => n + i.qty, 0));
@@ -170,13 +286,7 @@ export function Header() {
 
           <ThemeToggle />
 
-          <Link
-            to="/account"
-            className="hidden size-11 place-items-center rounded-full border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink sm:grid"
-            aria-label="Your account"
-          >
-            <User className="size-4" />
-          </Link>
+          <AccountMenu />
 
           <button
             onClick={() => setCartOpen(true)}
@@ -224,13 +334,21 @@ export function Header() {
                 </NavLink>
               ))}
               <NavLink
-                to="/account"
+                to={user ? "/account" : "/login"}
                 className={({ isActive }) =>
                   cn("block rounded-lg px-3 py-2.5 text-[15px] font-medium sm:hidden", isActive ? "bg-s2 text-gold" : "text-ink2")
                 }
               >
-                Your account
+                {user ? "Your account" : "Sign in"}
               </NavLink>
+              {user && (
+                <button
+                  onClick={doSignOut}
+                  className="block w-full rounded-lg px-3 py-2.5 text-left text-[15px] font-medium text-ink2 sm:hidden"
+                >
+                  Sign out
+                </button>
+              )}
               <div className="flex items-center gap-3 px-3 pt-2 pb-1 sm:hidden">
                 <span className="text-[12.5px]  text-ink3">Currency</span>
                 {(["LKR", "USD"] as const).map((c) => (

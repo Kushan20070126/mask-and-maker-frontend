@@ -80,6 +80,16 @@ npm run build   # production build (single-file dist via vite-plugin-singlefile)
 npm run preview # serve the build
 ```
 
+## Google sign-in
+
+`/login` offers one way in: **Continue with Google** (Google Identity Services, no password stored). The profile (name, email, photo) is kept in the browser under `mm-auth`; `/account` redirects to the login page until someone is signed in.
+
+1. In Google Cloud Console create an OAuth 2.0 client of type *Web application* and add your site (for example `http://localhost:5173`) under *Authorized JavaScript origins*.
+2. Copy `.env.example` to `.env.local` and set `VITE_GOOGLE_CLIENT_ID`.
+3. Restart `npm run dev`.
+
+Without a client id the page runs in **preview mode**: the button opens two sample accounts so the flow can be demonstrated offline.
+
 ## Verification demo paths
 
 - `/verify` — landing, paste a code or simulate a scan
