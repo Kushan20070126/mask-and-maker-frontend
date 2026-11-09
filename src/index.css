@@ -119,6 +119,9 @@ html[data-theme="light"] {
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* the floating header (top) and the phone quick-buy bar (bottom) must never cover a focused control */
+    scroll-padding-top: 6rem;
+    scroll-padding-bottom: 6rem;
     -webkit-text-size-adjust: 100%;
   }
   body {
