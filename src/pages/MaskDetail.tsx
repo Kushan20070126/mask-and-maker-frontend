@@ -1,4 +1,4 @@
-import { ArrowLeft, BadgeCheck, ChevronDown, Copy, FileCheck2, Heart, Package, ShoppingBag, Star } from "lucide-react";
+import { ArrowLeft, BadgeCheck, ChevronDown, Copy, FileCheck2, Heart, Maximize2, Package, ShoppingBag, Star } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { api } from "@/lib/mock/api";
@@ -11,7 +11,7 @@ import { MaskCard, TraditionTag } from "@/components/MaskCard";
 import { ARLauncher, ModelViewerPanel } from "@/components/ui/ARLauncher";
 import { ArchivePlate, MaskArtwork } from "@/components/ui/MaskImage";
 import { AnimatedTabs, BorderBeam, VerifiedSeal } from "@/components/ui/surfaces";
-import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
+import { Button, EmptyState, Lightbox, Skeleton } from "@/components/ui/kit";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
 import { ImageFrame as Photograph, Pic } from "@/components/ui/MaskImage";
 import { craftHands, photos } from "@/lib/photos";
@@ -44,6 +44,7 @@ export default function MaskDetail() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("photographs");
   const [country, setCountry] = useState("Sri Lanka");
+  const [zoomOpen, setZoomOpen] = useState(false);
 
   const currency = useApp((s) => s.currency);
   const setCurrency = useApp((s) => s.setCurrency);
@@ -185,7 +186,23 @@ export default function MaskDetail() {
             className="w-full justify-start"
           />
           <div className="mt-4">
-            {tab === "photographs" && <MaskArtwork mask={mask} eager className="w-full" />}
+            {tab === "photographs" && (
+              mask.image ? (
+                <button
+                  onClick={() => setZoomOpen(true)}
+                  aria-label={`Enlarge the photograph of ${mask.name}`}
+                  className="group/zoom relative block w-full cursor-zoom-in rounded-lg text-left"
+                >
+                  <MaskArtwork mask={mask} eager className="w-full" />
+                  <span className="pointer-events-none absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full bg-scrim px-3 py-1.5 text-[12px] font-medium text-ink opacity-90 transition-opacity group-hover/zoom:opacity-100">
+                    <Maximize2 className="size-3.5" aria-hidden="true" />
+                    Enlarge
+                  </span>
+                </button>
+              ) : (
+                <MaskArtwork mask={mask} eager className="w-full" />
+              )
+            )}
             {tab === "model" && (
               <div>
                 <ModelViewerPanel mask={mask} className="aspect-[4/5] w-full" />
@@ -457,6 +474,16 @@ export default function MaskDetail() {
             ))}
           </div>
         </section>
+      )}
+
+      {mask.image && (
+        <Lightbox
+          open={zoomOpen}
+          onClose={() => setZoomOpen(false)}
+          src={mask.image}
+          alt={`${mask.name}, studio photograph`}
+          caption={`${mask.name} · ${mask.region} · ${mask.year}`}
+        />
       )}
 
       {buyOffscreen && mask.stock > 0 && (

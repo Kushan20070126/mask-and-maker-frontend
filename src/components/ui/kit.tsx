@@ -5,6 +5,7 @@ import {
   forwardRef,
   useEffect,
   useRef,
+  useState,
   type ButtonHTMLAttributes,
   type InputHTMLAttributes,
   type KeyboardEvent as ReactKeyboardEvent,
@@ -15,7 +16,7 @@ import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { EXPO } from "@/lib/utils";
 import type { Photo } from "@/lib/photos";
-import { ImageFrame } from "./MaskImage";
+import { ImageFrame, Pic } from "./MaskImage";
 
 /* ------------------------------------------------ Button ----- */
 
@@ -302,6 +303,83 @@ export function Modal({
               </button>
             </div>
             <div className="px-5 py-5">{children}</div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ------------------------------------------------ Lightbox -- */
+
+/**
+ * Full-screen photograph viewer. Click or press Enter on the picture to flip
+ * between fitted and 2x; when zoomed the picture scrolls and can be dragged
+ * with the scrollbars or arrow keys. Escape and the close button leave.
+ */
+export function Lightbox({
+  open,
+  onClose,
+  src,
+  alt,
+  caption,
+}: {
+  open: boolean;
+  onClose: () => void;
+  src: string;
+  alt: string;
+  caption?: string;
+}) {
+  const { panelRef, onKeyDown } = useOverlay(open, onClose);
+  const [zoomed, setZoomed] = useState(false);
+  useEffect(() => {
+    if (!open) setZoomed(false);
+  }, [open]);
+  return (
+    <AnimatePresence>
+      {open && (
+        <div ref={panelRef} tabIndex={-1} onKeyDown={onKeyDown} className="fixed inset-0 z-[85] flex flex-col outline-none" role="dialog" aria-modal="true" aria-label={alt}>
+          <motion.div
+            className="absolute inset-0 bg-black/90"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            onClick={onClose}
+          />
+          <motion.div
+            className="relative flex min-h-0 flex-1 flex-col"
+            initial={{ opacity: 0, scale: 0.985 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: EXPO }}
+          >
+            <div className="flex items-center justify-between gap-4 p-4">
+              <p className="min-w-0 truncate text-sm text-white/80">{caption ?? alt}</p>
+              <button
+                onClick={onClose}
+                aria-label="Close photograph"
+                className="grid size-11 shrink-0 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+            <div className={cn("min-h-0 flex-1 overflow-auto px-4 pb-6", !zoomed && "grid place-items-center")}>
+              <button
+                onClick={() => setZoomed((z) => !z)}
+                aria-label={zoomed ? "Show the whole photograph" : "Zoom in"}
+                aria-pressed={zoomed}
+                className={cn("block rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-gold", zoomed ? "mx-auto w-[200%] max-w-none cursor-zoom-out sm:w-[130%]" : "max-h-full cursor-zoom-in")}
+              >
+                <Pic
+                  src={src}
+                  alt={alt}
+                  eager
+                  sizes={zoomed ? "200vw" : "100vw"}
+                  className={cn("rounded-lg object-contain", zoomed ? "w-full" : "max-h-[calc(100dvh-9rem)] w-auto max-w-full")}
+                />
+              </button>
+            </div>
           </motion.div>
         </div>
       )}
