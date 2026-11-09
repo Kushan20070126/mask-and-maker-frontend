@@ -43,7 +43,7 @@ export function SpotlightCard({ children, className }: { children: ReactNode; cl
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-320 group-hover/spot:opacity-100"
         style={{ background: "radial-gradient(560px circle at var(--mx) var(--my), color-mix(in oklab, var(--gold) 6%, transparent), transparent 46%)" }}
       />
-      <div className="relative">{children}</div>
+      <div className="relative h-full">{children}</div>
     </div>
   );
 }
