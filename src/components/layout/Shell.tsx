@@ -60,7 +60,7 @@ function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label={light ? "Switch to dark theme" : "Switch to gallery light theme"}
-      className="grid size-10 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
+      className="grid size-11 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
     >
       {light ? <Moon className="size-4" /> : <Sun className="size-4" />}
     </button>
@@ -127,7 +127,7 @@ export function Header() {
         <div className="ml-auto flex items-center gap-1.5">
           <button
             onClick={() => setPaletteOpen(true)}
-            className="hidden h-10 items-center gap-2 rounded-lg border border-line bg-s1 px-3 text-[13px] text-ink3 transition-colors hover:bg-s2 hover:text-ink2 md:inline-flex"
+            className="hidden h-11 items-center gap-2 rounded-lg border border-line bg-s1 px-3 text-[13px] text-ink3 transition-colors hover:bg-s2 hover:text-ink2 md:inline-flex"
             aria-label="Search (Ctrl K)"
           >
             <Search className="size-3.5" aria-hidden="true" />
@@ -136,7 +136,7 @@ export function Header() {
           </button>
           <button
             onClick={() => setPaletteOpen(true)}
-            className="grid size-10 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink md:hidden"
+            className="grid size-11 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink md:hidden"
             aria-label="Search"
           >
             <Search className="size-4" />
@@ -149,7 +149,7 @@ export function Header() {
                 onClick={() => setCurrency(c)}
                 aria-pressed={currency === c}
                 className={cn(
-                  "h-8 rounded-md px-2.5 transition-colors duration-180 tnum",
+                  "h-9 rounded-md px-3 transition-colors duration-180 tnum",
                   currency === c ? "bg-s3 text-gold" : "text-ink3 hover:text-ink2"
                 )}
               >
@@ -162,7 +162,7 @@ export function Header() {
 
           <Link
             to="/account"
-            className="hidden size-10 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink sm:grid"
+            className="hidden size-11 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink sm:grid"
             aria-label="Your account"
           >
             <User className="size-4" />
@@ -170,7 +170,7 @@ export function Header() {
 
           <button
             onClick={() => setCartOpen(true)}
-            className="relative grid size-10 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
+            className="relative grid size-11 place-items-center rounded-lg border border-line text-ink2 transition-colors hover:bg-s2 hover:text-ink"
             aria-label={`Open cart, ${cartCount} ${cartCount === 1 ? "piece" : "pieces"}`}
           >
             <ShoppingBag className="size-4" />
@@ -183,7 +183,7 @@ export function Header() {
 
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="grid size-10 place-items-center rounded-lg border border-line text-ink2 lg:hidden"
+            className="grid size-11 place-items-center rounded-lg border border-line text-ink2 lg:hidden"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >

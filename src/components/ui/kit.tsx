@@ -33,8 +33,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       type={type}
       className={cn(
         "inline-flex select-none items-center justify-center gap-2 rounded-lg font-medium transition-all duration-100 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45",
-        size === "sm" && "h-9 px-3.5 text-[13px]",
-        size === "md" && "h-10 px-4 text-sm",
+        size === "sm" && "h-10 px-4 text-[13px]",
+        size === "md" && "h-11 px-5 text-sm",
         size === "lg" && "h-12 px-6 text-[15px]",
         variant === "primary" && "bg-gold text-on-gold shadow-[0_1px_0_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.22)] hover:bg-gold-strong",
         variant === "outline" && "edge bg-s2 text-ink hover:bg-s3",
@@ -245,7 +245,7 @@ export function Modal({
           >
             <div className="flex items-center justify-between border-b border-line px-5 py-4">
               <h2 className="font-display text-lg text-ink">{title}</h2>
-              <button onClick={onClose} aria-label="Close dialog" className="grid size-10 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-ink">
+              <button onClick={onClose} aria-label="Close dialog" className="grid size-11 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-ink">
                 <X className="size-4" />
               </button>
             </div>
@@ -303,7 +303,7 @@ export function Drawer({
             {title !== undefined && (
               <div className="flex items-center justify-between border-b border-line px-5 py-4">
                 <h2 className="font-display text-lg text-ink">{title}</h2>
-                <button onClick={onClose} aria-label="Close panel" className="grid size-10 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-ink">
+                <button onClick={onClose} aria-label="Close panel" className="grid size-11 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-ink">
                   <X className="size-4" />
                 </button>
               </div>

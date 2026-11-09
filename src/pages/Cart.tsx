@@ -65,7 +65,7 @@ export default function Cart() {
                   <div className="mt-4 flex items-center justify-between">
                     <div className="inline-flex items-center rounded-lg border border-line">
                       <button
-                        className="grid size-10 place-items-center text-ink3 transition-colors hover:text-ink disabled:opacity-40"
+                        className="grid size-11 place-items-center text-ink3 transition-colors hover:text-ink disabled:opacity-40"
                         onClick={() => setQty(mask.slug, qty - 1)}
                         disabled={qty <= 1}
                         aria-label={`Decrease quantity of ${mask.name}`}
@@ -74,7 +74,7 @@ export default function Cart() {
                       </button>
                       <span className="w-8 text-center font-mono text-sm text-ink tnum">{qty}</span>
                       <button
-                        className="grid size-10 place-items-center text-ink3 transition-colors hover:text-ink disabled:opacity-40"
+                        className="grid size-11 place-items-center text-ink3 transition-colors hover:text-ink disabled:opacity-40"
                         onClick={() => setQty(mask.slug, Math.min(qty + 1, mask.stock))}
                         disabled={qty >= mask.stock}
                         aria-label={`Increase quantity of ${mask.name}`}
@@ -89,7 +89,7 @@ export default function Cart() {
                           removeFromCart(mask.slug);
                           toast("Removed from crate", { description: mask.name });
                         }}
-                        className="grid size-10 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-danger"
+                        className="grid size-11 place-items-center rounded-lg text-ink3 transition-colors hover:bg-s2 hover:text-danger"
                         aria-label={`Remove ${mask.name}`}
                       >
                         <Trash2 className="size-4" />
