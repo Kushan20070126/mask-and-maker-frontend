@@ -1,6 +1,6 @@
 import { ArrowLeft, BadgeCheck, ChevronDown, Copy, FileCheck2, Heart, Maximize2, Package, ShoppingBag, Star } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useParams, useSearchParams } from "react-router-dom";
 import { api } from "@/lib/mock/api";
 import { usePageMeta } from "@/lib/meta";
 import type { Artisan, Mask } from "@/lib/types";
@@ -36,6 +36,7 @@ const includes = [
 
 export default function MaskDetail() {
   const { slug = "" } = useParams();
+  const { state } = useLocation();
   const [searchParams] = useSearchParams();
   const wantsAR = searchParams.get("ar") === "1";
   const [mask, setMask] = useState<Mask | null>(null);
@@ -166,14 +167,14 @@ export default function MaskDetail() {
     <div className="mx-auto max-w-7xl px-4 pt-8 pb-28 sm:px-6 lg:pb-4">
       <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
 
-      <Link to="/masks" className="inline-flex items-center gap-1.5 text-[13px] text-ink3 transition-colors hover:text-ink">
+      <Link to={{ pathname: "/masks", search: state?.collectionSearch }} state={{ collectionScrollKey: state?.collectionScrollKey }} className="inline-flex items-center gap-1.5 text-[13px] text-ink3 transition-colors hover:text-ink">
         <ArrowLeft className="size-3.5" aria-hidden="true" />
         The collection
       </Link>
 
-      <div className="mt-5 grid gap-10 lg:grid-cols-2 lg:gap-14">
+      <div className="mt-5 grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-14">
         {/* -------------------------------- gallery */}
-        <div>
+        <div className="min-w-0">
           <AnimatedTabs
             id="gallery"
             value={tab}

@@ -22,7 +22,7 @@ export function TraditionTag({ tradition, className }: { tradition: Tradition; c
   );
 }
 
-export function MaskCard({ mask }: { mask: Mask }) {
+export function MaskCard({ mask, linkState }: { mask: Mask; linkState?: { collectionSearch: string; collectionScrollKey: string } }) {
   const currency = useApp((s) => s.currency);
   const wishlisted = useApp((s) => s.wishlist.includes(mask.slug));
   const toggleWishlist = useApp((s) => s.toggleWishlist);
@@ -45,7 +45,7 @@ export function MaskCard({ mask }: { mask: Mask }) {
   return (
     <SpotlightCard className="h-full">
       <div className="relative">
-        <Link to={`/masks/${mask.slug}`} aria-label={`View ${mask.name}`}>
+        <Link to={`/masks/${mask.slug}`} state={linkState} aria-label={`View ${mask.name}`}>
           <MaskArtwork mask={mask} ratio="aspect-[4/5]" className="rounded-b-none" />
         </Link>
         <button
@@ -63,7 +63,7 @@ export function MaskCard({ mask }: { mask: Mask }) {
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <Link to={`/masks/${mask.slug}`} className="block">
+            <Link to={`/masks/${mask.slug}`} state={linkState} className="block">
               <h3 className="truncate font-display text-[17px] leading-snug text-ink transition-colors hover:text-gold-strong">{mask.name}</h3>
             </Link>
             <p className="mt-0.5 truncate text-xs text-ink3">

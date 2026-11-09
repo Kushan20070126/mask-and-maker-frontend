@@ -26,6 +26,11 @@ const About = lazy(() => import("@/pages/About"));
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
+    const previous = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    return () => { window.history.scrollRestoration = previous; };
+  }, []);
+  useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, [pathname]);
   return null;

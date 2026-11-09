@@ -1,6 +1,6 @@
 import { ArrowUpDown, Check, LayoutGrid, List, RotateCcw, SlidersHorizontal } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Link, useLocation, useNavigationType, useSearchParams } from "react-router-dom";
 import { api, sizeOf, type MaskQuery } from "@/lib/mock/api";
 import { artisans } from "@/lib/mock/data";
 import { usePageMeta } from "@/lib/meta";
@@ -28,32 +28,66 @@ const sizeOptions = [
 ];
 
 type SortId = NonNullable<MaskQuery["sort"]>;
+const collectionScroll = new Map<string, number>();
+const filterKeys = ["tradition", "artisan", "ar", "verified", "maxPrice", "size", "q"];
 
 export default function Marketplace() {
   usePageMeta("The collection", "Eighteen hand-carved Kaduru masks across the Raksha, Sanni and Kolam traditions — each with named maker and minted provenance.");
 
-  /* the tradition tab lives in the URL, so deep links, footer links and back/forward all agree */
   const [params, setParams] = useSearchParams();
+  const { key, search, state } = useLocation();
+  const navigationType = useNavigationType();
+  const scrollKey = state?.scrollKey ?? key;
+  const restoreKey = navigationType === "POP" ? scrollKey : state?.collectionScrollKey;
+  const pendingScroll = useRef(restoreKey ? collectionScroll.get(restoreKey) : undefined);
+
+  function updateParam(name: string, value: string | string[] = "") {
+    const next = new URLSearchParams(window.location.search);
+    next.delete(name);
+    for (const entry of Array.isArray(value) ? value : [value]) {
+      if (entry) next.append(name, entry);
+    }
+    setParams(next, { replace: true, state: { scrollKey } });
+  }
+
   const tradeParam = params.get("tradition");
   const tradition = traditionTabs.some((t) => t.id === tradeParam) ? (tradeParam as string) : "all";
-  const setTradition = useCallback(
-    (t: string) => setParams(t === "all" ? {} : { tradition: t }, { replace: true }),
-    [setParams]
-  );
-  const [artisan, setArtisan] = useState("all");
-  const [arOnly, setArOnly] = useState(false);
-  const [verifiedOnly, setVerifiedOnly] = useState(false);
-  const [maxPrice, setMaxPrice] = useState(215000);
-  const [sizes, setSizes] = useState<string[]>([]);
-  const [q, setQ] = useState("");
-  const [sort, setSort] = useState<SortId>("featured");
-  const [view, setView] = useState<"grid" | "list">("grid");
+  const setTradition = (t: string) => updateParam("tradition", t === "all" ? "" : t);
+  const makerParam = params.get("artisan");
+  const artisan = artisans.some((a) => a.slug === makerParam) ? makerParam! : "all";
+  const arOnly = params.get("ar") === "1";
+  const verifiedOnly = params.get("verified") === "1";
+  const priceParam = Number(params.get("maxPrice"));
+  const maxPrice = priceParam >= 30000 && priceParam <= 215000 && priceParam % 5000 === 0 ? priceParam : 215000;
+  const sizeParams = params.getAll("size").join(",");
+  const sizes = useMemo(() => sizeOptions.map(({ id }) => id).filter((id) => sizeParams.split(",").includes(id)), [sizeParams]);
+  const q = params.get("q") ?? "";
+  const sortParam = params.get("sort");
+  const sort: SortId = sortParam === "price-asc" || sortParam === "price-desc" || sortParam === "newest" ? sortParam : "featured";
+  const view = params.get("view") === "list" ? "list" : "grid";
   const [maxPriceSettled, setMaxPriceSettled] = useState(maxPrice);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(true);
   const [results, setResults] = useState<Mask[]>([]);
   const [sheetOpen, setSheetOpen] = useState(false);
   const currency = useApp((s) => s.currency);
+  const detailLinkState = { collectionSearch: search, collectionScrollKey: scrollKey };
+
+  useLayoutEffect(() => {
+    if (loading) return;
+    if (pendingScroll.current !== undefined) {
+      window.scrollTo({ top: pendingScroll.current, behavior: "instant" });
+      pendingScroll.current = undefined;
+    }
+    const saveScroll = () => {
+      if (window.location.pathname === "/masks" && window.location.search === search) {
+        collectionScroll.set(scrollKey, window.scrollY);
+      }
+    };
+    saveScroll();
+    window.addEventListener("scroll", saveScroll, { passive: true });
+    return () => window.removeEventListener("scroll", saveScroll);
+  }, [loading, scrollKey, search]);
 
   /* dragging the price slider shouldn't fire a query per tick */
   useEffect(() => {
@@ -98,29 +132,22 @@ export default function Marketplace() {
     };
   }, [tradition, artisan, arOnly, verifiedOnly, maxPriceSettled, sizes, q, sort]);
 
-  const activeChips = useMemo(() => {
-    const chips: { key: string; label: string; clear: () => void }[] = [];
-    if (tradition !== "all") chips.push({ key: "t", label: `Tradition: ${tradition}`, clear: () => setTradition("all") });
-    if (artisan !== "all") {
-      const a = artisans.find((x) => x.slug === artisan);
-      chips.push({ key: "a", label: `Maker: ${a?.name ?? artisan}`, clear: () => setArtisan("all") });
-    }
-    if (maxPrice < 215000) chips.push({ key: "p", label: `Under ${formatMoney(maxPrice, currency)}`, clear: () => setMaxPrice(215000) });
-    sizes.forEach((s) => chips.push({ key: `s-${s}`, label: `Size: ${s}`, clear: () => setSizes((prev) => prev.filter((x) => x !== s)) }));
-    if (arOnly) chips.push({ key: "ar", label: "AR available", clear: () => setArOnly(false) });
-    if (verifiedOnly) chips.push({ key: "v", label: "Verified", clear: () => setVerifiedOnly(false) });
-    if (q) chips.push({ key: "q", label: `“${q}”`, clear: () => setQ("") });
-    return chips;
-  }, [tradition, artisan, maxPrice, sizes, arOnly, verifiedOnly, q, currency, setTradition]);
+  const activeChips: { key: string; label: string; clear: () => void }[] = [];
+  if (tradition !== "all") activeChips.push({ key: "t", label: `Tradition: ${tradition}`, clear: () => setTradition("all") });
+  if (artisan !== "all") {
+    const a = artisans.find((x) => x.slug === artisan);
+    activeChips.push({ key: "a", label: `Maker: ${a?.name ?? artisan}`, clear: () => updateParam("artisan") });
+  }
+  if (maxPrice < 215000) activeChips.push({ key: "p", label: `Under ${formatMoney(maxPrice, currency)}`, clear: () => updateParam("maxPrice") });
+  sizes.forEach((s) => activeChips.push({ key: `s-${s}`, label: `Size: ${s}`, clear: () => updateParam("size", sizes.filter((x) => x !== s)) }));
+  if (arOnly) activeChips.push({ key: "ar", label: "AR available", clear: () => updateParam("ar") });
+  if (verifiedOnly) activeChips.push({ key: "v", label: "Verified", clear: () => updateParam("verified") });
+  if (q) activeChips.push({ key: "q", label: `“${q}”`, clear: () => updateParam("q") });
 
   const resetAll = () => {
-    setTradition("all");
-    setArtisan("all");
-    setArOnly(false);
-    setVerifiedOnly(false);
-    setMaxPrice(215000);
-    setSizes([]);
-    setQ("");
+    const next = new URLSearchParams(params);
+    filterKeys.forEach((name) => next.delete(name));
+    setParams(next, { replace: true, state: { scrollKey } });
   };
 
   const filterBody = (
@@ -129,7 +156,7 @@ export default function Marketplace() {
         <p className="mb-2.5 text-[12.5px] font-medium  text-ink3">Maker</p>
         <select
           value={artisan}
-          onChange={(e) => setArtisan(e.target.value)}
+          onChange={(e) => updateParam("artisan", e.target.value === "all" ? "" : e.target.value)}
           className="h-10 w-full rounded-lg border border-line bg-s2 px-3 text-sm text-ink outline-none transition focus:border-gold/50 focus:ring-2 focus:ring-gold/20"
           aria-label="Filter by maker"
         >
@@ -153,7 +180,7 @@ export default function Marketplace() {
           max={215000}
           step={5000}
           value={maxPrice}
-          onChange={(e) => setMaxPrice(Number(e.target.value))}
+          onChange={(e) => updateParam("maxPrice", e.target.value === "215000" ? "" : e.target.value)}
           className="w-full accent-[#C9A45C]"
           aria-label="Maximum price"
         />
@@ -167,7 +194,7 @@ export default function Marketplace() {
             return (
               <button
                 key={s.id}
-                onClick={() => setSizes((prev) => (on ? prev.filter((x) => x !== s.id) : [...prev, s.id]))}
+                onClick={() => updateParam("size", on ? sizes.filter((x) => x !== s.id) : [...sizes, s.id])}
                 aria-pressed={on}
                 className={cn(
                   "flex w-full items-center justify-between rounded-lg border px-3 py-2.5 text-left text-[13px] transition-colors duration-180",
@@ -186,8 +213,8 @@ export default function Marketplace() {
         <legend className="mb-2.5 text-[12.5px] font-medium  text-ink3">Attributes</legend>
         <div className="space-y-2">
           {([
-            ["AR preview ready", arOnly, () => setArOnly(!arOnly)],
-            ["Registry-verified", verifiedOnly, () => setVerifiedOnly(!verifiedOnly)],
+            ["AR preview ready", arOnly, () => updateParam("ar", arOnly ? "" : "1")],
+            ["Registry-verified", verifiedOnly, () => updateParam("verified", verifiedOnly ? "" : "1")],
           ] as const).map(([label, on, toggle]) => (
             <button
               key={label}
@@ -229,7 +256,7 @@ export default function Marketplace() {
           <div className="relative flex-1 sm:w-64">
             <input
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={(e) => updateParam("q", e.target.value)}
               placeholder="Search pieces or regions…"
               className="h-10 w-full rounded-lg border border-line bg-s2 pr-10 pl-3.5 text-sm text-ink outline-none transition placeholder:text-ink3 focus:border-gold/50 focus:ring-2 focus:ring-gold/20"
               aria-label="Search the collection"
@@ -242,15 +269,15 @@ export default function Marketplace() {
       {/* tradition tabs + controls */}
       <div className="mt-8 flex flex-wrap items-center gap-3">
         <AnimatedTabs id="tradition" tabs={traditionTabs} value={tradition} onChange={setTradition} />
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex w-full min-w-0 items-center gap-2 sm:w-auto">
           <label className="hidden items-center gap-2 text-xs text-ink3 sm:flex" htmlFor="sort">
             <ArrowUpDown className="size-3.5" aria-hidden="true" />
           </label>
           <select
             id="sort"
             value={sort}
-            onChange={(e) => setSort(e.target.value as SortId)}
-            className="h-9 rounded-lg border border-line bg-s2 px-2.5 text-[13px] text-ink outline-none focus:border-gold/50"
+            onChange={(e) => updateParam("sort", e.target.value === "featured" ? "" : e.target.value)}
+            className="h-9 min-w-0 flex-1 rounded-lg border border-line bg-s2 px-2.5 text-[13px] text-ink outline-none focus:border-gold/50 sm:flex-none"
             aria-label="Sort results"
           >
             <option value="featured">Featured first</option>
@@ -259,14 +286,14 @@ export default function Marketplace() {
             <option value="newest">Newest carving</option>
           </select>
           <div className="flex rounded-lg border border-line bg-s1 p-0.5" role="group" aria-label="View">
-            <button onClick={() => setView("grid")} aria-pressed={view === "grid"} aria-label="Grid view" className={cn("grid size-8 place-items-center rounded-md transition-colors", view === "grid" ? "bg-s3 text-ink" : "text-ink3 hover:text-ink2")}>
+            <button onClick={() => updateParam("view")} aria-pressed={view === "grid"} aria-label="Grid view" className={cn("grid size-8 place-items-center rounded-md transition-colors", view === "grid" ? "bg-s3 text-ink" : "text-ink3 hover:text-ink2")}>
               <LayoutGrid className="size-3.5" />
             </button>
-            <button onClick={() => setView("list")} aria-pressed={view === "list"} aria-label="List view" className={cn("grid size-8 place-items-center rounded-md transition-colors", view === "list" ? "bg-s3 text-ink" : "text-ink3 hover:text-ink2")}>
+            <button onClick={() => updateParam("view", "list")} aria-pressed={view === "list"} aria-label="List view" className={cn("grid size-8 place-items-center rounded-md transition-colors", view === "list" ? "bg-s3 text-ink" : "text-ink3 hover:text-ink2")}>
               <List className="size-3.5" />
             </button>
           </div>
-          <Button variant="outline" size="sm" className="lg:hidden" onClick={() => setSheetOpen(true)}>
+          <Button variant="outline" size="sm" className="shrink-0 lg:hidden" onClick={() => setSheetOpen(true)}>
             <SlidersHorizontal className="size-3.5" />
             Filters
             {activeChips.length > 0 && (
@@ -321,24 +348,21 @@ export default function Marketplace() {
             <EmptyState
               photo={photos.masksWall}
               title="The shelf is bare under these filters"
-              body="No piece matches every box you've ticked. Loosen one filter — or let us commission the face you're imagining."
+              body="No masks match these filters. Try changing one or clearing them all. Custom commissions are unavailable in this demo."
             >
               <Button variant="outline" size="sm" onClick={resetAll}>
                 <RotateCcw className="size-3.5" />
                 Reset filters
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => useApp.getState().toast("Commission noted", { description: "The registry desk writes back within two days.", kind: "success" })}>
-                Commission a carving
-              </Button>
             </EmptyState>
           ) : view === "grid" ? (
             <div key="grid" className="grid grid-cols-2 gap-4 xl:grid-cols-3">
               {results.map((m) => (
-                <MaskCard key={m.slug} mask={m} />
+                <MaskCard key={m.slug} mask={m} linkState={detailLinkState} />
               ))}
             </div>
           ) : (
-            <ListView results={results} />
+            <ListView results={results} linkState={detailLinkState} />
           )}
         </div>
       </div>
@@ -356,17 +380,23 @@ export default function Marketplace() {
   );
 }
 
-function ListView({ results }: { results: Mask[] }) {
+function ListView({ results, linkState }: { results: Mask[]; linkState: { collectionSearch: string; collectionScrollKey: string } }) {
   const currency = useApp((s) => s.currency);
   return (
     <div className="space-y-3">
       {results.map((m) => (
         <SpotlightCard key={m.slug}>
-          <Link to={`/masks/${m.slug}`} className="flex items-center gap-4 p-3" aria-label={`View ${m.name}`}>
-            <MaskArtwork mask={m} ratio="" className="size-20 shrink-0 rounded-lg sm:size-24" />
+          <Link
+            to={`/masks/${m.slug}`}
+            state={linkState}
+            aria-labelledby={`mask-name-${m.slug}`}
+            aria-describedby={`mask-price-${m.slug}`}
+            className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-1.5 p-3 sm:grid-cols-[auto_minmax(0,1fr)_auto] sm:gap-x-4"
+          >
+            <MaskArtwork mask={m} ratio="" className="row-span-2 size-20 rounded-lg sm:row-span-1 sm:size-24" />
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-3">
-                <h3 className="truncate font-display text-[17px] text-ink">{m.name}</h3>
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <h3 id={`mask-name-${m.slug}`} className="font-display text-[17px] leading-tight text-ink">{m.name}</h3>
                 <TraditionTag tradition={m.tradition} />
               </div>
               <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-ink3">{m.story}</p>
@@ -374,7 +404,7 @@ function ListView({ results }: { results: Mask[] }) {
                 {m.heightCm} cm · {sizeOf(m)} · {m.region} · {m.year}
               </p>
             </div>
-            <span className="hidden shrink-0 font-mono text-[15px] text-ink sm:block tnum">{formatMoney(m.priceLKR, currency)}</span>
+            <span id={`mask-price-${m.slug}`} className="col-start-2 font-mono text-sm text-ink tnum sm:col-start-auto sm:text-[15px]">{formatMoney(m.priceLKR, currency)}</span>
           </Link>
         </SpotlightCard>
       ))}

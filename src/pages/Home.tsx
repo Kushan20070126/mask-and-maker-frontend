@@ -113,53 +113,31 @@ export default function Home() {
     <>
       {/* ---------------------------------------------- HERO */}
       <section className="grain relative overflow-hidden" aria-label="Introduction">
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-4 pt-14 pb-16 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-20 lg:pb-24">
-          <Stagger className="lg:col-span-7">
+        <div className="relative mx-auto grid max-w-7xl gap-7 px-4 pt-8 pb-12 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-20 lg:pb-24">
+          <Stagger className="lg:col-span-7 lg:self-end">
             <StaggerItem>
-              <h1 className="font-display text-[44px] leading-[1.04] font-light tracking-[-0.02em] text-ink sm:text-[60px] lg:text-[68px]">
+              <h1 className="font-display text-[38px] leading-[1.04] font-light tracking-[-0.02em] text-ink sm:text-[60px] lg:text-[68px]">
                 The carved face of a living tradition.
               </h1>
             </StaggerItem>
             <StaggerItem>
-              <p className="mt-6 max-w-md text-base leading-relaxed text-ink2">
-                Raksha guardians, healing Sanni demons, the laughing faces of the Kolam — hand-carved in Kaduru wood by
-                Ambalangoda's masters, with provenance kept in code and prices kept honest.
+              <p className="mt-4 max-w-md text-base leading-relaxed text-ink2 sm:mt-6">
+                Hand-carved Kaduru masks from Ambalangoda, Sri Lanka. Meet the makers and trace each mask’s origins.
               </p>
             </StaggerItem>
             <StaggerItem>
-              <div className="mt-9 flex flex-wrap items-center gap-3">
+              <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 sm:mt-8">
                 <Magnetic>
                   <ButtonLink to="/masks" arrow size="lg">Explore the collection</ButtonLink>
                 </Magnetic>
-                <ButtonLink to="/artisans" variant="outline" arrow size="lg">Meet the makers</ButtonLink>
+                <Link to="/artisans" className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-ink2 underline-offset-4 hover:text-gold-strong hover:underline">
+                  Meet the makers <ArrowRight className="size-3.5" aria-hidden="true" />
+                </Link>
               </div>
-            </StaggerItem>
-            <StaggerItem>
-              <p className="mt-9 text-sm text-ink3">Eighteen masks, eight lineages, no middlemen.</p>
-            </StaggerItem>
-            <StaggerItem>
-              <Link to="/heritage" className="group mt-10 block max-w-xl" aria-label="Read how a mask is made and danced">
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { p: craftHands, cap: "The bench" },
-                    { p: photos.masksWall2, cap: "The masks" },
-                    { p: photos.kolamDance, cap: "The dance" },
-                  ].map(({ p, cap }) => (
-                    <figure key={cap}>
-                      <ImageFrame src={p.src} alt={p.alt} ratio="aspect-[4/5]" position={p.position} className="rounded-md" />
-                      <figcaption className="mt-1.5 text-[12.5px] text-ink3">{cap}</figcaption>
-                    </figure>
-                  ))}
-                </div>
-                <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-gold transition-colors group-hover:text-gold-strong">
-                  How a mask is made and danced
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </span>
-              </Link>
             </StaggerItem>
           </Stagger>
 
-          <Reveal className="lg:col-span-5" delay={0.15}>
+          <Reveal className="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1" delay={0.15}>
             <div className="relative mx-auto max-w-sm lg:max-w-none">
               {/* the one gold frame of this screen */}
               <div className="gold-frame relative overflow-hidden">
@@ -195,6 +173,28 @@ export default function Home() {
                 <ArrowRight className="size-3.5" aria-hidden="true" />
               </Link>
             </div>
+          </Reveal>
+
+          <Reveal className="mt-3 lg:col-span-7 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:self-start">
+            <p className="text-sm text-ink3">Eighteen masks, eight lineages, no middlemen.</p>
+            <Link to="/heritage" className="group mt-4 block max-w-xl" aria-label="Read how a mask is made and danced">
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { p: craftHands, cap: "The bench" },
+                  { p: photos.masksWall2, cap: "The masks" },
+                  { p: photos.kolamDance, cap: "The dance" },
+                ].map(({ p, cap }) => (
+                  <figure key={cap}>
+                    <ImageFrame src={p.src} alt={p.alt} ratio="aspect-[4/5]" position={p.position} className="rounded-md" />
+                    <figcaption className="mt-1.5 text-[12.5px] text-ink3">{cap}</figcaption>
+                  </figure>
+                ))}
+              </div>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-gold transition-colors group-hover:text-gold-strong">
+                How a mask is made and danced
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </span>
+            </Link>
           </Reveal>
         </div>
       </section>

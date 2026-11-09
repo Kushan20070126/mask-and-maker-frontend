@@ -509,17 +509,16 @@ export function CookieNotice() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-      className="edge fixed bottom-4 left-4 z-[65] w-[calc(100%-2rem)] max-w-sm rounded-lg bg-s2 p-4 shadow-2xl"
+      className="edge fixed bottom-3 left-3 z-[65] w-[calc(100%-1.5rem)] max-w-sm rounded-lg bg-s2 px-3 py-2 shadow-2xl"
       role="region"
       aria-label="Cookie notice"
     >
-      <p className="text-sm font-medium text-ink">A word on cookies</p>
-      <p className="mt-1 text-sm leading-relaxed text-ink2">
-        We keep your crate and currency on this device, and measure the pages — nothing follows you off the registry.
+      <p className="text-[13px] leading-snug text-ink2">
+        <strong className="text-ink">Cookies</strong> help remember your cart and currency and measure site visits.
       </p>
-      <div className="mt-3 flex gap-2">
-        <Button size="sm" onClick={() => setChoice("accepted")}>That's fair</Button>
-        <Button size="sm" variant="ghost" onClick={() => setChoice("declined")}>Essential only</Button>
+      <div className="mt-1 flex flex-wrap gap-x-2">
+        <Button size="sm" className="min-h-11" onClick={() => setChoice("accepted")}>Accept all</Button>
+        <Button size="sm" className="min-h-11" variant="ghost" onClick={() => setChoice("declined")}>Essential only</Button>
       </div>
     </motion.div>
   );

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, BadgeCheck, ChevronDown, CreditCard, Landmark, Loader2, Lock, PackageCheck, Truck } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgeCheck, ChevronDown, CreditCard, Loader2, PackageCheck, Truck } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -35,19 +35,19 @@ interface ShipMethod {
 }
 
 const stepNames = ["Address", "Delivery", "Payment", "Review"];
-
-/** MM/YY with a real month that has not already passed. */
-function expiryValid(v: string): boolean {
-  if (!/^\d{2}\/\d{2}$/.test(v)) return false;
-  const month = Number(v.slice(0, 2));
-  const year = 2000 + Number(v.slice(3));
-  if (month < 1 || month > 12) return false;
-  const now = new Date();
-  return year > now.getFullYear() || (year === now.getFullYear() && month >= now.getMonth() + 1);
-}
+const sampleAddress: Address = {
+  name: "Sample Shopper",
+  email: "shopper@example.com",
+  phone: "+94 77 000 0000",
+  line1: "14 Example Road",
+  city: "Colombo",
+  postal: "00700",
+  country: "Sri Lanka",
+};
+const testCard = "Test card ending in 4242";
 
 export default function Checkout() {
-  usePageMeta("Secure checkout");
+  usePageMeta("Demo checkout");
   const currency = useApp((s) => s.currency);
   const cart = useApp((s) => s.cart);
   const clearCart = useApp((s) => s.clearCart);
@@ -56,7 +56,6 @@ export default function Checkout() {
   const [step, setStep] = useState(0);
   const [address, setAddress] = useState<Address | null>(null);
   const [ship, setShip] = useState<ShipMethod | null>(null);
-  const [pay, setPay] = useState({ name: "", number: "", expiry: "", cvc: "" });
   const [placing, setPlacing] = useState(false);
   const [orderId, setOrderId] = useState<string | null>(null);
 
@@ -96,9 +95,6 @@ export default function Checkout() {
     defaultValues: address ?? { country: "Sri Lanka" },
   });
 
-  const payValid = pay.number.replace(/\s/g, "").length >= 15 && expiryValid(pay.expiry) && pay.cvc.length >= 3;
-  const expiryBad = pay.expiry.length === 5 && !expiryValid(pay.expiry);
-
   const placeOrder = () => {
     if (placing) return;
     setPlacing(true);
@@ -106,14 +102,14 @@ export default function Checkout() {
       setOrderId(`MM-ORD-${3400 + Math.floor(Math.random() * 500)}`);
       setPlacing(false);
       clearCart();
-      toast("Order placed", { description: "The workshop has been notified and the registry updated.", kind: "success" });
+      toast("Demo order complete", { kind: "success" });
     }, 1700);
   };
 
   /* ------------------------------ success ------------------------------ */
   if (orderId) {
     const next: ProvStep[] = [
-      { label: "Order received & paid", date: "Just now", state: "done" },
+      { label: "Demo order placed", date: "Just now", state: "done" },
       { label: "Registry check & provenance pack", state: "current", actor: "Certificate pulled, copy printed" },
       { label: "Workshop hand-over", state: "pending", actor: "The maker signs the crate card" },
       { label: "Export papers & dispatch", state: "pending" },
@@ -125,17 +121,15 @@ export default function Checkout() {
           <span className="mx-auto grid size-14 place-items-center rounded-full border border-gold/50 bg-gold/10">
             <BadgeCheck className="size-6 text-gold" aria-hidden="true" />
           </span>
-          <h1 className="mt-5 font-display text-[30px] text-ink">It's on its way to its tree again</h1>
+          <h1 className="mt-5 font-display text-[30px] text-ink">Demo order complete</h1>
           <p className="mx-auto mt-2 max-w-sm text-[15px] leading-relaxed text-ink2">
-            Order <span className="font-mono text-gold tnum">{orderId}</span> is registered. The maker has been notified and
-            settlement begins on their side today.
+            Your demo reference is <span className="font-mono text-gold tnum">{orderId}</span>. This was a simulation with no charge or shipment.
           </p>
           <div className="mx-auto mt-8 max-w-sm text-left">
-            <h2 className="mb-4 text-[13px] font-semibold text-ink">What happens next</h2>
+            <h2 className="mb-4 text-[13px] font-semibold text-ink">How a real order would be fulfilled</h2>
             <ProvenanceTimeline steps={next} />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <ButtonLink to="/account">Track in your account</ButtonLink>
             <Link to="/masks" className="inline-flex h-10 items-center rounded-lg border border-line bg-s2 px-4 text-sm font-medium text-ink transition-colors hover:bg-s3">
               Back to the collection
             </Link>
@@ -190,8 +184,8 @@ export default function Checkout() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
-      <h1 className="mt-2 font-display text-[30px] text-ink">Two minutes, handled gently</h1>
-      <p className="mt-2 text-sm text-ink2">Guest checkout — no account needed.</p>
+      <h1 className="mt-2 font-display text-[30px] text-ink">Demo checkout</h1>
+      <p className="mt-2 text-sm text-ink2">Try the guest checkout with sample details. This simulation stays in your browser and uses a test card.</p>
       <Stepper steps={stepNames} current={step} className="mt-7 max-w-2xl" onStep={(i) => !placing && setStep(i)} />
 
       <details className="group mt-6 rounded-lg bg-s2 lg:hidden">
@@ -223,19 +217,21 @@ export default function Checkout() {
               })}
               className="edge space-y-4 rounded-lg bg-s1 p-6"
               aria-label="Delivery address"
+              autoComplete="off"
               noValidate
             >
+              <Button type="button" variant="outline" onClick={() => form.reset(sampleAddress)}>Use sample address</Button>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Full name" error={form.formState.errors.name?.message}>
-                  <Input autoComplete="name" placeholder="Ruwin Jayasuriya" {...form.register("name")} />
+                  <Input placeholder="Sample Shopper" {...form.register("name")} />
                 </Field>
                 <Field label="Email" error={form.formState.errors.email?.message}>
-                  <Input type="email" autoComplete="email" placeholder="you@example.com" {...form.register("email")} />
+                  <Input type="email" placeholder="shopper@example.com" {...form.register("email")} />
                 </Field>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Phone / WhatsApp" error={form.formState.errors.phone?.message}>
-                  <Input autoComplete="tel" placeholder="+94 77 000 0000" {...form.register("phone")} />
+                  <Input type="tel" placeholder="+94 77 000 0000" {...form.register("phone")} />
                 </Field>
                 <Field label="Country" error={form.formState.errors.country?.message}>
                   <select
@@ -249,7 +245,7 @@ export default function Checkout() {
                 </Field>
               </div>
               <Field label="Street address" error={form.formState.errors.line1?.message}>
-                <Input autoComplete="street-address" placeholder="14 Galle Road, Apt 3" {...form.register("line1")} />
+                <Input placeholder="14 Example Road" {...form.register("line1")} />
               </Field>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="City" error={form.formState.errors.city?.message}>
@@ -304,65 +300,16 @@ export default function Checkout() {
 
           {/* STEP 3 — payment */}
           {step === 2 && (
-            <div className="edge rounded-lg bg-s1 p-6" aria-label="Payment details">
-              <div className="mb-5 flex items-center justify-between">
-                <p className="flex items-center gap-2 text-sm font-semibold text-ink">
-                  <CreditCard className="size-4 text-gold" aria-hidden="true" />
-                  Card payment
-                </p>
-                <span className="inline-flex items-center gap-2 rounded-md bg-s2 px-2 py-1 text-[12px] text-ink3">
-                  <Landmark className="size-3" aria-hidden="true" />
-                  PAYHERE / STRIPE STUB
-                </span>
-              </div>
-              <div className="space-y-4">
-                <Field label="Name on card (optional)">
-                  <Input autoComplete="cc-name" value={pay.name} onChange={(e) => setPay({ ...pay, name: e.target.value })} placeholder="R Jayasuriya" />
-                </Field>
-                <Field label="Card number">
-                  <Input
-                    inputMode="numeric"
-                    autoComplete="cc-number"
-                    value={pay.number}
-                    onChange={(e) => {
-                      const digits = e.target.value.replace(/\D/g, "").slice(0, 19);
-                      setPay({ ...pay, number: digits.replace(/(.{4})/g, "$1 ").trim() });
-                    }}
-                    placeholder="4242 4242 4242 4242"
-                  />
-                </Field>
-                <div className="grid grid-cols-2 gap-4">
-                  <Field label="Expiry" error={expiryBad ? "Use a real month that hasn't passed" : undefined}>
-                    <Input
-                      inputMode="numeric"
-                      autoComplete="cc-exp"
-                      value={pay.expiry}
-                      onChange={(e) => {
-                        const d = e.target.value.replace(/\D/g, "").slice(0, 4);
-                        setPay({ ...pay, expiry: d.length > 2 ? `${d.slice(0, 2)}/${d.slice(2)}` : d });
-                      }}
-                      placeholder="08/27"
-                    />
-                  </Field>
-                  <Field label="Security code">
-                    <Input
-                      inputMode="numeric"
-                      autoComplete="cc-csc"
-                      value={pay.cvc}
-                      onChange={(e) => setPay({ ...pay, cvc: e.target.value.replace(/\D/g, "").slice(0, 4) })}
-                      placeholder="•••"
-                    />
-                  </Field>
-                </div>
-                <Button size="lg" className="w-full" disabled={!payValid} onClick={() => setStep(3)}>
-                  Review order
-                  <ArrowRight className="size-4" />
-                </Button>
-                <p className="flex items-start gap-1.5 text-xs leading-relaxed text-ink3">
-                  <Lock className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-                  This is a demonstration storefront. Details stay in your browser; no charge is made and nothing is transmitted.
-                </p>
-              </div>
+            <div className="edge space-y-4 rounded-lg bg-s1 p-6" aria-label="Test payment">
+              <p className="flex items-center gap-2 text-sm font-semibold text-ink">
+                <CreditCard className="size-4 text-gold" aria-hidden="true" />
+                {testCard}
+              </p>
+              <p className="text-sm text-ink2">The demo uses this card automatically.</p>
+              <Button size="lg" className="w-full" onClick={() => setStep(3)}>
+                Review demo order
+                <ArrowRight className="size-4" />
+              </Button>
             </div>
           )}
 
@@ -391,17 +338,15 @@ export default function Checkout() {
                 <div>
                   <p className="text-[12.5px]  text-ink3">Paying with</p>
                   <p className="mt-1.5 text-sm leading-relaxed text-ink2">
-                    Card ···· {pay.number.replace(/\s/g, "").slice(-4)}
-                    <br />
-                    {pay.name.trim() && <span className="text-ink3">{pay.name}</span>}
+                    {testCard}
                   </p>
                 </div>
               </div>
               <Button size="lg" className="w-full" onClick={placeOrder} disabled={placing}>
                 {placing ? <Loader2 className="size-4 animate-spin" /> : <PackageCheck className="size-4" />}
-                {placing ? "Registering the order…" : `Place order — ${formatMoney(total, currency)}`}
+                {placing ? "Placing demo order…" : "Place demo order"}
               </Button>
-              <p className="text-center text-xs text-ink3">The maker is notified the moment the order registers.</p>
+              <p className="text-center text-xs text-ink3">Demo total {formatMoney(total, currency)} · No charge</p>
             </div>
           )}
         </div>
