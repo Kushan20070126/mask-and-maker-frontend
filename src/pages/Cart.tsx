@@ -1,4 +1,4 @@
-import { ArrowRight, Minus, Package, Plus, Trash2 } from "lucide-react";
+import { Minus, Package, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { masks } from "@/lib/mock/data";
 import { usePageMeta } from "@/lib/meta";
@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
 import { photos } from "@/lib/photos";
 import { TraditionTag } from "@/components/MaskCard";
+import { ButtonLink } from "@/components/ui/kit";
 
 export default function Cart() {
   usePageMeta("Your crate");
@@ -35,10 +36,7 @@ export default function Cart() {
             title="The crate is empty"
             body="Each piece here is one of one — the good ones don't linger. Have a look round the collection while the shelf is full."
           >
-            <Link to="/masks" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
-              Browse the collection
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Link>
+            <ButtonLink to="/masks" arrow>Browse the collection</ButtonLink>
           </EmptyState>
         </div>
       ) : (
@@ -117,10 +115,7 @@ export default function Cart() {
                 <dd className="font-mono text-lg text-gold tnum">{formatMoney(subtotal, currency)}</dd>
               </div>
             </dl>
-            <Link to="/checkout" className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-gold text-sm font-medium text-on-gold transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]">
-              Proceed to checkout
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Link>
+            <ButtonLink to="/checkout" arrow className="mt-5 w-full justify-center">Proceed to checkout</ButtonLink>
             <p className="mt-3 flex items-start gap-1.5 text-xs leading-relaxed text-ink3">
               <Package className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
               Crated at the workshop, export papers handled for you, 61% settled with the maker within 14 days.

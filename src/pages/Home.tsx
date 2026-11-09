@@ -13,6 +13,7 @@ import { SpotlightCard } from "@/components/ui/surfaces";
 import { ImageFrame } from "@/components/ui/MaskImage";
 import { FlameBand } from "@/components/art";
 import { craftHands, photos } from "@/lib/photos";
+import { ButtonLink } from "@/components/ui/kit";
 
 /* ------------------------------------------------ magnetic CTA --- */
 
@@ -127,20 +128,9 @@ export default function Home() {
             <StaggerItem>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Magnetic>
-                  <Link
-                    to="/masks"
-                    className="inline-flex h-12 items-center gap-2 rounded-lg bg-gold px-6 text-[15px] font-medium text-on-gold shadow-[0_1px_0_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.25)] transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]"
-                  >
-                    Explore the collection
-                    <ArrowRight className="size-4" aria-hidden="true" />
-                  </Link>
+                  <ButtonLink to="/masks" arrow size="lg">Explore the collection</ButtonLink>
                 </Magnetic>
-                <Link
-                  to="/artisans"
-                  className="inline-flex h-12 items-center rounded-lg px-5 text-[15px] font-medium text-ink2 transition-colors duration-180 hover:text-gold-strong"
-                >
-                  Meet the makers
-                </Link>
+                <ButtonLink to="/artisans" variant="outline" arrow size="lg">Meet the makers</ButtonLink>
               </div>
             </StaggerItem>
             <StaggerItem>

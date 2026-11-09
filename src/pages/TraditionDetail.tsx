@@ -11,6 +11,7 @@ import { ImageFrame } from "@/components/ui/MaskImage";
 import { FlameBand } from "@/components/art";
 import { photos, traditionPhoto } from "@/lib/photos";
 import { EmptyState, Skeleton } from "@/components/ui/kit";
+import { ButtonLink } from "@/components/ui/kit";
 
 const washColor: Record<string, string> = {
   vermilion: "var(--vermilion)",
@@ -35,9 +36,7 @@ export default function TraditionDetail() {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
         <EmptyState photo={photos.masksBanner} title="No such tradition" body="The island keeps three. They are Raksha, Sanni and Kolam — and they are a scroll away.">
-          <Link to="/heritage" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
-            Back to the hub
-          </Link>
+          <ButtonLink to="/heritage">Back to the hub</ButtonLink>
         </EmptyState>
       </div>
     );

@@ -15,6 +15,7 @@ import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
 import { ImageFrame as Photograph } from "@/components/ui/MaskImage";
 import { craftHands, photos } from "@/lib/photos";
+import { ButtonLink } from "@/components/ui/kit";
 
 /* Mock carrier quotes derived from weight. */
 function shipRows(country: string, weightKg: number): { carrier: string; eta: string; priceLKR: number }[] {
@@ -126,9 +127,7 @@ export default function MaskDetail() {
           title="That face isn't in the registry"
           body="The piece you're after has either found its keeper or never left the workshop. The shelf it came from is well worth a look."
         >
-          <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
-            Back to the collection
-          </Link>
+          <ButtonLink to="/masks">Back to the collection</ButtonLink>
         </EmptyState>
       </div>
     );

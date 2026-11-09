@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { AlertTriangle, CheckCircle2, Info, X, type LucideIcon } from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle2, Info, X, type LucideIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 import {
   forwardRef,
   useEffect,
@@ -18,34 +19,85 @@ import { ImageFrame } from "./MaskImage";
 
 /* ------------------------------------------------ Button ----- */
 
+type Variant = "primary" | "outline" | "ghost" | "danger";
+type Size = "sm" | "md" | "lg";
+
+function buttonClass(variant: Variant, size: Size, arrow: boolean, className?: string) {
+  return cn(
+    "group/btn inline-flex select-none items-center justify-center gap-2 rounded-full font-medium transition-[background-color,transform,opacity] duration-100 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45",
+    size === "sm" && (arrow ? "h-10 pl-4 pr-1.5 text-[13px]" : "h-10 px-4 text-[13px]"),
+    size === "md" && (arrow ? "h-11 pl-5 pr-1.5 text-sm" : "h-11 px-5 text-sm"),
+    size === "lg" && (arrow ? "h-12 pl-6 pr-1.5 text-[15px]" : "h-12 px-6 text-[15px]"),
+    variant === "primary" && "bg-gold text-on-gold hover:bg-gold-strong",
+    variant === "outline" && "border border-gold/60 bg-transparent text-ink hover:bg-gold/10",
+    variant === "ghost" && "text-ink2 hover:bg-s2 hover:text-ink",
+    variant === "danger" && "border border-danger/40 bg-danger/10 text-danger hover:bg-danger/15",
+    className
+  );
+}
+
+/** The small square chip with an arrow that closes a call-to-action. */
+function ArrowChip({ variant, size }: { variant: Variant; size: Size }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "grid shrink-0 place-items-center rounded-full transition-transform duration-200 group-hover/btn:translate-x-0.5",
+        size === "lg" ? "size-9" : size === "md" ? "size-8" : "size-7",
+        variant === "primary" ? "bg-on-gold text-gold" : "bg-gold text-on-gold"
+      )}
+    >
+      <ArrowRight className="size-4" />
+    </span>
+  );
+}
+
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "ghost" | "danger";
-  size?: "sm" | "md" | "lg";
+  variant?: Variant;
+  size?: Size;
+  /** closes the label with an arrow chip (primary and outline only) */
+  arrow?: boolean;
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
-  { variant = "primary", size = "md", className, type = "button", ...props },
+  { variant = "primary", size = "md", arrow = false, className, type = "button", children, ...props },
   ref
 ) {
+  const chip = arrow && (variant === "primary" || variant === "outline");
   return (
-    <button
-      ref={ref}
-      type={type}
-      className={cn(
-        "inline-flex select-none items-center justify-center gap-2 rounded-lg font-medium transition-all duration-100 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45",
-        size === "sm" && "h-10 px-4 text-[13px]",
-        size === "md" && "h-11 px-5 text-sm",
-        size === "lg" && "h-12 px-6 text-[15px]",
-        variant === "primary" && "bg-gold text-on-gold shadow-[0_1px_0_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.22)] hover:bg-gold-strong",
-        variant === "outline" && "edge bg-s2 text-ink hover:bg-s3",
-        variant === "ghost" && "text-ink2 hover:bg-s2 hover:text-ink",
-        variant === "danger" && "border border-danger/40 bg-danger/10 text-danger hover:bg-danger/15",
-        className
-      )}
-      {...props}
-    />
+    <button ref={ref} type={type} className={buttonClass(variant, size, chip, className)} {...props}>
+      {children}
+      {chip && <ArrowChip variant={variant} size={size} />}
+    </button>
   );
 });
+
+/** A router link that looks like a Button. */
+export function ButtonLink({
+  to,
+  variant = "primary",
+  size = "md",
+  arrow = false,
+  className,
+  children,
+  onClick,
+}: {
+  to: string;
+  variant?: Variant;
+  size?: Size;
+  arrow?: boolean;
+  className?: string;
+  children: ReactNode;
+  onClick?: () => void;
+}) {
+  const chip = arrow && (variant === "primary" || variant === "outline");
+  return (
+    <Link to={to} onClick={onClick} className={buttonClass(variant, size, chip, className)}>
+      {children}
+      {chip && <ArrowChip variant={variant} size={size} />}
+    </Link>
+  );
+}
 
 /* ------------------------------------------------ Tag -------- */
 

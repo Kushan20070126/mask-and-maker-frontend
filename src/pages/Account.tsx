@@ -13,6 +13,7 @@ import { MaskArtwork } from "@/components/ui/MaskImage";
 import { ProvenanceTimeline } from "@/components/ui/ProvenanceTimeline";
 import { photos } from "@/lib/photos";
 import { cn } from "@/utils/cn";
+import { ButtonLink } from "@/components/ui/kit";
 
 const tabs = [
   { id: "orders", label: "Orders" },
@@ -162,9 +163,7 @@ export default function Account() {
         (wishlist.length === 0 ? (
           <div className="mt-8">
             <EmptyState photo={photos.masksWall2} title="Nothing kept yet" body="Tap the heart on any mask and it waits here — privately, on this device.">
-              <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold hover:bg-gold-strong active:scale-[0.98] transition-transform duration-100">
-                Browse the collection
-              </Link>
+              <ButtonLink to="/masks">Browse the collection</ButtonLink>
             </EmptyState>
           </div>
         ) : (

@@ -13,6 +13,7 @@ import { Button, EmptyState, Field, Input, Stepper } from "@/components/ui/kit";
 import { MaskArtwork } from "@/components/ui/MaskImage";
 import { photos } from "@/lib/photos";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
+import { ButtonLink } from "@/components/ui/kit";
 
 const addressSchema = z.object({
   name: z.string().min(2, "Your name, as customs will read it"),
@@ -134,9 +135,7 @@ export default function Checkout() {
             <ProvenanceTimeline steps={next} />
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/account" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
-              Track in your account
-            </Link>
+            <ButtonLink to="/account">Track in your account</ButtonLink>
             <Link to="/masks" className="inline-flex h-10 items-center rounded-lg border border-line bg-s2 px-4 text-sm font-medium text-ink transition-colors hover:bg-s3">
               Back to the collection
             </Link>
@@ -151,9 +150,7 @@ export default function Checkout() {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
         <EmptyState photo={photos.masksBanner} title="Nothing to check out" body="Your crate is empty — the shelves, however, are not.">
-          <Link to="/masks" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
-            Browse the collection
-          </Link>
+          <ButtonLink to="/masks">Browse the collection</ButtonLink>
         </EmptyState>
       </div>
     );

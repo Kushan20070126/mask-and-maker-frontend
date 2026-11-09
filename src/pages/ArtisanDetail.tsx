@@ -12,6 +12,7 @@ import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
 import { ImageFrame } from "@/components/ui/MaskImage";
 import { FlameBand } from "@/components/art";
 import { photos } from "@/lib/photos";
+import { ButtonLink } from "@/components/ui/kit";
 
 const patronAmounts = [1500, 4500, 12000];
 
@@ -61,9 +62,7 @@ export default function ArtisanDetail() {
     return (
       <div className="mx-auto max-w-3xl px-4 pt-24 sm:px-6">
         <EmptyState photo={photos.masksBanner} title="No maker by that name" body="The registry lists eight workshops. One of them is bound to have carved what you're looking for.">
-          <Link to="/artisans" className="inline-flex h-10 items-center rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
-            Meet the makers
-          </Link>
+          <ButtonLink to="/artisans">Meet the makers</ButtonLink>
         </EmptyState>
       </div>
     );

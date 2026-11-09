@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ImageFrame } from "@/components/ui/MaskImage";
 import { photos, type Photo } from "@/lib/photos";
 import { usePageMeta } from "@/lib/meta";
+import { ButtonLink } from "@/components/ui/kit";
 
 /* ---------------- 404 ---------------- */
 
@@ -21,10 +22,10 @@ export function NotFound() {
         to a well-lit room.
       </p>
       <div className="mt-8 flex gap-3">
-        <Link to="/" className="inline-flex h-10 items-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-transform duration-100 hover:bg-gold-strong active:scale-[0.98]">
+        <ButtonLink to="/">
           <ArrowLeft className="size-4" aria-hidden="true" />
           Home
-        </Link>
+        </ButtonLink>
         <Link to="/masks" className="inline-flex h-10 items-center rounded-lg border border-line bg-s2 px-4 text-sm font-medium text-ink transition-colors hover:bg-s3">
           The collection
         </Link>

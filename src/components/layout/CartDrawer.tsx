@@ -1,4 +1,4 @@
-import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { masks } from "@/lib/mock/data";
@@ -6,6 +6,7 @@ import { formatMoney } from "@/lib/utils";
 import { useApp } from "@/store/app";
 import { Button, Drawer } from "../ui/kit";
 import { MaskArtwork } from "../ui/MaskImage";
+import { ButtonLink } from "@/components/ui/kit";
 
 export function CartDrawer() {
   const open = useApp((s) => s.cartOpen);
@@ -40,13 +41,9 @@ export function CartDrawer() {
             <p className="font-display text-lg text-ink">Nothing crated yet</p>
             <p className="mt-1 text-sm text-ink2">One-of-a-kind pieces wait patiently, but not forever.</p>
           </div>
-          <Link
-            to="/masks"
-            onClick={() => setOpen(false)}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-gold px-4 text-sm font-medium text-on-gold transition-all duration-100 hover:bg-gold-strong active:scale-[0.98]"
-          >
-            Browse the collection
-          </Link>
+          <ButtonLink to="/masks" className="justify-center" onClick={() => setOpen(false)}>
+Browse the collection
+</ButtonLink>
         </div>
       ) : (
         <>
@@ -107,16 +104,13 @@ export function CartDrawer() {
               <span className="font-mono text-lg text-ink tnum">{formatMoney(subtotal, currency)}</span>
             </div>
             <p className="mt-1 text-xs text-ink3">Insured shipping and export papers calculated at checkout.</p>
-            <Button
-              size="lg"
-              className="mt-4 w-full"
+            <Button size="lg" arrow className="mt-4 w-full"
               onClick={() => {
                 setOpen(false);
                 navigate("/checkout");
               }}
             >
               Proceed to checkout
-              <ArrowRight className="size-4" />
             </Button>
             <Link
               to="/cart"
