@@ -50,7 +50,7 @@ function SectionHead({ title, href, hrefLabel }: { title: string; href?: string;
   return (
     <div className="mb-10 flex items-end justify-between gap-6">
       <div>
-        <h2 className="font-display text-[28px] leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">{title}</h2>
+        <h2 className="font-display text-[32px] leading-[1.1] tracking-[-0.015em] text-ink sm:text-[46px]">{title}</h2>
       </div>
       {href && (
         <Link to={href} className="hidden shrink-0 items-center gap-1.5 text-sm font-medium text-ink2 transition-colors hover:text-gold-strong sm:inline-flex">
@@ -203,7 +203,7 @@ export default function Home() {
       <Marquee
         label="Raksha guardians, Sanni healers, Kolam theatre, Kaduru wood, natural pigments, verified provenance"
         items={["Raksha guardians", "Sanni healers", "Kolam theatre", "Carved in Kaduru", "Natural pigments", "Verified provenance", "Made in Ambalangoda"]}
-        className="border-y border-line py-7"
+        className="border-t border-line py-7"
       />
 
       {/* ---------------------------------------------- TRUST STRIP */}
@@ -220,25 +220,26 @@ export default function Home() {
         <FlameBand tall />
       </section>
 
+      <div data-band="alt" className="mt-24">
       {/* ---------------------------------------------- FEATURED BENTO */}
-      <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="Featured pieces">
+      <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6" aria-label="Featured pieces">
         <SectionHead title="Pieces the workshops are proudest of" href="/masks" hrefLabel="See all 18" />
         <Stagger className="grid auto-rows-[minmax(150px,auto)] grid-cols-2 gap-4 lg:grid-cols-4">
           {featured.map((m, i) => (
             <StaggerItem key={m.slug} className={i === 0 ? "col-span-2 row-span-2" : ""}>
               <SpotlightCard className="h-full">
                 <Link to={`/masks/${m.slug}`} className="group block h-full" aria-label={`View ${m.name}`}>
-                  <div className={cn(i === 0 ? "aspect-square sm:aspect-[1/1.08]" : "aspect-[4/3.1]", "relative h-full w-full overflow-hidden rounded-lg")}>
+                  <div className={cn(i === 0 ? "aspect-square sm:aspect-[1/1.08]" : "min-h-[220px]", "relative h-full w-full overflow-hidden rounded-lg")}>
                     <div className="absolute inset-0 transition-transform duration-600 ease-out group-hover:scale-[1.03]">
                       <MaskArtwork mask={m} ratio="" className="h-full rounded-lg" eager={i < 2} />
                     </div>
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-canvas/85 via-canvas/10 to-transparent" aria-hidden="true" />
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" aria-hidden="true" />
                     <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
                       <div className="min-w-0">
-                        <p className={cn("truncate font-display text-ink", i === 0 ? "text-xl" : "text-base")}>{m.name}</p>
-                        <p className="mt-0.5 truncate text-xs text-ink2">{m.region} · {m.year}</p>
+                        <p className={cn("truncate font-display text-white", i === 0 ? "text-xl" : "text-base")}>{m.name}</p>
+                        <p className="mt-0.5 truncate text-xs text-white/80">{m.region} · {m.year}</p>
                       </div>
-                      <span className="shrink-0 font-mono text-[13px] text-gold tnum">{formatMoney(m.priceLKR, currency)}</span>
+                      <span className="shrink-0 font-mono text-[13px] text-[#ddb983] tnum">{formatMoney(m.priceLKR, currency)}</span>
                     </div>
                   </div>
                 </Link>
@@ -247,6 +248,8 @@ export default function Home() {
           ))}
         </Stagger>
       </section>
+
+      </div>
 
       {/* ---------------------------------------------- HOW IT WORKS */}
       <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="How it works">
@@ -273,6 +276,7 @@ export default function Home() {
         </div>
       </section>
 
+      <div data-band="alt" className="mt-24 pb-24">
       {/* ---------------------------------------------- ARTISAN SPOTLIGHT */}
       <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="Maker spotlight">
         <div className="edge overflow-hidden rounded-lg bg-s1">
@@ -287,7 +291,7 @@ export default function Home() {
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-s1 via-transparent to-transparent lg:bg-gradient-to-r" aria-hidden="true" />
             </div>
             <div className="p-8 sm:p-10 lg:col-span-3">
-              <h2 className="mt-2 font-display text-[28px] leading-tight text-ink sm:text-[34px]">
+              <h2 className="mt-2 font-display text-[32px] leading-tight text-ink sm:text-[44px]">
                 {sirisena.name} <span className="font-sinhala text-[0.62em] text-ink2">· {sirisena.sinhalaName}</span>
               </h2>
               <p className="mt-1 text-sm text-ink3">{sirisena.role} · {sirisena.village}</p>
@@ -326,7 +330,7 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="Folklore hub preview">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-[28px] leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
+            <h2 className="font-display text-[32px] leading-[1.1] tracking-[-0.015em] text-ink sm:text-[46px]">
               Every mask arrived with a story attached. We keep those, too.
             </h2>
             <ul className="mt-7 divide-y divide-line border-y border-line">
@@ -356,11 +360,13 @@ export default function Home() {
         </div>
       </section>
 
+      </div>
+
       {/* ---------------------------------------------- IMPACT */}
       <section className="mx-auto max-w-7xl px-4 pt-24 sm:px-6" aria-label="Impact">
         <div className="grid items-center gap-10 rounded-lg bg-s2 p-6 sm:p-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-7">
-            <h2 className="max-w-lg font-display text-[28px] leading-[1.15] tracking-[-0.01em] text-ink sm:text-[34px]">
+            <h2 className="max-w-lg font-display text-[32px] leading-[1.1] tracking-[-0.015em] text-ink sm:text-[46px]">
               Eight lineages along one stretch of coast
             </h2>
             <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-ink2">

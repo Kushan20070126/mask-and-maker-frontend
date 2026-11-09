@@ -257,3 +257,47 @@ html[data-theme="light"] {
 @layer components {
   .marquee-track { animation: marquee var(--marquee-seconds, 55s) linear infinite; will-change: transform; }
 }
+
+/* ============================================================
+   Alternating bands: <div data-band="alt"> flips the token set for
+   everything inside it. Cream on the dark theme, dark on the light one,
+   so the page keeps its rhythm in either theme without per-component work.
+   ============================================================ */
+html:not([data-theme="light"]) [data-band="alt"] {
+  color-scheme: light;
+  --canvas: #f4efe6;
+  --s1: #ede7db;
+  --s2: #e7e0d1;
+  --s3: #ded5c2;
+  --line: rgba(28, 22, 14, 0.12);
+  --edge-hi: rgba(255, 255, 255, 0.7);
+  --gold: #735520;
+  --gold-strong: #5e4419;
+  --on-gold: #f7f2e8;
+  --ink: #211c15;
+  --ink2: #48423a;
+  --ink3: #625a4e;
+  --ink4: #b4ab9c;
+  --scrim: rgba(244, 239, 230, 0.72);
+}
+html[data-theme="light"] [data-band="alt"] {
+  color-scheme: dark;
+  --canvas: #0b0a09;
+  --s1: #14110e;
+  --s2: #1b1712;
+  --s3: #24201a;
+  --line: rgba(255, 255, 255, 0.09);
+  --edge-hi: rgba(255, 255, 255, 0.08);
+  --gold: #c9a45c;
+  --gold-strong: #ddb983;
+  --on-gold: #16120a;
+  --ink: #ede7db;
+  --ink2: #aba399;
+  --ink3: #8e867a;
+  --ink4: #50493f;
+  --scrim: rgba(6, 5, 4, 0.72);
+}
+[data-band="alt"] {
+  background: var(--canvas);
+  color: var(--ink);
+}
