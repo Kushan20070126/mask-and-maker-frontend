@@ -1,6 +1,4 @@
-import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { useRef, type MouseEvent, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { artisans, masks, articles } from "@/lib/mock/data";
 import { usePageMeta } from "@/lib/meta";
@@ -15,34 +13,6 @@ import { FlameBand } from "@/components/art";
 import { Marquee } from "@/components/ui/Marquee";
 import { craftHands, photos } from "@/lib/photos";
 import { ButtonLink } from "@/components/ui/kit";
-
-/* ------------------------------------------------ magnetic CTA --- */
-
-function Magnetic({ children }: { children: ReactNode }) {
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLSpanElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 180, damping: 14, mass: 0.4 });
-  const sy = useSpring(y, { stiffness: 180, damping: 14, mass: 0.4 });
-
-  const onMove = (e: MouseEvent) => {
-    if (reduce || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    x.set((e.clientX - (r.left + r.width / 2)) * 0.16);
-    y.set((e.clientY - (r.top + r.height / 2)) * 0.22);
-  };
-  const onLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.span ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} style={{ x: sx, y: sy }} className="inline-block">
-      {children}
-    </motion.span>
-  );
-}
 
 /* ------------------------------------------------ sections ------- */
 
@@ -111,88 +81,72 @@ export default function Home() {
 
   return (
     <>
-      {/* ---------------------------------------------- HERO */}
-      <section className="grain relative overflow-hidden" aria-label="Introduction">
-        <div className="relative mx-auto grid max-w-7xl gap-7 px-4 pt-8 pb-12 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-8 lg:pt-20 lg:pb-24">
-          <Stagger className="lg:col-span-7 lg:self-end">
-            <StaggerItem>
-              <h1 className="font-display text-[38px] leading-[1.04] font-light tracking-[-0.02em] text-ink sm:text-[60px] lg:text-[68px]">
-                The carved face of a living tradition.
-              </h1>
-            </StaggerItem>
-            <StaggerItem>
-              <p className="mt-4 max-w-md text-base leading-relaxed text-ink2 sm:mt-6">
-                Hand-carved Kaduru masks from Ambalangoda, Sri Lanka. Meet the makers and trace each mask’s origins.
-              </p>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 sm:mt-8">
-                <Magnetic>
-                  <ButtonLink to="/masks" arrow size="lg">Explore the collection</ButtonLink>
-                </Magnetic>
-                <Link to="/artisans" className="inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-ink2 underline-offset-4 hover:text-gold-strong hover:underline">
-                  Meet the makers <ArrowRight className="size-3.5" aria-hidden="true" />
-                </Link>
-              </div>
-            </StaggerItem>
-          </Stagger>
-
-          <Reveal className="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1" delay={0.15}>
-            <div className="relative mx-auto max-w-sm lg:max-w-none">
-              {/* the one gold frame of this screen */}
-              <div className="gold-frame relative overflow-hidden">
-                <motion.div
-                  initial={false}
-                  animate={{ rotate: [0, 0.6, 0, -0.6, 0] }}
-                  transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <ImageFrame
-                    src={heroMask.image}
-                    alt={`${heroMask.name} — hero piece, carved by Sirisena Apuhamy`}
-                    ratio="aspect-[4/5]"
-                    className="rounded-none"
-                    eager
-                  />
-                </motion.div>
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-canvas/85 via-transparent to-transparent" aria-hidden="true" />
-                <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
-                  <div>
-                    <p className="font-display text-lg leading-tight text-ink">{heroMask.name}</p>
-                    <p className="mt-0.5 text-xs text-ink2">
-                      Sirisena Apuhamy · <span className="font-sinhala">{heroMask.sinhala}</span>
-                    </p>
-                  </div>
-                  <span className="font-mono text-[13px] text-gold tnum">{formatMoney(heroMask.priceLKR, currency)}</span>
+      {/* ---------------------------------------------- HERO
+          The Naga Raja's story is the idea: its twin hoods are carved from one plank,
+          so the object is shown larger than the screen and the headline says why. */}
+      <section aria-label="Introduction" className="relative">
+        <div className="grid lg:min-h-[calc(100svh-5.5rem)] lg:grid-cols-[7fr_5fr]">
+          <div className="flex flex-col px-4 pt-8 pb-10 sm:px-6 lg:pt-16 lg:pr-14 lg:pb-14 lg:pl-[max(1.5rem,calc((100vw-80rem)/2+1.5rem))]">
+            <Stagger className="my-auto">
+              <StaggerItem>
+                <h1 className="font-display text-[42px] leading-[1] font-light tracking-[-0.03em] text-balance text-ink sm:text-[64px] lg:text-[clamp(56px,6vw,100px)]">
+                  Carved from one plank of Kaduru.
+                </h1>
+              </StaggerItem>
+              <StaggerItem>
+                <p className="mt-5 max-w-[34rem] text-base leading-relaxed text-ink sm:mt-7 sm:text-lg">
+                  Hand-carved masks from Ambalangoda, each one with its maker, its wood and its certificate on record.
+                </p>
+              </StaggerItem>
+              <StaggerItem>
+                <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 sm:mt-9">
+                  <ButtonLink to="/masks" arrow size="lg">Browse the collection</ButtonLink>
+                  <Link to="/artisans" className="inline-flex min-h-11 items-center gap-1.5 text-[15px] font-medium text-ink underline decoration-gold/50 underline-offset-[6px] transition-colors hover:text-gold-strong hover:decoration-gold">
+                    Meet the makers
+                  </Link>
                 </div>
-              </div>
-              <Link
-                to={`/masks/${heroMask.slug}`}
-                className="absolute -right-2 -bottom-3 inline-flex items-center gap-1.5 rounded-lg bg-s2 px-3 py-2 text-xs font-medium text-ink2 shadow-lg transition-colors hover:text-gold-strong sm:-right-4"
-              >
-                This month's signature piece
-                <ArrowRight className="size-3.5" aria-hidden="true" />
-              </Link>
-            </div>
-          </Reveal>
+              </StaggerItem>
+            </Stagger>
 
-          <Reveal className="mt-3 lg:col-span-7 lg:col-start-1 lg:row-start-2 lg:mt-0 lg:self-start">
-            <p className="text-sm text-ink3">Eighteen masks, eight lineages, no middlemen.</p>
-            <Link to="/heritage" className="group mt-4 block max-w-xl" aria-label="Read how a mask is made and danced">
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { p: craftHands, cap: "The bench" },
-                  { p: photos.masksWall2, cap: "The masks" },
-                  { p: photos.kolamDance, cap: "The dance" },
-                ].map(({ p, cap }) => (
-                  <figure key={cap}>
-                    <ImageFrame src={p.src} alt={p.alt} ratio="aspect-[4/5]" position={p.position} className="rounded-md" />
-                    <figcaption className="mt-1.5 text-[12.5px] text-ink3">{cap}</figcaption>
-                  </figure>
-                ))}
-              </div>
-              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-gold transition-colors group-hover:text-gold-strong">
+            <Reveal className="mt-10 lg:mt-12" delay={0.2}>
+              <p className="text-[15px] text-ink2">Eighteen masks, eight lineages, no middlemen.</p>
+              <Link to="/heritage" className="mt-1 inline-flex min-h-11 items-center gap-1.5 text-[15px] font-medium text-gold transition-colors hover:text-gold-strong">
                 How a mask is made and danced
                 <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
+            </Reveal>
+          </div>
+
+          <Reveal className="relative min-h-[520px] sm:min-h-[640px] lg:min-h-0" delay={0.1}>
+            <div className="absolute inset-0 overflow-hidden bg-s1">
+              <div className="absolute inset-0 animate-ken">
+                <ImageFrame
+                  src={heroMask.image}
+                  alt={`${heroMask.name}, a cobra-king Kolam mask carved by Sirisena Apuhamy, its six hoods rising from a painted crown`}
+                  ratio=""
+                  className="absolute inset-0 rounded-none ring-0"
+                  position="50% 30%"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  eager
+                />
+              </div>
+            </div>
+            <Link
+              to={`/masks/${heroMask.slug}`}
+              className="group absolute bottom-0 left-0 flex max-w-[calc(100%-1rem)] items-end gap-6 bg-canvas py-5 pr-6 pl-4 transition-colors hover:bg-s1 sm:pr-8 sm:pl-6 lg:py-6 lg:pr-10"
+              aria-label={`View ${heroMask.name}, this month's signature piece`}
+            >
+              <span>
+                <span className="block font-display text-2xl leading-tight text-ink sm:text-[28px]">{heroMask.name} <span className="font-sinhala text-base text-ink2">{heroMask.sinhala}</span></span>
+                <span className="mt-1 block text-sm text-ink2">
+                  Carved by Sirisena Apuhamy in {heroMask.carvingDays} days
+                </span>
+              </span>
+              <span className="shrink-0 pb-0.5 text-right">
+                <span className="block text-base font-medium text-ink tnum">{formatMoney(heroMask.priceLKR, currency)}</span>
+                <span className="mt-1 inline-flex items-center gap-1 text-sm text-gold transition-colors group-hover:text-gold-strong">
+                  View <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                </span>
               </span>
             </Link>
           </Reveal>
