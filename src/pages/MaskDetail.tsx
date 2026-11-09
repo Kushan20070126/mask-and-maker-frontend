@@ -13,7 +13,7 @@ import { ArchivePlate, MaskArtwork } from "@/components/ui/MaskImage";
 import { AnimatedTabs, BorderBeam, VerifiedSeal } from "@/components/ui/surfaces";
 import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
 import { ProvenanceTimeline, type ProvStep } from "@/components/ui/ProvenanceTimeline";
-import { ImageFrame as Photograph } from "@/components/ui/MaskImage";
+import { ImageFrame as Photograph, Pic } from "@/components/ui/MaskImage";
 import { craftHands, photos } from "@/lib/photos";
 import { ButtonLink } from "@/components/ui/kit";
 
@@ -217,7 +217,7 @@ export default function MaskDetail() {
             >
               <div className="relative size-14 shrink-0 overflow-hidden rounded-full border border-line">
                 {artisan.photo ? (
-                  <img src={artisan.photo} alt={`Portrait of ${artisan.name}`} className="h-full w-full object-cover" loading="lazy" />
+                  <Pic src={artisan.photo} alt={`Portrait of ${artisan.name}`} className="h-full w-full object-cover" sizes="56px" />
                 ) : (
                   <span className="grid h-full w-full place-items-center bg-s3 font-display text-[15px] text-gold">{artisan.initials}</span>
                 )}

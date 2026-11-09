@@ -9,7 +9,7 @@ import { useApp } from "@/store/app";
 import { cn } from "@/utils/cn";
 import { MaskCard } from "@/components/MaskCard";
 import { Button, EmptyState, Skeleton } from "@/components/ui/kit";
-import { ImageFrame } from "@/components/ui/MaskImage";
+import { ImageFrame, Pic } from "@/components/ui/MaskImage";
 import { FlameBand } from "@/components/art";
 import { photos } from "@/lib/photos";
 import { ButtonLink } from "@/components/ui/kit";
@@ -116,12 +116,11 @@ export default function ArtisanDetail() {
               ratio="aspect-[4/4.6]"
               fallback={
                 <figure className="relative h-full w-full bg-s1">
-                  <img
+                  <Pic
                     src={photos.masksWall2.src}
                     alt={photos.masksWall2.alt}
                     className="h-full w-full object-cover"
                     style={{ objectPosition: photos.masksWall2.position }}
-                    loading="lazy"
                   />
                   <figcaption className="absolute inset-x-0 bottom-0 bg-s1 p-4 text-[13px] leading-snug text-ink2">
                     No portrait sitting yet. Pictured: {photos.masksWall2.caption}.

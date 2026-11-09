@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import type { Mask, Tradition } from "@/lib/types";
 import { cn } from "@/utils/cn";
 
@@ -167,6 +167,51 @@ export function ArchivePlate({
   );
 }
 
+/* ------------------------------------------------ Pic ---
+   An <img> that serves the WebP variants made by scripts/optimize-images.py
+   (800 and 1600 wide) through <picture>, and falls back to the original JPEG. */
+
+export function Pic({
+  src,
+  alt,
+  className,
+  sizes = "(min-width: 1024px) 50vw, 100vw",
+  eager,
+  style,
+  onLoad,
+  onError,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  sizes?: string;
+  eager?: boolean;
+  style?: CSSProperties;
+  onLoad?: () => void;
+  onError?: () => void;
+}) {
+  const base = src.startsWith("/images/") && /\.jpe?g$/i.test(src) ? src.replace(/\.jpe?g$/i, "") : null;
+  const img = (
+    <img
+      src={src}
+      alt={alt}
+      loading={eager ? "eager" : "lazy"}
+      decoding="async"
+      style={style}
+      onLoad={onLoad}
+      onError={onError}
+      className={className}
+    />
+  );
+  if (!base) return img;
+  return (
+    <picture className="contents">
+      <source type="image/webp" srcSet={`${base}-800.webp 800w, ${base}-1600.webp 1600w`} sizes={sizes} />
+      {img}
+    </picture>
+  );
+}
+
 /* ------------------------------------------------ ImageFrame ---
    Consistent-ratio image with blur-up, inner ring and graceful fallback. */
 
@@ -178,6 +223,7 @@ export function ImageFrame({
   eager,
   fallback,
   position,
+  sizes,
 }: {
   src?: string;
   alt: string;
@@ -187,6 +233,8 @@ export function ImageFrame({
   fallback?: ReactNode;
   /** CSS object-position, to keep the subject of a crop in frame */
   position?: string;
+  /** the <img sizes> hint: how wide the picture is shown, so the browser picks the right file */
+  sizes?: string;
 }) {
   const [loaded, setLoaded] = useState(false);
   const [err, setErr] = useState(false);
@@ -198,11 +246,11 @@ export function ImageFrame({
         fallback ?? null
       ) : (
         <>
-          <img
+          <Pic
             src={src}
             alt={alt}
-            loading={eager ? "eager" : "lazy"}
-            decoding="async"
+            sizes={sizes}
+            eager={eager}
             style={position ? { objectPosition: position } : undefined}
             onLoad={() => setLoaded(true)}
             onError={() => setErr(true)}

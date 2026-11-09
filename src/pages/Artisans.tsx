@@ -8,12 +8,13 @@ import { AnimatedTabs } from "@/components/ui/surfaces";
 import { Skeleton } from "@/components/ui/kit";
 import { Stagger, StaggerItem } from "@/components/ui/motion";
 import { CoastMap } from "@/components/art";
+import { Pic } from "@/components/ui/MaskImage";
 
 export function ArtisanAvatar({ artisan, size = "size-14" }: { artisan: Artisan; size?: string }) {
   return (
     <div className={`relative ${size} shrink-0 overflow-hidden rounded-full border border-line`}>
       {artisan.photo ? (
-        <img src={artisan.photo} alt={`Portrait of ${artisan.name}`} className="h-full w-full object-cover" loading="lazy" />
+        <Pic src={artisan.photo} alt={`Portrait of ${artisan.name}`} className="h-full w-full object-cover" sizes="64px" />
       ) : (
         <span className="grid h-full w-full place-items-center bg-s3 font-display text-[15px] tracking-wide text-gold">
           {artisan.initials}

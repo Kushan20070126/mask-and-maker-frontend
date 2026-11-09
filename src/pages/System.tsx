@@ -1,7 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
 import { ArrowLeft, Drama, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ImageFrame } from "@/components/ui/MaskImage";
+import { ImageFrame, Pic } from "@/components/ui/MaskImage";
 import { photos, type Photo } from "@/lib/photos";
 import { usePageMeta } from "@/lib/meta";
 import { ButtonLink } from "@/components/ui/kit";
@@ -170,7 +170,7 @@ export function CreditsPage() {
       <ul className="mt-8 space-y-6">
         {list.map((p) => (
           <li key={p.src} className="flex gap-4">
-            <img src={p.src} alt="" className="h-20 w-20 shrink-0 rounded-md object-cover" loading="lazy" style={{ objectPosition: p.position }} />
+            <Pic src={p.src} alt="" sizes="80px" className="h-20 w-20 shrink-0 rounded-md object-cover" style={{ objectPosition: p.position }} />
             <p className="text-[15px] leading-relaxed text-ink2">
               <a href={p.page} className="font-medium text-ink underline-offset-2 hover:underline" target="_blank" rel="noreferrer">
                 {p.title}
