@@ -11,7 +11,9 @@
     <meta property="og:type" content="website" />
     <script>
       try {
-        if (localStorage.getItem("mm-theme") === "light") document.documentElement.dataset.theme = "light";
+        var saved = localStorage.getItem("mm-theme");
+        var systemLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+        if (saved === "light" || (saved !== "dark" && systemLight)) document.documentElement.dataset.theme = "light";
       } catch (e) {}
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

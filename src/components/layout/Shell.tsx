@@ -36,15 +36,25 @@ function ThemeToggle() {
   const [light, setLight] = useState(() =>
     typeof document !== "undefined" ? document.documentElement.dataset.theme === "light" : false
   );
+  // Until the visitor picks a theme with the button, follow the system setting live.
   useEffect(() => {
-    try {
-      if (localStorage.getItem("mm-theme") === "light") {
-        document.documentElement.dataset.theme = "light";
-        setLight(true);
+    const chosen = () => {
+      try {
+        return localStorage.getItem("mm-theme") !== null;
+      } catch {
+        return false; /* storage unavailable: follow the system */
       }
-    } catch {
-      /* storage unavailable: keep the default theme */
-    }
+    };
+    if (chosen()) return;
+    const query = window.matchMedia("(prefers-color-scheme: light)");
+    const follow = () => {
+      if (chosen()) return;
+      document.documentElement.dataset.theme = query.matches ? "light" : "dark";
+      setLight(query.matches);
+    };
+    follow();
+    query.addEventListener("change", follow);
+    return () => query.removeEventListener("change", follow);
   }, []);
   const toggle = () => {
     const next = !light;
