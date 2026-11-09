@@ -57,6 +57,15 @@ export function loadGoogle(): Promise<void> {
   return loading;
 }
 
+/** Closing the Google window is a choice, not a failure: the page resets without an error. */
+export const CANCELLED = "SignInCancelled";
+
+const failure = (type: string) => {
+  const err = new Error(messageFor(type));
+  if (type === "popup_closed" || type === "access_denied") err.name = CANCELLED;
+  return err;
+};
+
 const messageFor = (type: string) =>
   type === "popup_closed"
     ? "The Google window was closed before sign-in finished."
@@ -73,8 +82,8 @@ export async function signInWithGoogle(): Promise<AuthUser> {
     const client = google.accounts.oauth2.initTokenClient({
       client_id: googleClientId,
       scope: "openid email profile",
-      callback: (r) => (r.access_token ? resolve(r.access_token) : reject(new Error(messageFor(r.error ?? "")))),
-      error_callback: (e) => reject(new Error(messageFor(e.type))),
+      callback: (r) => (r.access_token ? resolve(r.access_token) : reject(failure(r.error ?? ""))),
+      error_callback: (e) => reject(failure(e.type)),
     });
     client.requestAccessToken({ prompt: "select_account" });
   });

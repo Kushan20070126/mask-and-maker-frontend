@@ -1,10 +1,10 @@
-import { BadgeCheck, Heart, Loader2, PackageOpen, ShieldCheck } from "lucide-react";
+import { BadgeCheck, Heart, Loader2, Lock, PackageOpen, ShieldCheck } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link, Navigate, useSearchParams } from "react-router-dom";
 import { Modal } from "@/components/ui/kit";
 import { Pic } from "@/components/ui/MaskImage";
-import { googleClientId, loadGoogle, signInWithGoogle } from "@/lib/google";
+import { CANCELLED, googleClientId, loadGoogle, signInWithGoogle } from "@/lib/google";
 import { usePageMeta } from "@/lib/meta";
 import { photos } from "@/lib/photos";
 import { useApp } from "@/store/app";
@@ -13,6 +13,9 @@ import { EXPO } from "@/lib/utils";
 
 /** Only same-site paths are honoured, so a crafted ?next= can't send someone elsewhere. */
 export const safeNext = (next: string | null) => (next && /^\/(?!\/|login)/.test(next) ? next : "/account");
+
+/** Why the visitor landed here, when a protected page sent them. */
+const reasonFor = (path: string) => (path.startsWith("/account") ? "Your account is private. Sign in to open it." : "");
 
 const perks = [
   { icon: BadgeCheck, title: "Your certificates, kept", body: "Every piece you buy arrives with a verifiable certificate and a digital twin." },
@@ -40,6 +43,7 @@ export default function Login() {
   usePageMeta("Sign in", "Sign in to Mask & Maker with your Google account to keep your orders, certificates and wishlist.");
   const [params] = useSearchParams();
   const next = safeNext(params.get("next"));
+  const reason = params.get("next") ? reasonFor(next) : "";
   const user = useAuth((s) => s.user);
   const signIn = useAuth((s) => s.signIn);
   const toast = useApp((s) => s.toast);
@@ -71,7 +75,9 @@ export default function Login() {
     try {
       finish(await signInWithGoogle());
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Google sign-in didn't complete. Please try again.");
+      if (!(e instanceof Error && e.name === CANCELLED)) {
+        setError(e instanceof Error ? e.message : "Google sign-in didn't complete. Please try again.");
+      }
       setBusy(false);
     }
   };
@@ -86,7 +92,7 @@ export default function Login() {
     <div className="mx-auto max-w-6xl px-4 pt-8 sm:px-6">
       <div className="edge grid overflow-hidden rounded-[28px] bg-s1 lg:min-h-[640px] lg:grid-cols-[1.05fr_1fr]">
         {/* the photograph */}
-        <section className="relative isolate flex min-h-[220px] flex-col justify-end overflow-hidden p-7 sm:p-10 lg:justify-between" aria-label="About signing in">
+        <section className="relative isolate flex min-h-[132px] flex-col justify-end overflow-hidden p-6 sm:min-h-[200px] sm:p-10 lg:justify-between" aria-label="About signing in">
           <Pic
             src={photos.masksWall2.src}
             alt=""
@@ -103,10 +109,10 @@ export default function Login() {
           </p>
 
           <div>
-            <h1 className="max-w-md font-display text-[32px] leading-[1.08] tracking-[-0.015em] text-white sm:text-[42px]">
+            <p className="max-w-md font-display text-[26px] leading-[1.1] tracking-[-0.015em] text-white sm:text-[42px]">
               Every mask arrives with its story.
-            </h1>
-            <p className="mt-3 max-w-md text-[15px] leading-relaxed text-white/80">
+            </p>
+            <p className="mt-3 hidden max-w-md text-[15px] leading-relaxed text-white/80 sm:block">
               Sign in to keep what you collect — the certificate, the maker, the date it left the workshop.
             </p>
             <ul className="mt-7 hidden gap-4 lg:grid">
@@ -132,21 +138,27 @@ export default function Login() {
         </section>
 
         {/* the sign-in card */}
-        <section className="flex items-center justify-center px-6 py-12 sm:px-12" aria-labelledby="signin-title">
+        <section className="flex items-center justify-center px-6 py-8 sm:px-12 sm:py-12" aria-labelledby="signin-title">
           <div className="w-full max-w-sm">
-            <motion.span {...rise(0)} className="relative grid size-14 place-items-center rounded-full border border-gold/40 bg-s2 text-gold">
+            <motion.span {...rise(0)} className="relative hidden size-14 place-items-center rounded-full sm:grid border border-gold/40 bg-s2 text-gold">
               <span className="absolute inset-[4px] rounded-full border border-gold/20" aria-hidden="true" />
               <ShieldCheck className="size-6" aria-hidden="true" />
             </motion.span>
 
-            <motion.h2 {...rise(1)} id="signin-title" className="mt-6 font-display text-[30px] leading-tight text-ink">
-              Welcome to the registry
-            </motion.h2>
+            {reason && (
+              <motion.p {...rise(0)} className="mb-4 flex items-center gap-2 rounded-full border border-gold/30 bg-gold/[0.07] px-3.5 py-2 text-[13.5px] text-ink2">
+                <Lock className="size-3.5 shrink-0 text-gold" aria-hidden="true" />
+                {reason}
+              </motion.p>
+            )}
+            <motion.h1 {...rise(1)} id="signin-title" className="font-display text-[30px] leading-tight text-ink sm:mt-6">
+              Sign in or join
+            </motion.h1>
             <motion.p {...rise(2)} className="mt-2 text-[15px] leading-relaxed text-ink2">
-              Continue with Google. There's no password to make or remember — we only read your name, email address and photo.
+              One tap with Google. There's no password to make or remember.
             </motion.p>
 
-            <motion.div {...rise(3)} className="mt-8">
+            <motion.div {...rise(3)} className="mt-6 sm:mt-8">
               <button
                 onClick={onGoogle}
                 disabled={busy}
@@ -157,29 +169,26 @@ export default function Login() {
                 {busy ? "Waiting for Google…" : "Continue with Google"}
               </button>
 
-              <p role="alert" className="min-h-0 text-sm text-danger empty:hidden mt-3">
+              <p role="alert" className="mt-3 text-sm text-danger empty:hidden">
                 {error}
               </p>
+
+              <p className="mt-3 flex items-start justify-center gap-2 text-center text-[13px] leading-snug text-ink3">
+                <Lock className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+                We only read your name, email and photo, and never post anything.
+              </p>
+
+              <Link
+                to="/masks"
+                className="mt-5 flex h-12 w-full items-center justify-center rounded-full border border-line text-[14.5px] font-medium text-ink2 transition-colors hover:bg-s2 hover:text-ink"
+              >
+                Keep browsing as a guest
+              </Link>
+              <p className="mt-2 text-center text-[12.5px] text-ink3">Checkout works without an account.</p>
             </motion.div>
 
-            {preview && (
-              <motion.div {...rise(4)} className="mt-5 rounded-lg border border-gold/30 bg-gold/[0.06] px-4 py-3">
-                <p className="font-mono text-[11px] tracking-wide text-gold">PREVIEW MODE</p>
-                <p className="mt-1 text-[13.5px] leading-snug text-ink2">
-                  No Google client ID is set, so this button offers sample accounts. Add <code className="font-mono text-[12.5px] text-ink">VITE_GOOGLE_CLIENT_ID</code> to switch on real Google sign-in.
-                </p>
-              </motion.div>
-            )}
-
-            <motion.div {...rise(5)} className="mt-8 border-t border-line pt-6">
-              <p className="text-[13.5px] text-ink3">
-                Just looking? You don't need an account to{" "}
-                <Link to="/masks" className="text-ink2 underline underline-offset-2 hover:text-gold">
-                  browse the collection
-                </Link>{" "}
-                or check out as a guest.
-              </p>
-              <p className="mt-3 text-[12.5px] leading-relaxed text-ink3">
+            <motion.div {...rise(5)} className="mt-7 border-t border-line pt-5">
+              <p className="text-[12.5px] leading-relaxed text-ink3">
                 By continuing you agree to our{" "}
                 <Link to="/legal/terms" className="underline underline-offset-2 hover:text-ink2">
                   Terms of trade
@@ -190,6 +199,12 @@ export default function Login() {
                 </Link>
                 . More ways to sign in will come later.
               </p>
+              {preview && (
+                <p className="mt-4 rounded-lg border border-dashed border-gold/40 px-3 py-2 text-[12.5px] leading-snug text-ink3">
+                  <span className="font-mono text-[11px] text-gold">PREVIEW</span> · sample accounts. Set{" "}
+                  <code className="font-mono text-[12px] text-ink2">VITE_GOOGLE_CLIENT_ID</code> for real Google sign-in.
+                </p>
+              )}
             </motion.div>
           </div>
         </section>
