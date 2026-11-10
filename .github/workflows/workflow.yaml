@@ -64,7 +64,7 @@ jobs:
   # Stage 2: Containerization & Push to Docker Hub
   # ==============================================================
   build-and-push:
-    name: "Docker Build & Push: ${{ env.IMAGE_NAME }}"
+    name: "Docker Build & Push: maskandmaker-frontend"
     needs: [test-and-build]
     runs-on: ubuntu-latest
 
